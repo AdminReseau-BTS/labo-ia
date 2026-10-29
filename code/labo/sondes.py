@@ -1,0 +1,261 @@
+"""Mission 1 - Sondes Fantomes.
+
+Parcourt les images d'archives des sondes spatiales via l'API publique OPUS
+(PDS Ring-Moon Systems Node, NASA). Chaque image recoit une empreinte calculee par
+un reseau de neurones de vision (ResNet18), puis est comparee a toutes les autres
+images de la meme cible prises par le meme instrument. Les plus isolees deviennent
+des "candidates", decrites par l'IA locale si elle est installee.
+"""
+import io
+import logging
+import time
+from pathlib import Path
+
+import numpy as np
+import requests
+import torch
+from PIL import Image
+from sklearn.decomposition import PCA
+from sklearn.ensemble import IsolationForest
+from sklearn.neighbors import NearestNeighbors
+from torchvision.models import ResNet18_Weights, resnet18
+
+from . import db, llm
+from .config import CAMPAIGNS, IMAGING_INSTRUMENTS, IMG_DIR, OPUS_API, OPUS_PREVIEWS, SONDES_DB
+
+log = logging.getLogger("sondes")
+
+PAGE = 100
+POLITE_DELAY = 0.5   # pause entre deux telechargements, pour menager les serveurs publics
+TOP_N = 10           # candidates gardees (et decrites) par groupe
+MIN_GROUP = 30       # en dessous, pas assez d'images pour savoir ce qui est "normal"
+KNN_REF_MAX = 20000  # echantillon de reference pour les tres gros groupes
+# Images techniques (calibration, poses dans le noir...) : leurs "anomalies" sont des defauts d'instrument.
+SKIP_TARGET_WORDS = ("calibration", "dark", "plaque", "flat", "bias", "none", "unknown")
+
+HTTP = requests.Session()
+HTTP.headers["User-Agent"] = "labo-ia-sondes-fantomes/1.0 (recherche d'anomalies, projet perso)"
+
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS campaigns (
+    id INTEGER PRIMARY KEY, instrument TEXT, target TEXT,
+    next_start INTEGER DEFAULT 1, available INTEGER, done INTEGER DEFAULT 0,
+    since_score INTEGER DEFAULT 0, scored_at REAL,
+    UNIQUE(instrument, target));
+CREATE TABLE IF NOT EXISTS images (
+    opus_id TEXT PRIMARY KEY, campaign_id INTEGER, time1 TEXT, small TEXT,
+    emb BLOB, artifact TEXT, score REAL, rank INTEGER, added_at REAL);
+CREATE INDEX IF NOT EXISTS images_campaign ON images(campaign_id, rank);
+CREATE TABLE IF NOT EXISTS descriptions (opus_id TEXT PRIMARY KEY, text TEXT, created_at REAL);
+CREATE TABLE IF NOT EXISTS journal (t REAL, msg TEXT);
+"""
+
+
+class Embedder:
+    """Transforme une image en vecteur de 512 nombres qui resume son contenu."""
+
+    def __init__(self):
+        torch.set_num_threads(2)
+        weights = ResNet18_Weights.DEFAULT
+        model = resnet18(weights=weights)
+        model.fc = torch.nn.Identity()
+        self.model = model.eval()
+        self.prep = weights.transforms()
+
+    @torch.no_grad()
+    def __call__(self, img):
+        v = self.model(self.prep(img.convert("RGB")).unsqueeze(0))[0].numpy().astype(np.float32)
+        return v / (np.linalg.norm(v) + 1e-8)
+
+
+def artifact_reason(gray):
+    """Ecarte les images ratees, qui sont 'bizarres' sans etre interessantes."""
+    if gray.std() < 3:
+        return "image presque uniforme"
+    if (gray < 6).mean() > 0.995:
+        return "image presque noire"
+    if (gray > 250).mean() > 0.5:
+        return "image saturee"
+    # Ecart moyen entre pixels voisins rapporte au contraste : ~0.1 pour une vraie scene,
+    # ~1 pour du bruit pur. Seuil volontairement haut pour garder les images bruitees mais structurees.
+    fine = (np.abs(np.diff(gray, axis=0)).mean() + np.abs(np.diff(gray, axis=1)).mean()) / 2
+    if fine > 0.8 * gray.std():
+        return "image dominee par le bruit"
+    return None
+
+
+def get_json(path, **params):
+    r = HTTP.get(f"{OPUS_API}/{path}", params=params, timeout=90)
+    r.raise_for_status()
+    return r.json()
+
+
+def fetch_page(instrument, target, start):
+    q = {"instrument": instrument, "target": target, "startobs": start, "limit": PAGE}
+    meta = get_json("data.json", cols="opusid,time1", **q)
+    imgs = get_json("images/small.json", **q)
+    times = {row[0]: row[1] for row in meta["page"]}
+    return imgs["data"], times, imgs["available"]
+
+
+def fetch_preview(preview, opus_id):
+    """Copie locale d'un apercu, pour le montrer a l'IA locale."""
+    dest = IMG_DIR / f"{opus_id}{Path(preview).suffix or '.jpg'}"
+    if not dest.exists():
+        r = HTTP.get(OPUS_PREVIEWS + preview, timeout=60)
+        r.raise_for_status()
+        dest.write_bytes(r.content)
+    return dest
+
+
+def process_page(con, embed, camp, items, times):
+    added = 0
+    for it in items:
+        oid, small = it["opus_id"], it.get("small")
+        if not small or con.execute("SELECT 1 FROM images WHERE opus_id=?", (oid,)).fetchone():
+            continue
+        try:
+            r = HTTP.get(OPUS_PREVIEWS + small, timeout=60)
+            r.raise_for_status()
+            img = Image.open(io.BytesIO(r.content))
+            img.load()
+        except (requests.RequestException, OSError) as e:
+            log.warning("image %s ignoree : %s", oid, e)
+            continue
+        gray = np.asarray(img.convert("L"), dtype=np.float32)
+        con.execute(
+            "INSERT INTO images(opus_id, campaign_id, time1, small, emb, artifact, added_at)"
+            " VALUES (?,?,?,?,?,?,?)",
+            (oid, camp["id"], times.get(oid), small, embed(img).tobytes(),
+             artifact_reason(gray), time.time()))
+        added += 1
+        time.sleep(POLITE_DELAY)
+    con.commit()
+    return added
+
+
+def pct_rank(a):
+    return a.argsort().argsort() / max(len(a) - 1, 1)
+
+
+def score_campaign(con, camp):
+    """Classe les images du groupe de la plus ordinaire a la plus isolee."""
+    rows = con.execute("SELECT opus_id, emb FROM images WHERE campaign_id=? AND artifact IS NULL",
+                       (camp["id"],)).fetchall()
+    con.execute("UPDATE campaigns SET since_score=0, scored_at=? WHERE id=?", (time.time(), camp["id"]))
+    con.commit()
+    if len(rows) < MIN_GROUP:
+        return []
+    X = np.stack([np.frombuffer(r["emb"], dtype=np.float32) for r in rows])
+    rng = np.random.default_rng(0)
+    ref = X if len(X) <= KNN_REF_MAX else X[rng.choice(len(X), KNN_REF_MAX, replace=False)]
+    k = min(10, len(ref) - 1)
+    dist, _ = NearestNeighbors(n_neighbors=k + 1, metric="cosine").fit(ref).kneighbors(X)
+    # Une image de reference a pour plus proche voisine elle-meme (distance 0) : on l'ignore.
+    knn = np.where(dist[:, 0] < 1e-6, dist[:, 1:].mean(axis=1), dist[:, :k].mean(axis=1))
+    Xp = PCA(n_components=min(32, len(X) - 1), random_state=0).fit_transform(X)
+    iso = -IsolationForest(n_estimators=200, random_state=0).fit(Xp).score_samples(Xp)
+    score = (pct_rank(knn) + pct_rank(iso)) / 2
+    order = np.argsort(-score)
+    con.execute("UPDATE images SET score=NULL, rank=NULL WHERE campaign_id=?", (camp["id"],))
+    con.executemany("UPDATE images SET score=?, rank=? WHERE opus_id=?",
+                    [(float(score[i]), pos + 1, rows[i]["opus_id"]) for pos, i in enumerate(order)])
+    con.commit()
+    return [rows[i]["opus_id"] for i in order[:TOP_N]]
+
+
+def describe_pending(con, limit=1):
+    """Fait decrire par l'IA locale les meilleures candidates pas encore decrites."""
+    if not llm.available():
+        return 0
+    rows = con.execute(
+        """SELECT i.opus_id, i.time1, i.small, c.instrument, c.target FROM images i
+           JOIN campaigns c ON c.id = i.campaign_id
+           LEFT JOIN descriptions d ON d.opus_id = i.opus_id
+           WHERE i.rank <= ? AND d.opus_id IS NULL ORDER BY i.rank LIMIT ?""",
+        (TOP_N, limit)).fetchall()
+    for r in rows:
+        try:
+            path = fetch_preview(r["small"].replace("_small.", "_med."), r["opus_id"])
+        except requests.RequestException:
+            path = fetch_preview(r["small"], r["opus_id"])
+        prompt = (
+            f"Tu es planetologue. Cette image d'archive vient de l'instrument {r['instrument']}, "
+            f"cible : {r['target']}, prise le {r['time1']}. Un algorithme l'a reperee comme "
+            "inhabituelle par rapport aux autres images de cette cible. En 3 ou 4 phrases en "
+            "francais : decris ce que tu vois, puis dis si cela ressemble plutot a un defaut "
+            "d'image (bruit, saturation, image ratee), a quelque chose de connu (bord de la "
+            "planete, anneaux, etoile, ombre), ou a quelque chose qui merite un regard humain. "
+            "Si tu n'es pas sur, dis-le. N'invente aucun fait.")
+        text = llm.ask(prompt, image_path=path)
+        con.execute("INSERT OR REPLACE INTO descriptions VALUES (?,?,?)", (r["opus_id"], text, time.time()))
+        con.commit()
+    return len(rows)
+
+
+def discover_campaigns(con):
+    """Une fois la liste de depart finie, etend la fouille a toute l'archive d'imagerie."""
+    added = 0
+    for inst in IMAGING_INSTRUMENTS:
+        mults = get_json("meta/mults/target.json", instrument=inst)["mults"]
+        for target, n in sorted(mults.items(), key=lambda kv: kv[1]):
+            if n < MIN_GROUP or any(w in target.lower() for w in SKIP_TARGET_WORDS):
+                continue
+            cur = con.execute("INSERT OR IGNORE INTO campaigns(instrument, target) VALUES (?,?)", (inst, target))
+            added += cur.rowcount
+    con.commit()
+    return added
+
+
+def run_once(con, embed):
+    camp = con.execute("SELECT * FROM campaigns WHERE done=0 ORDER BY id LIMIT 1").fetchone()
+    if camp is None:
+        added = discover_campaigns(con)
+        if added:
+            db.journal(con, log, f"Liste de départ terminée : {added} nouvelles cibles ajoutées à la fouille.")
+        else:
+            db.journal(con, log, "Toute l'archive d'imagerie est fouillée. Nouvelle vérification dans 24 h.")
+            time.sleep(86400)
+        return
+
+    items, times, available = fetch_page(camp["instrument"], camp["target"], camp["next_start"])
+    added = process_page(con, embed, camp, items, times)
+    next_start = camp["next_start"] + PAGE
+    done = int(not items or next_start > available)
+    con.execute("UPDATE campaigns SET next_start=?, available=?, done=?, since_score=since_score+? WHERE id=?",
+                (next_start, available, done, added, camp["id"]))
+    con.commit()
+
+    camp = con.execute("SELECT * FROM campaigns WHERE id=?", (camp["id"],)).fetchone()
+    total = con.execute("SELECT COUNT(*) FROM images WHERE campaign_id=?", (camp["id"],)).fetchone()[0]
+    if done or camp["since_score"] >= max(1000, total // 10):
+        top = score_campaign(con, camp)
+        name = f"{camp['target']} ({camp['instrument']})"
+        end = " Fouille terminée." if done else ""
+        if top:
+            db.journal(con, log, f"{name} : {total} images analysées, candidate n°1 : {top[0]}.{end}")
+        elif done:
+            db.journal(con, log, f"{name} : seulement {total} images, trop peu pour comparer.{end}")
+    describe_pending(con)
+
+
+def main():
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
+    IMG_DIR.mkdir(parents=True, exist_ok=True)
+    con = db.connect(SONDES_DB)
+    con.executescript(SCHEMA)
+    for inst, target in CAMPAIGNS:
+        con.execute("INSERT OR IGNORE INTO campaigns(instrument, target) VALUES (?,?)", (inst, target))
+    con.commit()
+    embed = Embedder()
+    db.journal(con, log, "Mission Sondes Fantômes démarrée.")
+    while True:
+        try:
+            run_once(con, embed)
+        except (requests.RequestException, ValueError, KeyError) as e:
+            log.warning("probleme reseau ou API (%s), nouvel essai dans 5 min", e)
+            time.sleep(300)
+
+
+if __name__ == "__main__":
+    main()
