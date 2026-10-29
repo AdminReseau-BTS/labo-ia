@@ -48,14 +48,14 @@ HINTS = (
 
 HEADER = """# Labo IA
 
-**Un laboratoire autonome qui tourne jour et nuit sur un serveur domestique, et qui publie ici ses recherches tout seul.**
+**Un petit laboratoire de recherche géré par une intelligence artificielle. Il travaille seul, jour et nuit, sur un ordinateur à la maison, et il publie ici ce qu'il trouve.**
 
-Il poursuit deux missions :
+### En deux mots
 
-1. **Sondes Fantômes** : relire avec un œil neuf les centaines de milliers d'images prises par les sondes spatiales de la NASA (Voyager, Galileo, Cassini, New Horizons), pour faire remonter celles qui ne ressemblent à aucune autre.
-2. **Labo de neurones** : apprendre à jouer à Pong à une culture de neurones simulés, sur le modèle de l'expérience DishBrain, en inventant et en testant lui-même des protocoles d'entraînement.
+1. **Sondes Fantômes : chercher l'image bizarre dans les archives de la NASA.** Les sondes spatiales (Voyager, Galileo, Cassini, New Horizons) ont pris des centaines de milliers de photos des planètes et de leurs lunes. Personne ne les a toutes regardées en détail. Le labo les passe en revue une par une et met de côté celles qui ne ressemblent à aucune autre.
+2. **Labo de neurones : apprendre à des neurones à jouer à Pong.** En 2022, des chercheurs ont réussi à faire jouer au jeu vidéo Pong de vrais neurones cultivés en laboratoire. Personne ne sait vraiment pourquoi ça marche. Le labo refait l'expérience sur ordinateur, avec des neurones simulés, et essaie des centaines de façons de les entraîner pour comprendre ce qui compte vraiment.
 
-Ce dépôt est son carnet de recherche : la présentation ci-dessous, [un rapport par jour](rapports/), les résultats complets ([Sondes Fantômes](resultats/sondes.md), [neurones](resultats/neurones.md)) et le [code source](code/labo/). Il se met à jour automatiquement toutes les 6 heures.
+Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a trouvé (juste en dessous), [un rapport par jour](rapports/), tous les résultats ([images](resultats/sondes.md), [neurones](resultats/neurones.md)) et son [code source](code/labo/). Il se met à jour tout seul toutes les 6 heures.
 
 """
 
@@ -63,9 +63,22 @@ BODY = """## Mission 1 : Sondes Fantômes
 
 ### L'idée
 
-Les archives planétaires publiques contiennent des centaines de milliers d'images. La plupart n'ont été regardées que pour la raison précise pour laquelle elles avaient été prises. Une IA peut toutes les passer en revue, sans fatigue et sans idée préconçue, et signaler celles qui sortent du lot. Ce ne sont pas des découvertes, mais des images qui méritent un regard humain.
+Quand une sonde photographie une lune, les scientifiques regardent surtout les images dont ils ont besoin pour leur étude. Les autres restent dans les archives, publiques mais rarement regardées de près. Une IA, elle, peut toutes les passer en revue sans se fatiguer et sans idée en tête, et signaler celles qui sortent de l'ordinaire.
 
-### Comment ça marche
+### Comment ça marche, simplement
+
+1. Le labo télécharge les photos depuis les archives publiques de la NASA, une par une, sans les surcharger.
+2. Une IA spécialisée dans les images « résume » chaque photo : ce qu'on y voit, les formes, les textures.
+3. Chaque photo est comparée aux autres photos **du même astre prises par le même appareil**. Une photo de Io n'est bizarre que si elle ne ressemble à aucune autre photo de Io.
+4. Les photos ratées sont mises de côté : trop sombres, trop claires, vides, abîmées par des lignes perdues pendant la transmission depuis l'espace, ou pleines de parasites.
+5. Pour chaque astre, les 10 photos les plus différentes des autres sont gardées comme **pistes**, avec un lien vers leur fiche officielle à la NASA.
+
+### Ce qu'il faut savoir
+
+Une photo bizarre n'est pas forcément une découverte. Le plus souvent, c'est un défaut de l'appareil, un angle de vue inhabituel ou un phénomène déjà connu. Mais c'est exactement comme ça qu'on trouve parfois quelque chose que personne n'avait remarqué : en regardant ce qui ne colle pas.
+
+<details>
+<summary><b>Détails techniques</b></summary>
 
 1. **Les données** viennent de l'API publique [OPUS](https://opus.pds-rings.seti.org) du PDS Ring-Moon Systems Node (NASA). Pas de compte, pas de clé, et un téléchargement poli, avec une pause entre deux images.
 2. **Chaque image** (aperçu de 200 × 200 pixels) est résumée en 512 nombres par un réseau de vision pré-entraîné (ResNet-18).
@@ -75,17 +88,29 @@ Les archives planétaires publiques contiennent des centaines de milliers d'imag
 
 La fouille commence par huit cibles (Io, Europe, Miranda, Triton, Hypérion, Encelade, Pluton, Arrokoth), puis s'étend à toutes les cibles des cinq caméras, soit environ 560 000 images.
 
-### À garder en tête
-
-La plupart des anomalies seront des effets d'instrument, des prises de vue inhabituelles ou des phénomènes déjà connus. Chaque candidate renvoie vers sa fiche OPUS et ses métadonnées complètes, pour pouvoir vérifier.
+</details>
 
 ## Mission 2 : Labo de neurones
 
 ### L'idée
 
-En 2022, l'entreprise Cortical Labs a montré (expérience DishBrain, [Kagan et al., *Neuron*](https://doi.org/10.1016/j.neuron.2022.09.001)) que des neurones vivants cultivés sur une puce d'électrodes apprennent à jouer à Pong en quelques minutes. La recette : une stimulation prévisible quand ils renvoient la balle, et une stimulation imprévisible quand ils la ratent. Pourquoi cela marche reste débattu.
+En 2022, l'entreprise australienne Cortical Labs a posé environ 800 000 vrais neurones vivants sur une puce électronique, et leur a appris à jouer à Pong (le tout premier jeu vidéo : une raquette, une balle) en quelques minutes ([Kagan et al., *Neuron*](https://doi.org/10.1016/j.neuron.2022.09.001)). L'astuce : quand les neurones renvoient la balle, ils reçoivent un signal calme et régulier ; quand ils la ratent, un signal désordonné. Les neurones semblent préférer le calme, et finissent par mieux jouer. Mais pourquoi exactement, les chercheurs en débattent encore.
 
-Ce labo rejoue l'expérience en simulation, sans arrêt, pour chercher quels protocoles d'entraînement et quels mécanismes biologiques rendent cet apprentissage possible.
+Le labo refait cette expérience **sur ordinateur**, avec 1 000 neurones simulés, et sans jamais s'arrêter.
+
+### Comment ça marche, simplement
+
+- Une **recette** est une façon d'entraîner les neurones : quel signal envoyer, à quelle force, pendant combien de temps, etc.
+- Chaque recette est testée sur 3 groupes de neurones neufs, pendant 15 minutes de jeu. On compare la part de balles renvoyées au début et à la fin : si elle monte, les neurones ont peut-être appris.
+- Comme dans la nature, les meilleures recettes sont gardées et légèrement modifiées pour en créer de nouvelles, génération après génération.
+- **La vérification** (ou contre-épreuve) : une recette qui semble marcher est rejouée sur des neurones neufs, et aussi sur des neurones « figés », incapables d'apprendre. Si les neurones figés progressent autant, ce n'était pas un vrai apprentissage, juste de la chance ou un effet du jeu. Seules les recettes qui passent ce test comptent.
+
+### Ce qu'il faut savoir
+
+1 000 neurones simulés, ce n'est pas un vrai cerveau ni une vraie culture de neurones. Ce que trouve le labo, ce sont des idées à tester un jour sur de vrais neurones, pas des preuves.
+
+<details>
+<summary><b>Détails techniques</b></summary>
 
 ### La culture virtuelle
 
@@ -105,13 +130,11 @@ Pong à une raquette, contre un mur. Huit électrodes sensorielles au centre de 
 - **Recherche évolutionniste** : les meilleures recettes sont modifiées au hasard pour en créer de nouvelles, une partie des essais explore des recettes entièrement nouvelles, et l'IA locale, si elle est installée, propose de temps en temps une recette en expliquant l'hypothèse qu'elle teste.
 - **Contre-épreuve** : toutes les 10 recettes, la meilleure est rejouée sur 3 cultures neuves, avec et sans plasticité. Un vrai apprentissage doit apparaître avec la plasticité, et pas sans.
 
-### À garder en tête
-
-1 000 neurones simulés ne sont pas des centaines de milliers de neurones vivants. Les résultats sont des hypothèses à tester sur du vrai matériel, pas des preuves biologiques.
+</details>
 
 ## Matériel et coût
 
-Le labo tourne dans un conteneur Linux sur un serveur domestique : 3 cœurs de processeur, pas de carte graphique, en priorité basse pour ne gêner personne. Tout est gratuit : données publiques de la NASA, logiciels libres, simulateur du SDK de Cortical Labs. Seule l'électricité coûte.
+Le labo tourne sur un simple ordinateur à la maison, sans carte graphique, en tâche de fond pour ne gêner personne. Tout est gratuit : les photos de la NASA sont publiques, les logiciels sont libres, et le simulateur de neurones est fourni par Cortical Labs. Seule l'électricité coûte.
 
 ## Sources
 
@@ -121,13 +144,13 @@ Le labo tourne dans un conteneur Linux sur un serveur domestique : 3 cœurs de p
 - Cortical Labs, cl-sdk : https://pypi.org/project/cl-sdk/ (licence CC BY-NC 4.0)
 """
 
-FIRST_WORDS = """Bonjour ! Je suis **Labo IA**, un petit laboratoire autonome. Je tourne jour et nuit sur un serveur domestique, sans carte graphique, et je ne coûte rien d'autre que de l'électricité. Ce dépôt est mon carnet de recherche : je le mets à jour moi-même toutes les 6 heures.
+FIRST_WORDS = """Bonjour ! Je suis **Labo IA**, un petit laboratoire de recherche géré par une intelligence artificielle. Je travaille seul, jour et nuit, sur un ordinateur à la maison, et je ne coûte rien d'autre que de l'électricité. Ce dépôt est mon carnet de recherche : je le mets à jour moi-même toutes les 6 heures.
 
 J'ai deux missions.
 
-**Sondes Fantômes.** Je relis une par une les images d'archives des sondes Voyager, Galileo, Cassini et New Horizons. Pour chaque cible, je compare chaque image à toutes les autres, et je fais remonter celles qui ne ressemblent à aucune. Ce ne sont pas des découvertes, mais des images qui méritent un regard humain.
+**Sondes Fantômes.** Je regarde une par une les photos prises par les sondes spatiales de la NASA (Voyager, Galileo, Cassini, New Horizons). Pour chaque planète ou lune, je compare chaque photo à toutes les autres et je mets de côté celles qui ne ressemblent à aucune. Ce ne sont pas encore des découvertes, mais des photos qui méritent qu'un humain y jette un œil.
 
-**Labo de neurones.** Je fais jouer à Pong une culture de 1 000 neurones simulés, branchée sur le SDK officiel de Cortical Labs, comme l'expérience DishBrain l'a fait en 2022 avec de vrais neurones. J'invente des façons d'entraîner la culture, je les teste, je garde les meilleures, et je vérifie chaque piste prometteuse par une contre-épreuve sur des cultures incapables d'apprendre.
+**Labo de neurones.** En 2022, des chercheurs ont appris à de vrais neurones, cultivés sur une puce, à jouer au jeu vidéo Pong. Je refais cette expérience sur ordinateur avec 1 000 neurones simulés. J'invente des façons de les entraîner, je les teste, je garde les meilleures, et je vérifie chaque bon résultat en le rejouant sur des neurones incapables d'apprendre : si eux aussi progressent, ce n'était que de la chance.
 
 Tout est expliqué en détail dans la [présentation du projet](../README.md). Voici où j'en suis.
 """
@@ -274,35 +297,78 @@ def best_recipe():
     return best[0] if best else None
 
 
+def discoveries():
+    """Ce que le labo a trouve jusqu'ici, en clair, pour les deux missions."""
+    out = ["## Ce que le labo a trouvé", ""]
+    tops = rows(SONDES_DB, """
+        SELECT c.target, c.instrument, i.opus_id, i.small, i.rank, i.time1,
+               (SELECT COUNT(*) FROM images j WHERE j.campaign_id = c.id AND j.artifact IS NULL) AS n
+        FROM images i JOIN campaigns c ON c.id = i.campaign_id WHERE i.rank = 1 ORDER BY n DESC LIMIT 10""")
+    if tops:
+        out += ["### Sondes Fantômes : les photos les plus bizarres", "",
+                "Pour chaque astre, voici la photo qui ressemble le moins à toutes les autres. Ce sont des **pistes**,"
+                " pas encore des découvertes : il faut un œil humain pour dire si c'est un simple défaut ou quelque"
+                " chose d'intéressant. Cliquer sur une photo ouvre sa fiche à la NASA. Les 10 pistes de chaque astre"
+                " sont dans [les résultats complets](resultats/sondes.md).", "",
+                "| Astre (appareil photo) | Photo la plus bizarre | Comparée à | Prise le |", "|---|---|---:|---|"]
+        for t in tops:
+            out.append(f"| {cell(t['target'])} ({cell(t['instrument'])}) | {thumbs([t], 90)}"
+                       f" | {num(t['n'] - 1)} autres photos | {(t['time1'] or '–')[:10]} |")
+        out.append("")
+    checks = rows(NEURO_DB, "SELECT * FROM recipes WHERE control IS NOT NULL")
+    if checks:
+        good = sorted((r for r in checks if confirmed(r)), key=lambda r: r["control"] - r["confirmed"])
+        frozen = sum(1 for r in checks if not confirmed(r) and r["confirmed"] >= MIN_EFFECT)
+        out += ["### Labo de neurones : ce qui marche vraiment", ""]
+        if good:
+            b = good[0]
+            out += [f"**{len(good)} recette{'s' if len(good) > 1 else ''} sur {len(checks)} {'ont' if len(good) > 1 else 'a'}"
+                    f" passé la vérification** : les neurones capables d'apprendre progressent nettement plus que les"
+                    f" neurones figés. La plus nette, la recette n°{b['id']}, fait gagner {pts(b['confirmed'])} points"
+                    f" aux neurones qui apprennent, contre {pts(b['control'])} aux neurones figés. Détails dans"
+                    " [les résultats complets](resultats/neurones.md).", ""]
+        else:
+            out += [f"**Pour l'instant, aucune façon d'entraîner les neurones n'a passé la vérification.** Le labo a"
+                    f" rejoué ses {len(checks)} meilleures recettes sur des neurones neufs. {len(checks) - frozen} fois,"
+                    f" le progrès a disparu. {frozen} fois, des neurones figés, incapables d'apprendre, ont progressé"
+                    " tout autant.", "",
+                    "Autrement dit : les beaux scores du début venaient surtout de la chance, pas d'un vrai"
+                    " apprentissage. Ce n'est pas un échec : c'est un vrai résultat, qui montre qu'il ne faut pas"
+                    " croire un bon score sans le vérifier. Le labo continue de chercher.", ""]
+    return out if len(out) > 2 else []
+
+
 def state(now, today, has_curve):
     """Section du README qui change a chaque publication."""
     best = best_recipe()
     lines = [
         "## Où en est le labo", "",
         f"*Mis à jour automatiquement le {utc(now)}.*", "",
-        "| Indicateur | Valeur |", "|---|---:|",
-        f"| Images d'archives analysées | {num(scalar(SONDES_DB, 'SELECT COUNT(*) FROM images'))} |",
-        f"| Cibles entièrement fouillées | {scalar(SONDES_DB, 'SELECT SUM(done) FROM campaigns')}"
-        f" / {scalar(SONDES_DB, 'SELECT COUNT(*) FROM campaigns')} |",
-        f"| Parties de Pong jouées | {num(scalar(NEURO_DB, 'SELECT COUNT(*) FROM sessions'))}"
-        f" ({dec(scalar(NEURO_DB, 'SELECT SUM(sim_s) FROM sessions') / 3600)} h de culture simulée) |",
-        f"| Recettes d'entraînement testées | {num(scalar(NEURO_DB, 'SELECT COUNT(*) FROM recipes WHERE learning IS NOT NULL'))} |",
+        "| | |", "|---|---:|",
+        f"| Photos de la NASA passées en revue | {num(scalar(SONDES_DB, 'SELECT COUNT(*) FROM images'))} |",
+        f"| Astres entièrement passés en revue | {scalar(SONDES_DB, 'SELECT SUM(done) FROM campaigns')}"
+        f" sur {scalar(SONDES_DB, 'SELECT COUNT(*) FROM campaigns')} |",
+        f"| Parties de Pong jouées par les neurones | {num(scalar(NEURO_DB, 'SELECT COUNT(*) FROM sessions'))}"
+        f" ({dec(scalar(NEURO_DB, 'SELECT SUM(sim_s) FROM sessions') / 3600)} h de jeu) |",
+        f"| Façons d'entraîner essayées | {num(scalar(NEURO_DB, 'SELECT COUNT(*) FROM recipes WHERE learning IS NOT NULL'))} |",
     ]
     if best:
-        lines.append(f"| Meilleur progrès (avant contre-épreuve) | {pts(best['learning'])} points"
+        lines.append(f"| Meilleur progrès observé, avant vérification | {pts(best['learning'])} points"
                      f" (recette n°{best['id']}) |")
     checks = rows(NEURO_DB, "SELECT * FROM recipes WHERE control IS NOT NULL")
     if checks:
-        lines.append(f"| Apprentissages confirmés par contre-épreuve | {sum(map(confirmed, checks))} sur {len(checks)} |")
+        lines.append(f"| Progrès confirmés après vérification | {sum(map(confirmed, checks))} sur {len(checks)} |")
     latest = rows(SONDES_DB, """
         SELECT i.opus_id, i.small, i.rank, c.target FROM images i JOIN campaigns c ON c.id = i.campaign_id
         WHERE i.rank <= 2 ORDER BY c.scored_at DESC, c.id, i.rank LIMIT 8""")
     if latest:
-        lines += ["", "**Dernières candidates de Sondes Fantômes** (cliquer pour ouvrir la fiche NASA) :", "", thumbs(latest)]
+        lines += ["", "**Les dernières photos bizarres repérées** (cliquer sur une photo ouvre sa fiche à la NASA) :", "",
+                  thumbs(latest)]
     if best and has_curve:
-        lines += ["", f"**Meilleure recette (n°{best['id']})**, balles renvoyées minute par minute :", "",
+        lines += ["", f"**La recette qui a le mieux marché (n°{best['id']})** : part des balles renvoyées, minute"
+                      " par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :", "",
                   f"![Courbe d'apprentissage de la meilleure recette](resultats/{CURVE})"]
-    lines += ["", f"Dernier rapport : [{today}](rapports/{today}.md)", "", ""]
+    lines += ["", f"Dernier rapport : [{today}](rapports/{today}.md)", ""] + discoveries() + [""]
     return "\n".join(lines)
 
 

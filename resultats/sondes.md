@@ -1,6 +1,6 @@
 # Sondes Fantômes : toutes les cibles classées
 
-*Mis à jour le 29/10/2026 à 03:50 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
+*Mis à jour le 29/10/2026 à 03:53 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
 
 ## Enceladus (Cassini ISS)
 
