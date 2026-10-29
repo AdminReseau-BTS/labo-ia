@@ -20,8 +20,8 @@ import sys
 import time
 from pathlib import Path
 
-from .config import (BASE, DATA, DEPLOY_KEY, FEEDBACK_MODES, NEURO_DB, OPUS_PREVIEWS, PUBLICATION_SETTINGS,
-                     PUBLICATION_STATUS, SONDES_DB)
+from .config import (BASE, DATA, DEPLOY_KEY, FEEDBACK_MODES, LOG_FORMAT, NEURO_DB, OPUS_PREVIEWS,
+                     PUBLICATION_SETTINGS, PUBLICATION_STATUS, SONDES_DB)
 from .db import rows, scalar
 from .web import OPUS_DETAIL, chart, mean_curve, pts
 
@@ -314,22 +314,31 @@ def best_recipe():
 def discoveries():
     """Ce que le labo a trouve jusqu'ici, en clair, pour les deux missions."""
     out = ["## Ce que le labo a trouvé", ""]
-    tops = rows(SONDES_DB, """
-        SELECT c.target, c.instrument, i.opus_id, i.small, i.rank, i.time1,
-               (SELECT COUNT(*) FROM images j WHERE j.campaign_id = c.id AND j.artifact IS NULL) AS n
-        FROM images i JOIN campaigns c ON c.id = i.campaign_id WHERE i.rank = 1 ORDER BY n DESC""")
-    tops = [{**t, "target": BODIES[t["target"]]} for t in tops if t["target"] in BODIES][:10]
-    if tops:
-        out += ["### Sondes Fantômes : les photos les plus bizarres", "",
-                "Pour chaque astre, voici la photo qui ressemble le moins à toutes les autres. Ce sont des **pistes**,"
-                " pas encore des découvertes : il faut un œil humain pour dire si c'est un simple défaut ou quelque"
-                " chose d'intéressant. Cliquer sur une photo ouvre sa fiche à la NASA. Les 10 pistes de chaque astre"
-                " sont dans [les résultats complets](resultats/sondes.md).", "",
-                "| Astre (appareil photo) | Photo la plus bizarre | Comparée à | Prise le |", "|---|---|---:|---|"]
-        for t in tops:
-            out.append(f"| {cell(t['target'])} ({cell(t['instrument'])}) | {thumbs([t], 90)}"
-                       f" | {num(t['n'] - 1)} autres photos | {(t['time1'] or '–')[:10]} |")
+    # Seules les photos que l'IA du labo juge vraiment interessantes sont montrees : pas les defauts.
+    finds = rows(SONDES_DB, """
+        SELECT i.opus_id, i.small, i.rank, i.time1, c.target, c.instrument, d.text FROM descriptions d
+        JOIN images i ON i.opus_id = d.opus_id JOIN campaigns c ON c.id = i.campaign_id
+        WHERE d.verdict = 'interessant' AND i.rank <= 10 ORDER BY d.created_at DESC LIMIT 12""")
+    judged = scalar(SONDES_DB, "SELECT COUNT(*) FROM descriptions WHERE verdict IS NOT NULL")
+    out += ["### Sondes Fantômes : les trouvailles", ""]
+    if finds:
+        out += [f"L'IA du labo a examiné {num(judged)} photos qui sortaient de l'ordinaire. La plupart s'expliquent"
+                " par un défaut d'image ou par quelque chose de déjà connu. Celles-ci, en revanche, méritent un regard"
+                " humain. Ce ne sont pas encore des découvertes confirmées. Cliquer sur une photo ouvre sa fiche à"
+                " la NASA.", "", "| Photo | Où et quand | Ce qu'en dit l'IA du labo |", "|---|---|---|"]
+        for f in finds:
+            name = BODIES.get(f["target"], f["target"])
+            out.append(f"| {thumbs([{**f, 'target': name}], 140)} | **{cell(name)}**<br>{cell(f['instrument'])}"
+                       f"<br>{(f['time1'] or '–')[:10]} | {cell(f['text'])} |")
         out.append("")
+    elif judged:
+        out += [f"Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné {num(judged)} photos qui"
+                " sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà"
+                " connu. Les vraies trouvailles apparaîtront ici.", ""]
+    else:
+        out += ["Pas encore de trouvaille. Chaque photo qui sort de l'ordinaire doit d'abord être examinée par l'IA"
+                " du labo, qui écarte les défauts d'image et les choses déjà connues. Seules les photos qui méritent"
+                " vraiment un regard humain apparaîtront ici.", ""]
     checks = rows(NEURO_DB, "SELECT * FROM recipes WHERE control IS NOT NULL")
     if checks:
         good = sorted((r for r in checks if confirmed(r)), key=lambda r: r["control"] - r["confirmed"])
@@ -377,12 +386,6 @@ def state(now, today, has_curve):
     checks = rows(NEURO_DB, "SELECT * FROM recipes WHERE control IS NOT NULL")
     if checks:
         lines.append(f"| Progrès confirmés après vérification | {sum(map(confirmed, checks))} sur {len(checks)} |")
-    latest = rows(SONDES_DB, """
-        SELECT i.opus_id, i.small, i.rank, c.target FROM images i JOIN campaigns c ON c.id = i.campaign_id
-        WHERE i.rank <= 2 ORDER BY c.scored_at DESC, c.id, i.rank LIMIT 8""")
-    if latest:
-        lines += ["", "**Les dernières photos bizarres repérées** (cliquer sur une photo ouvre sa fiche à la NASA) :", "",
-                  thumbs(latest)]
     if best and has_curve:
         lines += ["", f"**La recette qui a le mieux marché (n°{best['id']})** : part des balles renvoyées, minute"
                       " par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :", "",
@@ -406,12 +409,18 @@ def report(now, number):
         SELECT c.*, COUNT(i.opus_id) AS n FROM campaigns c JOIN images i ON i.campaign_id = c.id
         WHERE c.scored_at >= ? GROUP BY c.id ORDER BY c.scored_at""", (day,))
     if scored:
-        out += ["### Cibles classées aujourd'hui", ""]
-        for c in scored:
-            top = rows(SONDES_DB, "SELECT opus_id, small, rank, ? AS target FROM images"
-                                  " WHERE campaign_id=? AND rank <= 5 ORDER BY rank", (c["target"], c["id"]))
-            out += [f"**{c['target']}** ({c['instrument']}, {num(c['n'])} images), les 5 plus étranges :", "",
-                    thumbs(top), ""]
+        out += ["### Astres comparés aujourd'hui", "",
+                ", ".join(f"{BODIES.get(c['target'], c['target'])} ({c['instrument']}, {num(c['n'])} photos)"
+                          for c in scored) + ".", ""]
+    finds = rows(SONDES_DB, """
+        SELECT i.opus_id, i.small, i.rank, c.target, d.text FROM descriptions d
+        JOIN images i ON i.opus_id = d.opus_id JOIN campaigns c ON c.id = i.campaign_id
+        WHERE d.verdict = 'interessant' AND d.created_at >= ? ORDER BY d.created_at""", (day,))
+    if finds:
+        out += ["### Trouvailles du jour", ""]
+        for f in finds:
+            name = BODIES.get(f["target"], f["target"])
+            out += [f"**{name}** : {f['text']}", "", thumbs([{**f, "target": name}], 160), ""]
     entries = rows(SONDES_DB, "SELECT * FROM journal WHERE t >= ? ORDER BY t", (day,))
     if entries:
         out += ["### Journal", ""] + [f"- {hm(e['t'])} : {e['msg']}" for e in entries] + [""]
@@ -448,7 +457,8 @@ def report(now, number):
 def sondes_results(now):
     out = ["# Sondes Fantômes : toutes les cibles classées", "",
            f"*Mis à jour le {utc(now)}. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange"
-           " à la moins étrange. Cliquer sur une image ouvre sa fiche NASA (OPUS).*", ""]
+           " à la moins étrange, sauf celles que l'IA du labo a jugées ratées. Cliquer sur une image ouvre sa fiche"
+           " NASA (OPUS).*", ""]
     campaigns = rows(SONDES_DB, """
         SELECT c.*, COUNT(i.opus_id) AS n, SUM(i.artifact IS NOT NULL) AS flagged FROM campaigns c
         JOIN images i ON i.campaign_id = c.id WHERE c.scored_at IS NOT NULL GROUP BY c.id ORDER BY c.instrument, c.target""")
@@ -457,7 +467,7 @@ def sondes_results(now):
     for c in campaigns:
         status = "fouille terminée" if c["done"] else "fouille en cours"
         ranked = rows(SONDES_DB, """
-                SELECT i.*, d.text FROM images i LEFT JOIN descriptions d ON d.opus_id = i.opus_id
+                SELECT i.*, d.text, d.verdict FROM images i LEFT JOIN descriptions d ON d.opus_id = i.opus_id
                 WHERE i.campaign_id=? AND i.rank <= 10 ORDER BY i.rank""", (c["id"],))
         out += [f"## {c['target']} ({c['instrument']})", "",
                 f"{num(c['n'])} images analysées, dont {num(c['flagged'])} écartées comme ratées ; {status}."
@@ -465,10 +475,14 @@ def sondes_results(now):
         if not ranked:
             out += ["Pas de classement : il reste moins de 30 images exploitables pour les comparer entre elles.", ""]
             continue
-        out += ["| Rang | Image | Date | Score | Description par l'IA locale |", "|---:|---|---|---:|---|"]
+        out += ["| Rang | Image | Date | Score | Avis de l'IA du labo |", "|---:|---|---|---:|---|"]
         for i in ranked:
+            if i["verdict"] == "defaut":  # simple defaut d'image : rien a montrer
+                continue
             img = thumbs([{"opus_id": i["opus_id"], "small": i["small"], "rank": i["rank"], "target": c["target"]}], 90)
-            out.append(f"| {i['rank']} | {img} | {(i['time1'] or '')[:10]} | {i['score']:.3f} | {cell(i['text'] or '–')} |")
+            opinion = {"interessant": "**À regarder.** ", "connu": "Déjà connu ou banal. "}.get(i["verdict"], "")
+            text = opinion + (i["text"] or "pas encore examinée")
+            out.append(f"| {i['rank']} | {img} | {(i['time1'] or '')[:10]} | {i['score']:.3f} | {cell(text)} |")
         out.append("")
     return "\n".join(out)
 
@@ -515,7 +529,7 @@ def write_all(now):
 
 
 def main():
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
+    logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
     if PUBLICATION_SETTINGS.exists():
         url = json.loads(PUBLICATION_SETTINGS.read_text())["repo"]
     else:

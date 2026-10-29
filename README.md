@@ -11,20 +11,16 @@ Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a 
 
 ## Où en est le labo
 
-*Mis à jour automatiquement le 29/10/2026 à 03:54 UTC.*
+*Mis à jour automatiquement le 29/10/2026 à 07:20 UTC.*
 
 | | |
 |---|---:|
-| Photos de la NASA passées en revue | 42 375 |
-| Astres entièrement passés en revue | 50 sur 185 |
-| Parties de Pong jouées par les neurones | 270 (72,0 h de jeu) |
-| Façons d'entraîner essayées | 75 |
+| Photos de la NASA passées en revue | 55 072 |
+| Astres entièrement passés en revue | 59 sur 185 |
+| Parties de Pong jouées par les neurones | 347 (92,5 h de jeu) |
+| Façons d'entraîner essayées | 96 |
 | Meilleur progrès observé, avant vérification | +12 points (recette n°18) |
-| Progrès confirmés après vérification | 0 sur 7 |
-
-**Les dernières photos bizarres repérées** (cliquer sur une photo ouvre sa fiche à la NASA) :
-
-<a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-j-c2064928"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_5xxx/VGISS_5213/DATA/C20649XX/C2064928_small.jpg" width="110" alt="Europa, n°1" title="Europa, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-j-c2046905"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_5xxx/VGISS_5210/DATA/C20469XX/C2046905_small.jpg" width="110" alt="Europa, n°2" title="Europa, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c1242957"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8210/DATA/C12429XX/C1242957_small.jpg" width="110" alt="Star, n°1" title="Star, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c1242706"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8210/DATA/C12427XX/C1242706_small.jpg" width="110" alt="Star, n°2" title="Star, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-s-c4430317"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6215/DATA/C44303XX/C4430317_small.jpg" width="110" alt="Phoebe, n°1" title="Phoebe, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-s-c4430137"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6215/DATA/C44301XX/C4430137_small.jpg" width="110" alt="Phoebe, n°2" title="Phoebe, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-1-s-c3495037"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6113/DATA/C34950XX/C3495037_small.jpg" width="110" alt="Rhea, n°1" title="Rhea, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-1-s-c3495057"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6113/DATA/C34950XX/C3495057_small.jpg" width="110" alt="Rhea, n°2" title="Rhea, n°2"></a>
+| Progrès confirmés après vérification | 0 sur 9 |
 
 **La recette qui a le mieux marché (n°18)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
 
@@ -34,26 +30,13 @@ Dernier rapport : [2026-10-29](rapports/2026-10-29.md)
 
 ## Ce que le labo a trouvé
 
-### Sondes Fantômes : les photos les plus bizarres
+### Sondes Fantômes : les trouvailles
 
-Pour chaque astre, voici la photo qui ressemble le moins à toutes les autres. Ce sont des **pistes**, pas encore des découvertes : il faut un œil humain pour dire si c'est un simple défaut ou quelque chose d'intéressant. Cliquer sur une photo ouvre sa fiche à la NASA. Les 10 pistes de chaque astre sont dans [les résultats complets](resultats/sondes.md).
-
-| Astre (appareil photo) | Photo la plus bizarre | Comparée à | Prise le |
-|---|---|---:|---|
-| Encelade (Cassini ISS) | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1745432624"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2082/data/1745365751_1745606282/W1745432624_1_small.jpg" width="90" alt="Encelade, n°1" title="Encelade, n°1"></a> | 9 762 autres photos | 2013-04-23 |
-| Terre (Galileo SSI) | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0166212400"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0015/GOPEX/C0166212400R_small.jpg" width="90" alt="Terre, n°1" title="Terre, n°1"></a> | 5 677 autres photos | 1992-12-16 |
-| Pluton (New Horizons LORRI) | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=nh-lorri-lor_0299179751"><img src="https://opus.pds-rings.seti.org/holdings/previews/NHxxLO_xxxx/NHPELO_1001/data/20150714_029917/lor_0299179751_0x636_eng_small.jpg" width="90" alt="Pluton, n°1" title="Pluton, n°1"></a> | 5 366 autres photos | 2015-07-14 |
-| Arrokoth (New Horizons LORRI) | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=nh-lorri-lor_0408624843"><img src="https://opus.pds-rings.seti.org/holdings/previews/NHxxLO_xxxx/NHKELO_1001/data/20190101_040862/lor_0408624843_0x630_eng_small.jpg" width="90" alt="Arrokoth, n°1" title="Arrokoth, n°1"></a> | 4 342 autres photos | 2019-01-01 |
-| Lune (Galileo SSI) | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0060959300"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/MOON/C0060959300R_small.jpg" width="90" alt="Lune, n°1" title="Lune, n°1"></a> | 1 986 autres photos | 1990-12-08 |
-| Hypérion (Cassini ISS) | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1692998324"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2069/data/1692994130_1693342058/W1692998324_1_small.jpg" width="90" alt="Hypérion, n°1" title="Hypérion, n°1"></a> | 1 705 autres photos | 2011-08-25 |
-| Jupiter (Galileo SSI) | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0164408700"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0008/RAW_CAL/C0164408700R_small.jpg" width="90" alt="Jupiter, n°1" title="Jupiter, n°1"></a> | 1 450 autres photos | 1992-12-03 |
-| Io (Galileo SSI) | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0450101100"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0020/E15/IO/C0450101100R_small.jpg" width="90" alt="Io, n°1" title="Io, n°1"></a> | 840 autres photos | 1998-06-01 |
-| Europe (Galileo SSI) | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0389773000"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0018/G7/EUROPA/C0389773000R_small.jpg" width="90" alt="Europe, n°1" title="Europe, n°1"></a> | 699 autres photos | 1997-04-04 |
-| Triton (Voyager ISS) | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c1140138"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8208/DATA/C11401XX/C1140138_small.jpg" width="90" alt="Triton, n°1" title="Triton, n°1"></a> | 656 autres photos | 1989-08-25 |
+Pas encore de trouvaille. Chaque photo qui sort de l'ordinaire doit d'abord être examinée par l'IA du labo, qui écarte les défauts d'image et les choses déjà connues. Seules les photos qui méritent vraiment un regard humain apparaîtront ici.
 
 ### Labo de neurones : ce qui marche vraiment
 
-**Pour l'instant, aucune façon d'entraîner les neurones n'a passé la vérification.** Le labo a rejoué ses 7 meilleures recettes sur des neurones neufs : à chaque fois, le progrès a disparu.
+**Pour l'instant, aucune façon d'entraîner les neurones n'a passé la vérification.** Le labo a rejoué ses 9 meilleures recettes sur des neurones neufs : à chaque fois, le progrès a disparu.
 
 Autrement dit : les beaux scores du début venaient surtout de la chance, pas d'un vrai apprentissage. Ce n'est pas un échec : c'est un vrai résultat, qui montre qu'il ne faut pas croire un bon score sans le vérifier. Le labo continue de chercher.
 

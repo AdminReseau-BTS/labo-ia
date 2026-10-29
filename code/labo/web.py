@@ -1,14 +1,41 @@
-"""Tableau de bord du labo, sur le port 8080 (reseau local uniquement, sans mot de passe)."""
+"""Tableau de bord du labo, sur le port 8080 : libre sur le reseau local, protege par une cle
+secrete quand on vient d'Internet par le tunnel Cloudflare (voir labo.tunnel)."""
+import hmac
 import json
 import time
 
-from flask import Flask, abort, render_template_string
+from flask import Flask, abort, jsonify, redirect, render_template_string, request
 
-from .config import DEPLOY_KEY, FEEDBACK_MODES, NEURO_DB, OPUS_PREVIEWS, PUBLICATION_STATUS, SONDES_DB
-from .db import rows, scalar
+from . import direct, tunnel
+from .config import (DEPLOY_KEY, FEEDBACK_MODES, NEURO_DB, OPUS_PREVIEWS, PUBLICATION_STATUS, SONDES_DB,
+                     VEILLE_DB)
+from .db import connect, rows, scalar
 
 app = Flask(__name__)
 OPUS_DETAIL = "https://opus.pds-rings.seti.org/opus/#/view=detail&detail="
+
+
+@app.before_request
+def guard():
+    """Depuis Internet (tunnel Cloudflare), il faut la cle secrete du lien ; sur le reseau local, rien ne change.
+    Cloudflare ajoute l'en-tete Cf-Connecting-Ip a tout ce qui passe par le tunnel."""
+    if "Cf-Connecting-Ip" not in request.headers:
+        return None
+    key = tunnel.access_key()
+    if hmac.compare_digest(request.args.get("cle", ""), key):
+        resp = redirect(request.path)
+        resp.set_cookie("cle", key, max_age=90 * 86400, httponly=True, secure=True, samesite="Lax")
+        return resp
+    if not hmac.compare_digest(request.cookies.get("cle", ""), key):
+        return "Accès réservé : ouvre le lien complet du Labo IA (celui qui contient la clé).", 403
+    return None
+
+
+@app.context_processor
+def unseen_errors():
+    """Nombre d'erreurs pas encore vues, affiche dans le menu de chaque page, et lien pour le telephone."""
+    return {"unseen": scalar(VEILLE_DB, "SELECT COUNT(*) FROM erreurs WHERE vue=0 AND niveau='erreur'"),
+            "phone_link": tunnel.link()}
 
 
 @app.template_filter("when")
@@ -112,15 +139,64 @@ def campaign(cid):
                                   total=total, previews=OPUS_PREVIEWS, opus_detail=OPUS_DETAIL)
 
 
+@app.route("/direct")
+def live():
+    return render_template_string(LIVE, previews=OPUS_PREVIEWS, opus_detail=OPUS_DETAIL)
+
+
+@app.route("/api/direct")
+def live_api():
+    return jsonify(now=time.time(), neurones=direct.read("neurones"), sondes=direct.read("sondes"))
+
+
+@app.route("/erreurs")
+def errors():
+    from . import veille  # importe ici : la surveillance n'est utile qu'a cette page
+    show_all = request.args.get("tout") == "1"
+    return render_template_string(
+        ERRORS, now=when(time.time()), topic=veille.settings()["ntfy"], test=request.args.get("test"),
+        # Par defaut : les erreurs pas encore vues ou de la semaine, et tout ce qui date de moins de 24 h.
+        show_all=show_all, errors=rows(VEILLE_DB, "SELECT * FROM erreurs" + ("" if show_all else
+                                       " WHERE (niveau='erreur' AND (vue=0 OR derniere > unixepoch() - 7 * 86400))"
+                                       " OR derniere > unixepoch() - 86400")
+                                       + " ORDER BY vue, derniere DESC LIMIT 200"))
+
+
+@app.post("/erreurs/vu")
+def errors_seen():
+    if VEILLE_DB.exists():
+        con = connect(VEILLE_DB)
+        con.execute("UPDATE erreurs SET vue=1 WHERE vue=0")
+        con.commit()
+        con.close()
+    return redirect("/erreurs")
+
+
+@app.post("/erreurs/test")
+def notify_test():
+    from . import veille
+    ok = veille.notify("Labo IA : test", "Les notifications marchent. Tu seras prévenu ici si quelque chose casse.", 3)
+    return redirect(f"/erreurs?test={'ok' if ok else 'echec'}")
+
+
 STYLE = """
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 :root { --bg:#f5f6f8; --card:#fff; --ink:#1b1f24; --muted:#5d6876; --line:#e1e5ea;
-        --accent:#2f6fde; --ok:#1d8048; --warn:#a85f00; --c2:#9aa4b1; }
+        --accent:#2f6fde; --ok:#1d8048; --warn:#a85f00; --bad:#c62f2f; --c2:#9aa4b1; }
 @media (prefers-color-scheme: dark) {
   :root { --bg:#0f1216; --card:#171b21; --ink:#e6e9ee; --muted:#95a1b0; --line:#272d36;
-          --accent:#79a6ff; --ok:#52c48c; --warn:#e2a54b; --c2:#5d6876; } }
+          --accent:#79a6ff; --ok:#52c48c; --warn:#e2a54b; --bad:#ff6b6b; --c2:#5d6876; } }
+.nav { display:flex; gap:6px; flex-wrap:wrap; margin:0 0 14px; }
+.nav a { padding:5px 12px; border:1px solid var(--line); border-radius:999px; background:var(--card);
+         color:var(--ink); text-decoration:none; font-size:14px; }
+.nav a.on { border-color:var(--accent); color:var(--accent); }
+.badge { display:inline-block; min-width:20px; padding:0 6px; border-radius:999px; background:var(--bad); color:#fff;
+         font-size:12px; font-weight:700; text-align:center; }
+.alert { margin:10px 0 0; padding:10px 12px; border:1px solid var(--bad); border-radius:10px; color:var(--bad); }
+button { font:inherit; padding:6px 12px; border-radius:8px; border:1px solid var(--line); background:var(--card);
+         color:var(--ink); cursor:pointer; }
 * { box-sizing:border-box; }
 body { margin:0; background:var(--bg); color:var(--ink);
        font:15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
@@ -162,14 +238,25 @@ footer { max-width:1240px; margin:auto; padding:0 16px 30px; }
 </style>
 """
 
+def nav(page):
+    """Menu commun ; la pastille rouge compte les erreurs pas encore vues."""
+    links = (("/", "Tableau de bord"), ("/direct", "En direct"), ("/erreurs", "Erreurs"))
+    return '<nav class="nav">' + "".join(
+        f'<a href="{href}"{" class=on" if href == page else ""}>{label}'
+        + ('{% if unseen %} <span class="badge">{{ unseen }}</span>{% endif %}' if href == "/erreurs" else "")
+        + "</a>" for href, label in links) + "</nav>"
+
+
 PAGE = """<!doctype html>
 <html lang="fr"><head>""" + STYLE + """
 <meta http-equiv="refresh" content="60">
 <title>Labo IA</title>
 </head><body>
 <header>
+  """ + nav("/") + """
   <h1>Labo IA</h1>
   <p class="sub">Deux missions qui tournent jour et nuit sur ton Proxmox · mis à jour le {{ now }}</p>
+  {% if unseen %}<p class="alert">⚠ {{ unseen }} erreur{{ "s" if unseen > 1 }} à regarder : <a href="/erreurs">voir le détail</a>.</p>{% endif %}
   {% if pub and pub.ok %}
   <p class="sub">Recherches publiées sur <a href="{{ pub.url }}" target="_blank" rel="noopener">GitHub</a> · dernière publication le {{ pub.t|when }}</p>
   {% elif pub %}
@@ -281,7 +368,8 @@ PAGE = """<!doctype html>
   </ol>
 </section>
 </main>
-<footer class="note">Page visible seulement sur ton réseau local. Elle se recharge toute seule chaque minute.</footer>
+<footer class="note">Page libre sur ton réseau local ; depuis Internet, seulement avec le lien secret (page Erreurs).
+Elle se recharge toute seule chaque minute.</footer>
 </body></html>
 """
 
@@ -290,9 +378,9 @@ CAMPAIGN = """<!doctype html>
 <title>{{ c.target }} – Sondes Fantômes</title>
 </head><body>
 <header>
-  <p><a href="/">← Labo IA</a></p>
+  """ + nav("") + """
   <h1>{{ c.target }} <span class="note">· {{ c.instrument }}</span></h1>
-  <p class="sub">{{ total }} images analysées, dont {{ flagged }} écartées comme ratées (noires, saturées, uniformes).
+  <p class="sub">{{ total }} images analysées, dont {{ flagged }} écartées comme ratées (noires, saturées, vides, incomplètes, striées).
   Classement du {{ c.scored_at|when if c.scored_at else "–" }} : de la plus inhabituelle à la plus banale.</p>
 </header>
 <main style="display:block">
@@ -309,6 +397,212 @@ CAMPAIGN = """<!doctype html>
     <p class="note">Pas encore classée.</p>
   {% endfor %}
   </div>
+</section>
+</main>
+</body></html>
+"""
+
+LIVE = """<!doctype html>
+<html lang="fr"><head>""" + STYLE + """
+<title>En direct – Labo IA</title>
+<style>
+canvas { width:100%; display:block; border-radius:10px; background:#0b0e12; }
+#chip { max-width:320px; margin:auto; }
+.row { display:flex; gap:12px; flex-wrap:wrap; align-items:baseline; justify-content:space-between; }
+.big { font-size:18px; font-weight:600; }
+.tag { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px; border:1px solid var(--line); }
+.tag.ok { color:var(--ok); border-color:var(--ok); } .tag.no { color:var(--muted); }
+figure.no img { opacity:.45; filter:grayscale(1); }
+.keys { display:flex; gap:14px; flex-wrap:wrap; font-size:13px; color:var(--muted); justify-content:center; margin-top:8px; }
+.keys i { display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; }
+</style>
+</head><body>
+<header>
+  """ + nav("/direct") + """
+  <h1>En direct</h1>
+  <p class="sub">Ce que font les deux missions en ce moment. La page se met à jour toute seule.</p>
+</header>
+<main>
+<section>
+  <h2>Labo de neurones</h2>
+  <p class="sub" id="n-what">En attente des neurones…</p>
+  <h3>La partie de Pong</h3>
+  <canvas id="pong" width="640" height="400"></canvas>
+  <div class="row" style="margin-top:8px"><span class="big" id="n-score"></span><span class="note" id="n-time"></span></div>
+  <p class="note">La raquette (à gauche) est pilotée uniquement par l'activité des neurones. La simulation tourne
+  environ 6 fois plus vite que la réalité : la page rejoue des extraits de 10 secondes à vitesse normale.</p>
+  <h3>La puce : 64 électrodes sous les neurones</h3>
+  <canvas id="chip" width="320" height="320"></canvas>
+  <div class="keys"><span><i style="background:#3b82f6"></i>voient la balle</span>
+    <span><i style="background:#22c55e"></i>font monter la raquette</span>
+    <span><i style="background:#f59e0b"></i>la font descendre</span></div>
+  <p class="note">Chaque case est une électrode. Elle s'allume quand les neurones juste au-dessus s'activent.
+  Le labo envoie la position de la balle aux électrodes bleues ; ce que font les zones verte et orange déplace la raquette.</p>
+</section>
+<section>
+  <h2>Sondes Fantômes</h2>
+  <p class="sub" id="s-status">En attente…</p>
+  <h3>Les dernières photos regardées</h3>
+  <div class="grid" id="s-grid"></div>
+  <p class="note">Les photos ratées (trop sombres, vides, abîmées pendant la transmission…) sont écartées.
+  Les autres sont comparées entre elles pour trouver les plus bizarres. Cliquer sur une photo ouvre sa fiche à la NASA.</p>
+</section>
+</main>
+<script>
+const PREVIEWS = {{ previews|tojson }}, DETAIL = {{ opus_detail|tojson }};
+const REASONS = {"image presque uniforme": "vide", "image presque noire": "trop sombre", "image saturee": "trop claire",
+  "image incomplete": "incomplète", "image striee": "striée", "image dominee par le bruit": "parasites"};
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const $ = id => document.getElementById(id);
+let latest = null, clip = null, frame = 0, lastSondes = null, level = new Float32Array(64), flash = 0, flashColor = "";
+
+function ago(s) { return s < 90 ? Math.round(s) + " s" : Math.round(s / 60) + " min"; }
+
+async function poll() {
+  try {
+    const d = await (await fetch("/api/direct", {cache: "no-store"})).json();
+    latest = d.neurones ? {...d.neurones, age: d.now - d.neurones.t} : null;
+    showSondes(d.sondes, d.now);
+  } catch (e) { $("n-what").textContent = "Tableau de bord injoignable…"; }
+}
+
+function showSondes(s, now) {
+  if (!s) return;
+  const age = now - s.t;
+  $("s-status").textContent = (s.status || "") + (age > 900 ? " (pas de nouvelles depuis " + ago(age) + " : voir la page Erreurs)" : "");
+  const key = s.recent.length ? s.recent[0].opus_id : "";
+  if (key === lastSondes) return;
+  lastSondes = key;
+  $("s-grid").innerHTML = s.recent.map(r => {
+    const no = r.reason ? " class=no" : "";
+    const tag = r.reason ? '<span class="tag no">écartée : ' + esc(REASONS[r.reason] || r.reason) + "</span>"
+                         : '<span class="tag ok">gardée</span>';
+    return "<figure" + no + '><a href="' + esc(DETAIL + r.opus_id) + '" target="_blank" rel="noopener"><img src="'
+      + esc(PREVIEWS + r.small) + '" alt=""></a><figcaption>' + tag + "<br>" + esc((r.time1 || "").slice(0, 10)) + "</figcaption></figure>";
+  }).join("");
+}
+
+function startClip() {
+  if (!latest || !latest.frames || !latest.frames.length || (clip && latest.t === clip.t)) return false;
+  clip = latest; frame = 0;
+  const who = clip.plastic ? "neurones capables d'apprendre" : "neurones figés, incapables d'apprendre (vérification)";
+  $("n-what").innerHTML = "<strong>" + esc(clip.what) + "</strong> · culture n°" + esc(clip.seed) + ", " + who
+    + "<br>Recette : " + esc(clip.recipe);
+  return true;
+}
+
+function drawPong(f) {
+  const c = $("pong"), g = c.getContext("2d"), W = c.width, H = c.height;
+  const [x, y, paddle, event, pause] = f;
+  if (event) { flash = 12; flashColor = event === 1 ? "34,197,94" : "239,68,68"; }
+  g.fillStyle = "#0b0e12"; g.fillRect(0, 0, W, H);
+  if (flash > 0) { g.fillStyle = "rgba(" + flashColor + "," + (flash / 40) + ")"; g.fillRect(0, 0, W, H); flash--; }
+  g.fillStyle = "#2a313b"; g.fillRect(W - 8, 0, 8, H);
+  g.setLineDash([6, 10]); g.strokeStyle = "#2a313b"; g.beginPath(); g.moveTo(W / 2, 0); g.lineTo(W / 2, H); g.stroke(); g.setLineDash([]);
+  g.fillStyle = "#e6e9ee"; const ph = 0.25 * H; g.fillRect(10, paddle * H - ph / 2, 10, ph);
+  if (!pause) { g.beginPath(); g.arc(24 + x * (W - 40), 8 + y * (H - 16), 8, 0, 7); g.fill(); }
+  g.font = "16px system-ui"; g.textAlign = "center";
+  if (clip.sim_t < 0) { g.fillStyle = "#95a1b0"; g.fillText("Échauffement : la culture vit seule avant la partie", W / 2, 30); }
+  else if (pause) { g.fillStyle = "#ef4444"; g.fillText("Balle ratée : petite pause avant la suivante", W / 2, 30); }
+}
+
+function drawChip(f) {
+  const c = $("chip"), g = c.getContext("2d"), n = 8, s = c.width / n, act = f[5];
+  const color = ch => clip.sensory.includes(ch) ? [59,130,246] : clip.up.includes(ch) ? [34,197,94] : clip.down.includes(ch) ? [245,158,11] : [120,130,145];
+  g.fillStyle = "#0b0e12"; g.fillRect(0, 0, c.width, c.height);
+  for (let ch = 0; ch < 64; ch++) {
+    level[ch] = Math.max(level[ch] * 0.85, Math.min(+act[ch] / 3, 1));
+    const [r, gg, b] = color(ch), cx = (ch % n) * s, cy = Math.floor(ch / n) * s;
+    g.fillStyle = "rgba(" + r + "," + gg + "," + b + "," + (0.18 + 0.82 * level[ch]) + ")";
+    g.beginPath(); g.roundRect(cx + 4, cy + 4, s - 8, s - 8, 6); g.fill();
+  }
+}
+
+function tick() {
+  if ((!clip || frame >= clip.frames.length) && !startClip()) {
+    if (clip) $("n-time").textContent = latest && latest.age > 120 ? "Pas de nouvelles depuis " + ago(latest.age) + " : voir la page Erreurs" : "Chargement de l'extrait suivant…";
+    return;
+  }
+  const f = clip.frames[frame++];
+  drawPong(f); drawChip(f);
+  const minute = Math.max(0, Math.floor(clip.sim_t / 60) + 1);
+  $("n-score").textContent = clip.hits + " balles renvoyées, " + clip.misses + " ratées";
+  $("n-time").textContent = clip.sim_t < 0 ? "échauffement" : "minute " + Math.min(minute, 15) + " sur 15";
+}
+
+poll(); setInterval(poll, 2000); setInterval(tick, 50);
+</script>
+</body></html>
+"""
+
+ERRORS = """<!doctype html>
+<html lang="fr"><head>""" + STYLE + """
+<meta http-equiv="refresh" content="120">
+<title>Erreurs – Labo IA</title>
+<style>
+.err { border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin:0 0 10px; }
+.err.new { border-color:var(--bad); }
+.big { font-size:16px; margin:2px 0; }
+.lvl { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+.lvl.erreur { color:var(--bad); } .lvl.avertissement { color:var(--warn); } .lvl.vue { color:var(--muted); }
+pre { margin:8px 0 0; padding:10px; border-radius:8px; background:var(--bg); border:1px solid var(--line);
+      font:12.5px/1.45 ui-monospace, Consolas, monospace; overflow:auto; max-height:420px; white-space:pre; }
+code { font:13px ui-monospace, Consolas, monospace; padding:1px 6px; border:1px solid var(--line); border-radius:6px;
+       user-select:all; overflow-wrap:anywhere; }
+ol.steps { margin:6px 0 10px; padding-left:20px; }
+</style>
+</head><body>
+<header>
+  """ + nav("/erreurs") + """
+  <h1>Erreurs et alertes</h1>
+  <p class="sub">Le labo se surveille tout seul toutes les 5 minutes : plantages, services arrêtés, mission bloquée,
+  publication en échec, disque plein. Page mise à jour le {{ now }}.</p>
+</header>
+<main style="display:block">
+<section style="margin-bottom:16px">
+  <h2>Voir le labo depuis ton téléphone</h2>
+  {% if phone_link %}
+  <p class="note">Ce lien marche de partout, même hors de chez toi. Il contient une clé secrète : garde-le pour toi.
+  Il change si le serveur redémarre ; le nouveau lien t'est alors envoyé en notification.</p>
+  <p><code>{{ phone_link }}</code></p>
+  {% else %}
+  <p class="note">Le tunnel vers Internet n'est pas ouvert pour l'instant.</p>
+  {% endif %}
+</section>
+<section style="margin-bottom:16px">
+  <h2>Recevoir les alertes sur ton téléphone</h2>
+  <ol class="steps">
+    <li>Installe l'application gratuite <b>ntfy</b> (Play Store, App Store ou F-Droid). Pas de compte à créer.</li>
+    <li>Dans l'appli, appuie sur <b>+</b> et abonne-toi au sujet <code>{{ topic }}</code> (serveur par défaut, ntfy.sh).</li>
+    <li>Appuie ici pour vérifier que ça marche :</li>
+  </ol>
+  <form method="post" action="/erreurs/test"><button>Envoyer une notification de test</button></form>
+  {% if test == "ok" %}<p class="note" style="color:var(--ok)">Notification envoyée : elle doit arriver sur ton téléphone dans quelques secondes.</p>
+  {% elif test %}<p class="alert">L'envoi a échoué (pas d'accès à Internet ?). Réessaie dans un moment.</p>{% endif %}
+  <p class="note">Garde ce nom de sujet pour toi : toute personne qui le connaît peut lire les alertes. Elles ne contiennent
+  que des messages d'erreur du labo, rien de personnel.</p>
+</section>
+<section>
+  <div class="row" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+    <h2>{{ "Tout l'historique" if show_all else "Problèmes récents" }}</h2>
+    <span>
+    {% if unseen %}<form method="post" action="/erreurs/vu" style="display:inline"><button>Tout marquer comme vu</button></form>{% endif %}
+    <a href="/erreurs{{ '' if show_all else '?tout=1' }}" class="note">{{ "Voir seulement les récents" if show_all else "Voir tout l'historique" }}</a>
+    </span>
+  </div>
+  {% for e in errors %}
+  <div class="err {{ 'new' if not e.vue and e.niveau == 'erreur' }}">
+    <span class="lvl {{ 'vue' if e.vue else e.niveau }}">{{ e.niveau }}{{ " · vue" if e.vue }}</span>
+    <div class="big"><strong>{{ e.source }}</strong> : {{ e.titre }}</div>
+    <div class="note">{% if e.nombre > 1 %}{{ e.nombre }} fois, du {{ e.premiere|when }} au {{ e.derniere|when }}{% else %}le {{ e.premiere|when }}{% endif %}</div>
+    {% if e.detail %}<details><summary class="note">Voir le détail technique</summary><pre>{{ e.detail }}</pre></details>{% endif %}
+  </div>
+  {% else %}
+  <p class="note">Aucun problème : tout tourne normalement.</p>
+  {% endfor %}
+  <p class="note">Une <b>erreur</b> déclenche une notification (une seule fois tant que tu ne l'as pas marquée comme vue).
+  Un <b>avertissement</b> est un petit souci passager, comme une photo qui n'a pas pu être téléchargée : il est
+  seulement noté ici.</p>
 </section>
 </main>
 </body></html>

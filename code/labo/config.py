@@ -46,6 +46,23 @@ PUBLICATION_SETTINGS = DATA / "publication.json"
 PUBLICATION_STATUS = DATA / "publication-etat.json"
 DEPLOY_KEY = DATA / ".ssh" / "github_ed25519"
 
+# Etat en direct des missions (page « En direct » du tableau de bord).
+LIVE_DIR = DATA / "direct"
+
+# Surveillance (labo.veille) : erreurs relevees et reglages des notifications.
+VEILLE_DB = DATA / "veille.db"
+NOTIFY_SETTINGS = DATA / "notifications.json"
+NTFY_URL = "https://ntfy.sh"  # service de notifications gratuit, sans compte
+SERVICES = {"labo-sondes": "Sondes Fantômes", "labo-neurones": "Labo de neurones", "labo-web": "Tableau de bord",
+            "labo-publication": "Publication GitHub", "labo-tunnel": "Accès depuis Internet", "ollama": "IA locale"}
+
+# Acces au tableau de bord depuis Internet (labo.tunnel) : cle secrete et lien du moment.
+ACCESS_SETTINGS = DATA / "acces.json"
+TUNNEL_STATUS = DATA / "lien.json"
+
+# Format commun des journaux : le niveau (WARNING, ERROR...) sert a la surveillance.
+LOG_FORMAT = "%(asctime)s %(levelname)s %(name)s %(message)s"
+
 # IA locale optionnelle (Ollama). Sans elle, les missions tournent quand meme.
 OLLAMA_URL = "http://127.0.0.1:11434"
 OLLAMA_MODEL = "gemma3:4b"

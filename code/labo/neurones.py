@@ -16,6 +16,7 @@ import json
 import logging
 import os
 import time
+from collections import deque
 
 import numpy as np
 import requests
@@ -25,8 +26,8 @@ os.environ.setdefault("CL_SDK_VISUALISATION", "0")
 import cl  # noqa: E402
 from cl import BurstDesign, ChannelSet, StimDesign  # noqa: E402
 
-from . import culture, db, llm  # noqa: E402
-from .config import FEEDBACK_MODES, NEURO_DB  # noqa: E402
+from . import culture, db, direct, llm  # noqa: E402
+from .config import FEEDBACK_MODES, LOG_FORMAT, NEURO_DB  # noqa: E402
 
 log = logging.getLogger("neurones")
 
@@ -37,6 +38,9 @@ WINDOW_MIN = 5        # "debut" = 5 premieres minutes, "fin" = 5 dernieres
 SEARCH_SEEDS = (1, 2, 3)
 CONFIRM_EVERY = 10    # une contre-epreuve toutes les 10 recettes
 MIN_EFFECT = 0.05     # en dessous de 5 points, on ne parle pas d'apprentissage
+FRAME_TICKS = 5       # page « En direct » : une image de la partie toutes les 50 ms simulees...
+CLIP_FRAMES = 200     # ... soit les 10 dernieres secondes de jeu
+LIVE_EVERY = 1.5      # ... envoyees toutes les 1,5 s (la simulation va ~6 fois plus vite que le temps reel)
 
 # Disposition sur la puce (canal = ligne * 8 + colonne), inspiree de DishBrain :
 # 8 electrodes sensorielles au centre, zones motrices "haut" et "bas" en diagonale.
@@ -94,8 +98,8 @@ class Pong:
     PADDLE = 0.25  # hauteur de la raquette (fraction du terrain)
     SPEED = 0.6    # vitesse horizontale de la balle (terrains par seconde)
 
-    def __init__(self, recipe, rng):
-        self.r, self.rng = recipe, rng
+    def __init__(self, recipe, rng, info=None):
+        self.r, self.rng, self.info = recipe, rng, info
         self.dt = 1 / TICKS_PER_SECOND
         self.region = np.zeros(64, np.int8)
         self.region[list(UP)] = 1
@@ -106,6 +110,9 @@ class Pong:
         self.hits = np.zeros(GAME_MIN, int)
         self.misses = np.zeros(GAME_MIN, int)
         self.spikes = 0
+        self.act = np.zeros(64, int)  # impulsions par electrode depuis la derniere image en direct
+        self.frames = deque(maxlen=CLIP_FRAMES)
+        self.event, self.n, self.shown = 0, 0, 0.0
         self.serve()
 
     def serve(self):
@@ -116,6 +123,12 @@ class Pong:
     def tick(self, neurons, t, spikes):
         """t : secondes depuis le debut de la partie (negatif pendant l'echauffement)."""
         self.spikes += len(spikes)
+        if self.info is not None:
+            for s in spikes:
+                self.act[s.channel] += 1
+            self.n += 1
+            if self.n % FRAME_TICKS == 0:
+                self.record(t)
         if t < 0:
             return
         r = self.r
@@ -148,11 +161,13 @@ class Pong:
             minute = min(int(t // 60), GAME_MIN - 1)
             if abs(self.y - self.paddle) <= self.PADDLE / 2:
                 self.hits[minute] += 1
+                self.event = 1
                 self.x, self.vx = 0.0, self.SPEED
                 if r["mode"] == "fep" and r["hit_pulses"]:  # retour previsible
                     neurons.stim(ChannelSet(*SENSORY), self.fb, BurstDesign(r["hit_pulses"], 100))
             else:
                 self.misses[minute] += 1
+                self.event = 2
                 if r["mode"] == "none":
                     self.serve()
                 else:
@@ -164,6 +179,22 @@ class Pong:
         if self.phase >= 1:
             self.phase -= 1
             neurons.stim(SENSORY[min(int(self.y * 8), 7)], self.sens)
+
+    def record(self, t):
+        """Garde une image de la partie (balle, raquette, activite des 64 electrodes) pour la page
+        « En direct », et y envoie regulierement les 10 dernieres secondes de jeu."""
+        self.frames.append([round(self.x, 3), round(self.y, 3), round(self.paddle, 3), self.event,
+                            int(self.pause > 0), "".join(str(min(int(a), 9)) for a in self.act)])
+        self.act[:] = 0
+        self.event = 0
+        if time.time() - self.shown < LIVE_EVERY:
+            return
+        self.shown = time.time()
+        direct.write("neurones", {
+            **self.info, "sim_t": round(t, 1), "hits": int(self.hits.sum()), "misses": int(self.misses.sum()),
+            "curve": [round(float(a / (a + b)), 3) if a + b else None for a, b in zip(self.hits, self.misses)],
+            "frame_s": FRAME_TICKS / TICKS_PER_SECOND, "frames": list(self.frames),
+            "sensory": SENSORY, "up": UP, "down": DOWN})
 
     def result(self):
         h, m = self.hits, self.misses
@@ -180,13 +211,13 @@ class Pong:
         }
 
 
-def run_session(recipe, seed, plastic):
+def run_session(recipe, seed, plastic, info=None):
     cl.sim.set_simulator_data_source(
         "labo.culture:create_source",
         config={"seed": int(seed), "plastic": bool(plastic),
                 "stdp_tau_ms": float(recipe["stdp_tau"]), "target_hz": float(recipe["target_hz"])},
         metadata=culture.METADATA)
-    game = Pong(recipe, np.random.default_rng(seed))
+    game = Pong(recipe, np.random.default_rng(seed), info)
     start = time.time()
     sim_s = WARMUP_S + GAME_MIN * 60
     with cl.open(wait_until_recordable=False) as neurons:
@@ -196,9 +227,11 @@ def run_session(recipe, seed, plastic):
     return {**game.result(), "sim_s": sim_s, "wall": time.time() - start}
 
 
-def play(con, recipe_id, recipe, seed, plastic):
+def play(con, recipe_id, recipe, seed, plastic, what="Test"):
+    info = {"what": f"{what} de la recette n°{recipe_id}", "recipe": describe(recipe),
+            "seed": int(seed), "plastic": bool(plastic)}
     try:
-        res = run_session(recipe, seed, plastic)
+        res = run_session(recipe, seed, plastic, info)
     except Exception:  # le labo tourne 24 h/24 : une session ratee ne doit pas l'arreter
         log.exception("session interrompue (recette %s, culture %s)", recipe_id, seed)
         time.sleep(30)
@@ -307,8 +340,8 @@ def confirm_best(con):
         return
     recipe = json.loads(row["params"])
     seeds = [100 + 3 * row["id"] + k for k in range(3)]  # cultures jamais vues
-    plastic = [r for r in (play(con, row["id"], recipe, s, True) for s in seeds) if r]
-    frozen = [r for r in (play(con, row["id"], recipe, s, False) for s in seeds) if r]
+    plastic = [r for r in (play(con, row["id"], recipe, s, True, "Vérification") for s in seeds) if r]
+    frozen = [r for r in (play(con, row["id"], recipe, s, False, "Vérification") for s in seeds) if r]
     if not plastic or not frozen:
         return
     lp, lf = mean_learning(plastic), mean_learning(frozen)
@@ -325,7 +358,7 @@ def confirm_best(con):
 
 
 def main():
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
+    logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
     con = db.connect(NEURO_DB)
     con.executescript(SCHEMA)
     rng = np.random.default_rng()

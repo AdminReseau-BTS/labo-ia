@@ -9,6 +9,7 @@ des "candidates", decrites par l'IA locale si elle est installee.
 import io
 import logging
 import time
+from collections import deque
 from pathlib import Path
 
 import numpy as np
@@ -20,10 +21,17 @@ from sklearn.ensemble import IsolationForest
 from sklearn.neighbors import NearestNeighbors
 from torchvision.models import ResNet18_Weights, resnet18
 
-from . import db, llm
-from .config import CAMPAIGNS, IMAGING_INSTRUMENTS, IMG_DIR, OPUS_API, OPUS_PREVIEWS, SONDES_DB
+from . import db, direct, llm
+from .config import CAMPAIGNS, IMAGING_INSTRUMENTS, IMG_DIR, LOG_FORMAT, OPUS_API, OPUS_PREVIEWS, SONDES_DB
 
 log = logging.getLogger("sondes")
+RECENT = deque(maxlen=18)  # dernieres photos analysees, pour la page « En direct »
+
+
+def show(status, camp=None):
+    """Dit a la page « En direct » ce que fait la mission en ce moment."""
+    direct.write("sondes", {"status": status, "target": camp["target"] if camp else None,
+                            "instrument": camp["instrument"] if camp else None, "recent": list(RECENT)})
 
 PAGE = 100
 POLITE_DELAY = 0.5   # pause entre deux telechargements, pour menager les serveurs publics
@@ -34,6 +42,10 @@ FILTER_VERSION = 3  # a augmenter quand le filtre d'images ratees change : les c
 FILL_GRAY = 105      # valeur des zones sans donnees dans les apercus OPUS
 # Images techniques (calibration, poses dans le noir...) : leurs "anomalies" sont des defauts d'instrument.
 SKIP_TARGET_WORDS = ("calibration", "dark", "plaque", "flat", "bias", "none", "unknown")
+# Avis de l'IA locale sur chaque candidate : seules les "interessant" sont mises en avant sur GitHub.
+VERDICTS = ("defaut", "connu", "interessant")
+VERDICT_SCHEMA = {"type": "object", "required": ["description", "verdict"],
+                  "properties": {"description": {"type": "string"}, "verdict": {"type": "string", "enum": list(VERDICTS)}}}
 
 HTTP = requests.Session()
 HTTP.headers["User-Agent"] = "labo-ia-sondes-fantomes/1.0 (recherche d'anomalies, projet perso)"
@@ -48,7 +60,7 @@ CREATE TABLE IF NOT EXISTS images (
     opus_id TEXT PRIMARY KEY, campaign_id INTEGER, time1 TEXT, small TEXT,
     emb BLOB, artifact TEXT, score REAL, rank INTEGER, added_at REAL, filtre INTEGER);
 CREATE INDEX IF NOT EXISTS images_campaign ON images(campaign_id, rank);
-CREATE TABLE IF NOT EXISTS descriptions (opus_id TEXT PRIMARY KEY, text TEXT, created_at REAL);
+CREATE TABLE IF NOT EXISTS descriptions (opus_id TEXT PRIMARY KEY, text TEXT, created_at REAL, verdict TEXT);
 CREATE TABLE IF NOT EXISTS journal (t REAL, msg TEXT);
 """
 
@@ -170,13 +182,14 @@ def process_page(con, embed, camp, items, times):
         except (requests.RequestException, OSError) as e:
             log.warning("image %s ignoree : %s", oid, e)
             continue
-        gray = np.asarray(img.convert("L"), dtype=np.float32)
+        reason = artifact_reason(np.asarray(img.convert("L"), dtype=np.float32))
         con.execute(
             "INSERT INTO images(opus_id, campaign_id, time1, small, emb, artifact, filtre, added_at)"
             " VALUES (?,?,?,?,?,?,?,?)",
-            (oid, camp["id"], times.get(oid), small, embed(img).tobytes(),
-             artifact_reason(gray), FILTER_VERSION, time.time()))
+            (oid, camp["id"], times.get(oid), small, embed(img).tobytes(), reason, FILTER_VERSION, time.time()))
         added += 1
+        RECENT.appendleft({"opus_id": oid, "small": small, "reason": reason, "time1": times.get(oid)})
+        show(f"Analyse des photos de {camp['target']}", camp)
         time.sleep(POLITE_DELAY)
     con.commit()
     return added
@@ -213,6 +226,7 @@ def isolation(X):
 
 def score_campaign(con, camp, touch=True):
     """Classe les images du groupe de la plus ordinaire a la plus isolee."""
+    show(f"Comparaison de toutes les photos de {camp['target']} entre elles", camp)
     if touch:
         con.execute("UPDATE campaigns SET since_score=0, scored_at=? WHERE id=?", (time.time(), camp["id"]))
         con.commit()
@@ -256,6 +270,8 @@ def connect():
     con.executescript(SCHEMA)
     if "filtre" not in [c[1] for c in con.execute("PRAGMA table_info(images)")]:
         con.execute("ALTER TABLE images ADD COLUMN filtre INTEGER")
+    if "verdict" not in [c[1] for c in con.execute("PRAGMA table_info(descriptions)")]:
+        con.execute("ALTER TABLE descriptions ADD COLUMN verdict TEXT")
     return con
 
 
@@ -270,6 +286,7 @@ def describe_pending(con, limit=1):
            WHERE i.rank <= ? AND d.opus_id IS NULL ORDER BY i.rank LIMIT ?""",
         (TOP_N, limit)).fetchall()
     for r in rows:
+        show(f"L'IA locale décrit une photo bizarre de {r['target']}", r)
         try:
             path = fetch_preview(r["small"].replace("_small.", "_med."), r["opus_id"])
         except requests.RequestException:
@@ -277,14 +294,20 @@ def describe_pending(con, limit=1):
         prompt = (
             f"Tu es planetologue. Cette image d'archive vient de l'instrument {r['instrument']}, "
             f"cible : {r['target']}, prise le {r['time1']}. Un algorithme l'a reperee comme "
-            "inhabituelle par rapport aux autres images de cette cible. En 3 ou 4 phrases en "
-            "francais : decris ce que tu vois, puis dis si cela ressemble plutot a un defaut "
-            "d'image (bruit, saturation, image ratee), a quelque chose de connu (bord de la "
-            "planete, anneaux, etoile, ombre), ou a quelque chose qui merite un regard humain. "
-            "Si tu n'es pas sur, dis-le. N'invente aucun fait.")
-        text = llm.ask(prompt, image_path=path)
-        con.execute("INSERT OR REPLACE INTO descriptions VALUES (?,?,?)", (r["opus_id"], text, time.time()))
+            "inhabituelle par rapport aux autres images de cette cible. Dans 'description', en 3 ou 4 "
+            "phrases simples en francais, comprehensibles par quelqu'un qui n'y connait rien : decris ce "
+            "que tu vois et explique ton avis. Dans 'verdict', choisis : 'defaut' si c'est un defaut "
+            "d'image (bruit, saturation, lignes perdues, image ratee ou vide), 'connu' si c'est quelque "
+            "chose de banal ou deja connu (bord de la planete, anneaux, etoile, ombre, prise de vue "
+            "inhabituelle), 'interessant' seulement si cela merite vraiment un regard humain. Dans le "
+            "doute entre 'connu' et 'interessant', choisis 'connu'. N'invente aucun fait.")
+        out = llm.ask(prompt, image_path=path, schema=VERDICT_SCHEMA)
+        verdict = out["verdict"] if out.get("verdict") in VERDICTS else "connu"
+        con.execute("INSERT OR REPLACE INTO descriptions VALUES (?,?,?,?)",
+                    (r["opus_id"], str(out["description"]).strip(), time.time(), verdict))
         con.commit()
+        if verdict == "interessant":
+            db.journal(con, log, f"Trouvaille possible sur {r['target']} ({r['instrument']}) : {r['opus_id']}.")
     return len(rows)
 
 
@@ -310,6 +333,7 @@ def run_once(con, embed):
             db.journal(con, log, f"Liste de départ terminée : {added} nouvelles cibles ajoutées à la fouille.")
         else:
             db.journal(con, log, "Toute l'archive d'imagerie est fouillée. Nouvelle vérification dans 24 h.")
+            show("Toute l'archive est fouillée : en attente de nouvelles photos (vérification toutes les 24 h)")
             time.sleep(86400)
         return
 
@@ -335,7 +359,7 @@ def run_once(con, embed):
 
 
 def main():
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
+    logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
     IMG_DIR.mkdir(parents=True, exist_ok=True)
     con = connect()
     for inst, target in CAMPAIGNS:
@@ -349,6 +373,7 @@ def main():
             run_once(con, embed)
         except (requests.RequestException, ValueError, KeyError) as e:
             log.warning("probleme reseau ou API (%s), nouvel essai dans 5 min", e)
+            show("Problème de réseau ou de l'archive NASA : nouvel essai dans 5 minutes")
             time.sleep(300)
 
 
