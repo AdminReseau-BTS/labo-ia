@@ -1,6 +1,6 @@
 # Labo de neurones : recettes d'entraînement
 
-*Mis à jour le 29/10/2026 à 15:00 UTC. Progrès = balles renvoyées pendant les 5 dernières minutes de jeu, moins les 5 premières, en points, en moyenne sur 3 cultures.*
+*Mis à jour le 29/10/2026 à 21:01 UTC. Progrès = balles renvoyées pendant les 5 dernières minutes de jeu, moins les 5 premières, en points, en moyenne sur 3 cultures.*
 
 ## La meilleure recette, minute par minute
 
@@ -10,7 +10,15 @@
 
 | n° | Protocole | Réglages | Début → fin | Progrès | Contre-épreuve |
 |---:|---|---|---:|---:|---|
+| 140 | silence après une balle ratée<br>*variante de la n°135* | stimulation 0,83 µA de 6,68 à 28,87 Hz ; retour 1,46 µA, 0,51 s à 10,8 Hz, salve de 12 ; raquette ×3,25 ; STDP 38,34 ms ; homéostasie 3 Hz | 22 % → 27 % | **+5** | – |
+| 135 | silence après une balle ratée<br>*tirée au hasard* | stimulation 0,83 µA de 5,03 à 27,98 Hz ; retour 1,51 µA, 0,61 s à 10,8 Hz, salve de 12 ; raquette ×3,06 ; STDP 38,34 ms ; homéostasie 2,98 Hz | 25 % → 27 % | **+3** | – |
+| 137 | silence après une balle ratée<br>*tirée au hasard* | stimulation 0,55 µA de 9,23 à 40,04 Hz ; retour 1,2 µA, 5,47 s à 10,2 Hz, salve de 1 ; raquette ×3,49 ; STDP 32,82 ms ; homéostasie 1,24 Hz | 23 % → 25 % | **+2** | – |
+| 133 | silence après une balle ratée<br>*tirée au hasard* | stimulation 0,34 µA de 9,3 à 25,03 Hz ; retour 1,71 µA, 5,12 s à 2,56 Hz, salve de 5 ; raquette ×3,9 ; STDP 60,98 ms ; homéostasie 0,92 Hz | 25 % → 26 % | **+1** | – |
+| 136 | retour prévisible / imprévisible (DishBrain)<br>*proposée par l'IA : L'utilisation d'un retour d'information rapide et intense (forte amplitude FB, taux élevé) combinée à une sensibilité modérée, et un apprentissage rapide (stdp_tau élevé) peut améliorer significativement le taux de renvoi de balles dans un mode 'fep' imprévisible.* | stimulation 1,8 µA de 8 à 45 Hz ; retour 2,2 µA, 1 s à 25 Hz, salve de 15 ; raquette ×4 ; STDP 75 ms ; homéostasie 2,5 Hz | 25 % → 27 % | **+1** | – |
+| 139 | silence après une balle ratée<br>*tirée au hasard* | stimulation 0,78 µA de 3,66 à 27,15 Hz ; retour 1,06 µA, 0,69 s à 28,29 Hz, salve de 7 ; raquette ×2,33 ; STDP 46,53 ms ; homéostasie 2,19 Hz | 24 % → 24 % | **+1** | – |
 | 132 | retour prévisible / imprévisible (DishBrain)<br>*protocole DishBrain* | stimulation 1 µA de 4 à 40 Hz ; retour 1 µA, 4 s à 5 Hz, salve de 10 ; raquette ×2 ; STDP 20 ms ; homéostasie 1,5 Hz | 25 % → 23 % | **-2** | – |
+| 134 | silence après une balle ratée<br>*tirée au hasard* | stimulation 1,34 µA de 4,6 à 36,46 Hz ; retour 1,31 µA, 2,45 s à 11,3 Hz, salve de 12 ; raquette ×3,46 ; STDP 67,52 ms ; homéostasie 1 Hz | 26 % → 22 % | **-4** | – |
+| 138 | silence après une balle ratée<br>*tirée au hasard* | stimulation 1,73 µA de 2,71 à 43,97 Hz ; retour 0,62 µA, 1,46 s à 20,72 Hz, salve de 17 ; raquette ×0,61 ; STDP 33,01 ms ; homéostasie 1,4 Hz | 28 % → 23 % | **-5** | – |
 
 ## Archive : les 30 meilleures recettes sur 1 000 neurones
 

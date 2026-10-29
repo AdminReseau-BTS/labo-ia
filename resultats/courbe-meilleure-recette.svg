@@ -3,5 +3,5 @@
 <line x1="30" x2="610" y1="100.0" y2="100.0" stroke="#8b949e" stroke-opacity="0.35"/><text x="26" y="104.0" text-anchor="end">25%</text>
 <line x1="30" x2="610" y1="30.0" y2="30.0" stroke="#8b949e" stroke-opacity="0.35"/><text x="26" y="34.0" text-anchor="end">50%</text>
 <text x="30" y="192">minute 1</text><text x="610" y="192" text-anchor="end">minute 15</text>
-<polyline points="30.0,92.3 71.4,101.7 112.9,89.6 154.3,97.1 195.7,123.3 237.1,112.7 278.6,112.7 320.0,100.0 361.4,106.3 402.9,114.1 444.3,90.1 485.7,138.2 527.1,106.3 568.6,93.2 610.0,104.2" fill="none" stroke="#2f6fde" stroke-width="2.5" stroke-linejoin="round"/><rect x="30" y="210" width="14" height="3" fill="#2f6fde"/><text x="50" y="215">avec plasticité</text>
+<polyline points="30.0,113.1 71.4,96.8 112.9,121.0 154.3,121.5 195.7,83.0 237.1,102.7 278.6,102.2 320.0,91.5 361.4,117.0 402.9,112.6 444.3,91.9 485.7,79.2 527.1,99.6 568.6,100.7 610.0,100.6" fill="none" stroke="#2f6fde" stroke-width="2.5" stroke-linejoin="round"/><rect x="30" y="210" width="14" height="3" fill="#2f6fde"/><text x="50" y="215">avec plasticité</text>
 </svg>
