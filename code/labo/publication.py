@@ -35,6 +35,20 @@ AUTHOR = ("Labo IA", "labo-ia@localhost")
 CURVE = "courbe-meilleure-recette.svg"
 NOTABLE = ("Contre-épreuve", "Meilleure recette", "proposée par l'IA", "démarré")
 MIN_EFFECT = 0.05  # meme seuil que labo.neurones : en dessous de 5 points, on ne parle pas d'apprentissage
+# Noms francais des astres ; le tableau des decouvertes ne montre que ceux-la (pas les etoiles de calibration ni le ciel noir).
+BODIES = {
+    "Mercury": "Mercure", "Venus": "Vénus", "Earth": "Terre", "Moon": "Lune", "Mars": "Mars", "Jupiter": "Jupiter",
+    "Saturn": "Saturne", "Uranus": "Uranus", "Neptune": "Neptune", "Pluto": "Pluton", "Charon": "Charon",
+    "Io": "Io", "Europa": "Europe", "Ganymede": "Ganymède", "Callisto": "Callisto", "Amalthea": "Amalthée",
+    "Thebe": "Thébé", "Metis": "Métis", "Adrastea": "Adrastée", "Himalia": "Himalia",
+    "Mimas": "Mimas", "Enceladus": "Encelade", "Tethys": "Téthys", "Dione": "Dioné", "Rhea": "Rhéa",
+    "Titan": "Titan", "Hyperion": "Hypérion", "Iapetus": "Japet", "Phoebe": "Phœbé", "Janus": "Janus",
+    "Epimetheus": "Épiméthée", "Helene": "Hélène", "Telesto": "Télesto", "Calypso": "Calypso", "Pan": "Pan",
+    "Atlas": "Atlas", "Prometheus": "Prométhée", "Pandora": "Pandore",
+    "Miranda": "Miranda", "Ariel": "Ariel", "Umbriel": "Umbriel", "Titania": "Titania", "Oberon": "Obéron",
+    "Puck": "Puck", "Triton": "Triton", "Nereid": "Néréide", "Proteus": "Protée",
+    "Arrokoth": "Arrokoth", "Gaspra": "Gaspra", "Ida": "Ida", "Dactyl": "Dactyle",
+}
 MONTHS = ("janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août",
           "septembre", "octobre", "novembre", "décembre")
 # Erreurs les plus probables, traduites en ce qu'il faut faire.
@@ -303,7 +317,8 @@ def discoveries():
     tops = rows(SONDES_DB, """
         SELECT c.target, c.instrument, i.opus_id, i.small, i.rank, i.time1,
                (SELECT COUNT(*) FROM images j WHERE j.campaign_id = c.id AND j.artifact IS NULL) AS n
-        FROM images i JOIN campaigns c ON c.id = i.campaign_id WHERE i.rank = 1 ORDER BY n DESC LIMIT 10""")
+        FROM images i JOIN campaigns c ON c.id = i.campaign_id WHERE i.rank = 1 ORDER BY n DESC""")
+    tops = [{**t, "target": BODIES[t["target"]]} for t in tops if t["target"] in BODIES][:10]
     if tops:
         out += ["### Sondes Fantômes : les photos les plus bizarres", "",
                 "Pour chaque astre, voici la photo qui ressemble le moins à toutes les autres. Ce sont des **pistes**,"
@@ -328,10 +343,14 @@ def discoveries():
                     f" aux neurones qui apprennent, contre {pts(b['control'])} aux neurones figés. Détails dans"
                     " [les résultats complets](resultats/neurones.md).", ""]
         else:
+            lost = len(checks) - frozen
+            why = [f"{'à chaque fois' if not frozen else f'{lost} fois sur {len(checks)}'}, le progrès a disparu"
+                   if lost else "",
+                   f"{'à chaque fois' if not lost else f'{frozen} fois sur {len(checks)}'}, des neurones figés,"
+                   " incapables d'apprendre, ont progressé tout autant" if frozen else ""]
             out += [f"**Pour l'instant, aucune façon d'entraîner les neurones n'a passé la vérification.** Le labo a"
-                    f" rejoué ses {len(checks)} meilleures recettes sur des neurones neufs. {len(checks) - frozen} fois,"
-                    f" le progrès a disparu. {frozen} fois, des neurones figés, incapables d'apprendre, ont progressé"
-                    " tout autant.", "",
+                    f" rejoué ses {len(checks)} meilleures recettes sur des neurones neufs : "
+                    + " ; ".join(w for w in why if w) + ".", "",
                     "Autrement dit : les beaux scores du début venaient surtout de la chance, pas d'un vrai"
                     " apprentissage. Ce n'est pas un échec : c'est un vrai résultat, qui montre qu'il ne faut pas"
                     " croire un bon score sans le vérifier. Le labo continue de chercher.", ""]
