@@ -11,19 +11,20 @@ Ce dépôt est son carnet de recherche : la présentation ci-dessous, [un rappor
 
 ## Où en est le labo
 
-*Mis à jour automatiquement le 29/10/2026 à 01:17 UTC.*
+*Mis à jour automatiquement le 29/10/2026 à 01:32 UTC.*
 
-| | |
+| Indicateur | Valeur |
 |---|---:|
-| Images d'archives analysées | 33 875 |
+| Images d'archives analysées | 34 875 |
 | Cibles entièrement fouillées | 26 / 185 |
-| Parties de Pong jouées | 210 (56,0 h de culture simulée) |
+| Parties de Pong jouées | 217 (57,9 h de culture simulée) |
 | Recettes d'entraînement testées | 59 |
-| Meilleur progrès | +12 points (recette n°18) |
+| Meilleur progrès (avant contre-épreuve) | +12 points (recette n°18) |
+| Apprentissages confirmés par contre-épreuve | 0 sur 6 |
 
 **Dernières candidates de Sondes Fantômes** (cliquer pour ouvrir la fiche NASA) :
 
-<a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0165025926"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0009/MOON/C0165025926R_small.jpg" width="110" alt="Moon, n°1" title="Moon, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0165061100"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0010/MOON/C0165061100R_small.jpg" width="110" alt="Moon, n°2" title="Moon, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0164408700"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0008/RAW_CAL/C0164408700R_small.jpg" width="110" alt="Jupiter, n°1" title="Jupiter, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0248950200"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0016/SL9/C0248950200R_small.jpg" width="110" alt="Jupiter, n°2" title="Jupiter, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0164378800"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0007/RAW_CAL/C0164378800R_small.jpg" width="110" alt="Black Sky, n°1" title="Black Sky, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059477200"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059477200R_small.jpg" width="110" alt="Black Sky, n°2" title="Black Sky, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0584062201"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0023/G29/GANYMEDE/C0584062201R_small.jpg" width="110" alt="Ganymede, n°1" title="Ganymede, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0389923801"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0018/G7/GANYMEDE/C0389923801R_small.jpg" width="110" alt="Ganymede, n°2" title="Ganymede, n°2"></a>
+<a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061031845"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061031845R_small.jpg" width="110" alt="Earth, n°1" title="Earth, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061019945"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061019945R_small.jpg" width="110" alt="Earth, n°2" title="Earth, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0165025926"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0009/MOON/C0165025926R_small.jpg" width="110" alt="Moon, n°1" title="Moon, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0165061100"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0010/MOON/C0165061100R_small.jpg" width="110" alt="Moon, n°2" title="Moon, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0164408700"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0008/RAW_CAL/C0164408700R_small.jpg" width="110" alt="Jupiter, n°1" title="Jupiter, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0248950200"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0016/SL9/C0248950200R_small.jpg" width="110" alt="Jupiter, n°2" title="Jupiter, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0164378800"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0007/RAW_CAL/C0164378800R_small.jpg" width="110" alt="Black Sky, n°1" title="Black Sky, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059477200"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059477200R_small.jpg" width="110" alt="Black Sky, n°2" title="Black Sky, n°2"></a>
 
 **Meilleure recette (n°18)**, balles renvoyées minute par minute :
 

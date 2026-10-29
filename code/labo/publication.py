@@ -34,6 +34,7 @@ PAUSE = 5.5 * 3600  # minimum entre deux publications reussies (le timer repasse
 AUTHOR = ("Labo IA", "labo-ia@localhost")
 CURVE = "courbe-meilleure-recette.svg"
 NOTABLE = ("Contre-épreuve", "Meilleure recette", "proposée par l'IA", "démarré")
+MIN_EFFECT = 0.05  # meme seuil que labo.neurones : en dessous de 5 points, on ne parle pas d'apprentissage
 MONTHS = ("janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août",
           "septembre", "octobre", "novembre", "décembre")
 # Erreurs les plus probables, traduites en ce qu'il faut faire.
@@ -240,6 +241,19 @@ def curve_svg(recipe_id):
     return "\n".join(out) + "\n"
 
 
+def confirmed(r):
+    """Meme regle que labo.neurones : au moins 5 points avec plasticite, et 5 de plus que sans."""
+    return r["confirmed"] >= MIN_EFFECT and r["confirmed"] - r["control"] >= MIN_EFFECT
+
+
+def control_result(r):
+    if r["control"] is None:
+        return "–"
+    verdict = ("confirmé" if confirmed(r) else
+               "les cultures figées progressent autant" if r["confirmed"] >= MIN_EFFECT else "non reproduit")
+    return f"{pts(r['confirmed'])} avec plasticité, {pts(r['control'])} sans : {verdict}"
+
+
 def recipes_table(recipes):
     lines = ["| n° | Protocole | Réglages | Début → fin | Progrès | Contre-épreuve |",
              "|---:|---|---|---:|---:|---|"]
@@ -249,10 +263,9 @@ def recipes_table(recipes):
         settings = (f"stimulation {v['sens_amp']} µA de {v['rate_min']} à {v['rate_max']} Hz ; "
                     f"retour {v['fb_amp']} µA, {v['fb_seconds']} s à {v['fb_rate']} Hz, salve de {v['hit_pulses']} ; "
                     f"raquette ×{v['gain']} ; STDP {v['stdp_tau']} ms ; homéostasie {v['target_hz']} Hz")
-        check = (f"{pts(r['confirmed'])} avec plasticité, {pts(r['control'])} sans"
-                 if r["control"] is not None else "–")
         lines.append(f"| {r['id']} | {cell(FEEDBACK_MODES.get(p['mode'], p['mode']))}<br>*{cell(r['origin'])}* "
-                     f"| {settings} | {pct(r['early'])} → {pct(r['late'])} | **{pts(r['learning'])}** | {check} |")
+                     f"| {settings} | {pct(r['early'])} → {pct(r['late'])} | **{pts(r['learning'])}** "
+                     f"| {control_result(r)} |")
     return "\n".join(lines)
 
 
@@ -267,7 +280,7 @@ def state(now, today, has_curve):
     lines = [
         "## Où en est le labo", "",
         f"*Mis à jour automatiquement le {utc(now)}.*", "",
-        "| | |", "|---|---:|",
+        "| Indicateur | Valeur |", "|---|---:|",
         f"| Images d'archives analysées | {num(scalar(SONDES_DB, 'SELECT COUNT(*) FROM images'))} |",
         f"| Cibles entièrement fouillées | {scalar(SONDES_DB, 'SELECT SUM(done) FROM campaigns')}"
         f" / {scalar(SONDES_DB, 'SELECT COUNT(*) FROM campaigns')} |",
@@ -276,7 +289,11 @@ def state(now, today, has_curve):
         f"| Recettes d'entraînement testées | {num(scalar(NEURO_DB, 'SELECT COUNT(*) FROM recipes WHERE learning IS NOT NULL'))} |",
     ]
     if best:
-        lines.append(f"| Meilleur progrès | {pts(best['learning'])} points (recette n°{best['id']}) |")
+        lines.append(f"| Meilleur progrès (avant contre-épreuve) | {pts(best['learning'])} points"
+                     f" (recette n°{best['id']}) |")
+    checks = rows(NEURO_DB, "SELECT * FROM recipes WHERE control IS NOT NULL")
+    if checks:
+        lines.append(f"| Apprentissages confirmés par contre-épreuve | {sum(map(confirmed, checks))} sur {len(checks)} |")
     latest = rows(SONDES_DB, """
         SELECT i.opus_id, i.small, i.rank, c.target FROM images i JOIN campaigns c ON c.id = i.campaign_id
         WHERE i.rank <= 2 ORDER BY c.scored_at DESC, c.id, i.rank LIMIT 8""")
@@ -324,8 +341,14 @@ def report(now, number):
         f" simulée), **{num(scalar(NEURO_DB, 'SELECT COUNT(*) FROM sessions'))}** au total.",
         f"- **{len(tested)}** recettes d'entraînement testées aujourd'hui."]
     if best:
-        out.append(f"- Meilleure recette à ce jour : **n°{best['id']}**, {pts(best['learning'])} points"
-                   f" ({pct(best['early'])} de balles renvoyées au début, {pct(best['late'])} à la fin).")
+        line = (f"- Meilleure recette à ce jour : **n°{best['id']}**, {pts(best['learning'])} points"
+                f" ({pct(best['early'])} de balles renvoyées au début, {pct(best['late'])} à la fin)")
+        if best["control"] is not None:
+            line += f". Contre-épreuve : {control_result(best)}"
+        out.append(line + ".")
+    checks = rows(NEURO_DB, "SELECT * FROM recipes WHERE control IS NOT NULL")
+    if checks:
+        out.append(f"- Apprentissages confirmés par contre-épreuve : **{sum(map(confirmed, checks))} sur {len(checks)}**.")
     out.append("")
     if tested:
         out += ["### Meilleures recettes du jour", "", recipes_table(tested[:5]), ""]
@@ -414,7 +437,7 @@ def main():
         log.info("depot trouve grace a la cle de deploiement : %s", url)
     now = time.time()
     last = json.loads(PUBLICATION_STATUS.read_text()) if PUBLICATION_STATUS.exists() else {}
-    if last.get("ok") and now - last["t"] < PAUSE:
+    if last.get("ok") and now - last["t"] < PAUSE and "--maintenant" not in sys.argv:
         return
     page = "https://github.com/" + url.split(":", 1)[1].removesuffix(".git")
     try:

@@ -1,6 +1,6 @@
 # Sondes Fantômes : toutes les cibles classées
 
-*Mis à jour le 29/10/2026 à 01:17 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
+*Mis à jour le 29/10/2026 à 01:32 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
 
 ## Enceladus (Cassini ISS)
 
@@ -137,6 +137,23 @@
 | 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059866000"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059866000R_small.jpg" width="90" alt="Del Psc, n°8" title="Del Psc, n°8"></a> | 1990-11-30 | 0.750 | – |
 | 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059866600"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059866600R_small.jpg" width="90" alt="Del Psc, n°9" title="Del Psc, n°9"></a> | 1990-11-30 | 0.750 | – |
 | 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059866945"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059866945R_small.jpg" width="90" alt="Del Psc, n°10" title="Del Psc, n°10"></a> | 1990-11-30 | 0.738 | – |
+
+## Earth (Galileo SSI)
+
+1 800 images analysées, dont 7 écartées comme ratées ; fouille en cours. Classement du 29/10/2026 à 01:19 UTC.
+
+| Rang | Image | Date | Score | Description par l'IA locale |
+|---:|---|---|---:|---|
+| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061031845"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061031845R_small.jpg" width="90" alt="Earth, n°1" title="Earth, n°1"></a> | 1990-12-08 | 0.995 | – |
+| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061019945"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061019945R_small.jpg" width="90" alt="Earth, n°2" title="Earth, n°2"></a> | 1990-12-08 | 0.993 | – |
+| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061019645"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061019645R_small.jpg" width="90" alt="Earth, n°3" title="Earth, n°3"></a> | 1990-12-08 | 0.992 | – |
+| 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061024900"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061024900R_small.jpg" width="90" alt="Earth, n°4" title="Earth, n°4"></a> | 1990-12-08 | 0.991 | – |
+| 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061035145"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061035145R_small.jpg" width="90" alt="Earth, n°5" title="Earth, n°5"></a> | 1990-12-08 | 0.988 | – |
+| 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061019745"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061019745R_small.jpg" width="90" alt="Earth, n°6" title="Earth, n°6"></a> | 1990-12-08 | 0.988 | – |
+| 7 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061057800"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061057800R_small.jpg" width="90" alt="Earth, n°7" title="Earth, n°7"></a> | 1990-12-09 | 0.985 | – |
+| 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061025100"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061025100R_small.jpg" width="90" alt="Earth, n°8" title="Earth, n°8"></a> | 1990-12-08 | 0.982 | – |
+| 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061025600"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061025600R_small.jpg" width="90" alt="Earth, n°9" title="Earth, n°9"></a> | 1990-12-08 | 0.977 | – |
+| 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061037045"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/EARTH/C0061037045R_small.jpg" width="90" alt="Earth, n°10" title="Earth, n°10"></a> | 1990-12-08 | 0.974 | – |
 
 ## Europa (Galileo SSI)
 
