@@ -30,6 +30,8 @@ POLITE_DELAY = 0.5   # pause entre deux telechargements, pour menager les serveu
 TOP_N = 10           # candidates gardees (et decrites) par groupe
 MIN_GROUP = 30       # en dessous, pas assez d'images pour savoir ce qui est "normal"
 KNN_REF_MAX = 20000  # echantillon de reference pour les tres gros groupes
+FILTER_VERSION = 2   # a augmenter quand le filtre d'images ratees change : les candidates y repasseront
+FILL_GRAY = 105      # valeur des zones sans donnees dans les apercus OPUS
 # Images techniques (calibration, poses dans le noir...) : leurs "anomalies" sont des defauts d'instrument.
 SKIP_TARGET_WORDS = ("calibration", "dark", "plaque", "flat", "bias", "none", "unknown")
 
@@ -44,7 +46,7 @@ CREATE TABLE IF NOT EXISTS campaigns (
     UNIQUE(instrument, target));
 CREATE TABLE IF NOT EXISTS images (
     opus_id TEXT PRIMARY KEY, campaign_id INTEGER, time1 TEXT, small TEXT,
-    emb BLOB, artifact TEXT, score REAL, rank INTEGER, added_at REAL);
+    emb BLOB, artifact TEXT, score REAL, rank INTEGER, added_at REAL, filtre INTEGER);
 CREATE INDEX IF NOT EXISTS images_campaign ON images(campaign_id, rank);
 CREATE TABLE IF NOT EXISTS descriptions (opus_id TEXT PRIMARY KEY, text TEXT, created_at REAL);
 CREATE TABLE IF NOT EXISTS journal (t REAL, msg TEXT);
@@ -68,6 +70,30 @@ class Embedder:
         return v / (np.linalg.norm(v) + 1e-8)
 
 
+def runs(mask):
+    """Debut et fin de chaque suite de True."""
+    edges = np.flatnonzero(np.diff(np.concatenate(([0], mask.astype(np.int8), [0]))))
+    return zip(edges[::2], edges[1::2])
+
+
+def missing_data(gray):
+    """Part de l'image sans donnees : marges grises des apercus OPUS, ou lignes perdues (bandes noires).
+
+    Une bande noire n'est une perte de donnees que si elle coupe l'image net : claire juste
+    au-dessus et juste au-dessous, sur les memes colonnes. Le ciel noir autour d'un astre, lui,
+    a des bords courbes.
+    """
+    rs, cs = gray.std(axis=1), gray.std(axis=0)
+    fill = max(((rs < 1.5) & (np.abs(gray.mean(axis=1) - FILL_GRAY) <= 2)).mean(),
+               ((cs < 1.5) & (np.abs(gray.mean(axis=0) - FILL_GRAY) <= 2)).mean())
+    lost = 0
+    for a, b in runs((rs < 1.5) & (gray.mean(axis=1) < 2)):
+        sides = [np.median(s, axis=0) >= 8 for s in (gray[max(a - 4, 0):a], gray[b:b + 4]) if len(s)]
+        if (len(sides) == 2 and (sides[0] & sides[1]).mean() >= 0.3) or (len(sides) == 1 and sides[0].mean() >= 0.5):
+            lost += b - a
+    return max(fill, lost / len(gray))
+
+
 def artifact_reason(gray):
     """Ecarte les images ratees, qui sont 'bizarres' sans etre interessantes."""
     if gray.std() < 3:
@@ -76,6 +102,8 @@ def artifact_reason(gray):
         return "image presque noire"
     if (gray > 250).mean() > 0.5:
         return "image saturee"
+    if missing_data(gray) >= 0.04:
+        return "image incomplete"
     # Ecart moyen entre pixels voisins rapporte au contraste : ~0.1 pour une vraie scene,
     # ~1 pour du bruit pur. Seuil volontairement haut pour garder les images bruitees mais structurees.
     fine = (np.abs(np.diff(gray, axis=0)).mean() + np.abs(np.diff(gray, axis=1)).mean()) / 2
@@ -108,6 +136,14 @@ def fetch_preview(preview, opus_id):
     return dest
 
 
+def download(small):
+    r = HTTP.get(OPUS_PREVIEWS + small, timeout=60)
+    r.raise_for_status()
+    img = Image.open(io.BytesIO(r.content))
+    img.load()
+    return img
+
+
 def process_page(con, embed, camp, items, times):
     added = 0
     for it in items:
@@ -115,19 +151,16 @@ def process_page(con, embed, camp, items, times):
         if not small or con.execute("SELECT 1 FROM images WHERE opus_id=?", (oid,)).fetchone():
             continue
         try:
-            r = HTTP.get(OPUS_PREVIEWS + small, timeout=60)
-            r.raise_for_status()
-            img = Image.open(io.BytesIO(r.content))
-            img.load()
+            img = download(small)
         except (requests.RequestException, OSError) as e:
             log.warning("image %s ignoree : %s", oid, e)
             continue
         gray = np.asarray(img.convert("L"), dtype=np.float32)
         con.execute(
-            "INSERT INTO images(opus_id, campaign_id, time1, small, emb, artifact, added_at)"
-            " VALUES (?,?,?,?,?,?,?)",
+            "INSERT INTO images(opus_id, campaign_id, time1, small, emb, artifact, filtre, added_at)"
+            " VALUES (?,?,?,?,?,?,?,?)",
             (oid, camp["id"], times.get(oid), small, embed(img).tobytes(),
-             artifact_reason(gray), time.time()))
+             artifact_reason(gray), FILTER_VERSION, time.time()))
         added += 1
         time.sleep(POLITE_DELAY)
     con.commit()
@@ -138,15 +171,20 @@ def pct_rank(a):
     return a.argsort().argsort() / max(len(a) - 1, 1)
 
 
-def score_campaign(con, camp):
-    """Classe les images du groupe de la plus ordinaire a la plus isolee."""
-    rows = con.execute("SELECT opus_id, emb FROM images WHERE campaign_id=? AND artifact IS NULL",
-                       (camp["id"],)).fetchall()
-    con.execute("UPDATE campaigns SET since_score=0, scored_at=? WHERE id=?", (time.time(), camp["id"]))
-    con.commit()
-    if len(rows) < MIN_GROUP:
-        return []
-    X = np.stack([np.frombuffer(r["emb"], dtype=np.float32) for r in rows])
+def recheck(con, r):
+    """Repasse une image au filtre actuel ; renvoie True si elle est ratee."""
+    try:
+        reason = artifact_reason(np.asarray(download(r["small"]).convert("L"), dtype=np.float32))
+    except (requests.RequestException, OSError) as e:
+        log.warning("image %s non reverifiee : %s", r["opus_id"], e)
+        return False
+    time.sleep(POLITE_DELAY)
+    con.execute("UPDATE images SET artifact=?, filtre=? WHERE opus_id=?", (reason, FILTER_VERSION, r["opus_id"]))
+    return reason is not None
+
+
+def isolation(X):
+    """Isolement de chaque image : distance a ses plus proches voisines et Isolation Forest, combines."""
     rng = np.random.default_rng(0)
     ref = X if len(X) <= KNN_REF_MAX else X[rng.choice(len(X), KNN_REF_MAX, replace=False)]
     k = min(10, len(ref) - 1)
@@ -155,13 +193,55 @@ def score_campaign(con, camp):
     knn = np.where(dist[:, 0] < 1e-6, dist[:, 1:].mean(axis=1), dist[:, :k].mean(axis=1))
     Xp = PCA(n_components=min(32, len(X) - 1), random_state=0).fit_transform(X)
     iso = -IsolationForest(n_estimators=200, random_state=0).fit(Xp).score_samples(Xp)
-    score = (pct_rank(knn) + pct_rank(iso)) / 2
-    order = np.argsort(-score)
-    con.execute("UPDATE images SET score=NULL, rank=NULL WHERE campaign_id=?", (camp["id"],))
+    return (pct_rank(knn) + pct_rank(iso)) / 2
+
+
+def score_campaign(con, camp, touch=True):
+    """Classe les images du groupe de la plus ordinaire a la plus isolee."""
+    if touch:
+        con.execute("UPDATE campaigns SET since_score=0, scored_at=? WHERE id=?", (time.time(), camp["id"]))
+        con.commit()
+    while True:
+        rows = con.execute("SELECT opus_id, emb, small, filtre FROM images WHERE campaign_id=? AND artifact IS NULL",
+                           (camp["id"],)).fetchall()
+        con.execute("UPDATE images SET score=NULL, rank=NULL WHERE campaign_id=?", (camp["id"],))
+        if len(rows) < MIN_GROUP:
+            con.commit()
+            return []
+        score = isolation(np.stack([np.frombuffer(r["emb"], dtype=np.float32) for r in rows]))
+        order = np.argsort(-score)
+        # Les meilleures candidates analysees avec un ancien filtre y repassent. S'il en tombe, on
+        # reclasse sans elles, pour que "l'ordinaire" ne soit pas mesure avec des images ratees.
+        stale = [rows[i] for i in order[:TOP_N] if (rows[i]["filtre"] or 0) < FILTER_VERSION]
+        if not sum(recheck(con, r) for r in stale):
+            break
     con.executemany("UPDATE images SET score=?, rank=? WHERE opus_id=?",
                     [(float(score[i]), pos + 1, rows[i]["opus_id"]) for pos, i in enumerate(order)])
     con.commit()
     return [rows[i]["opus_id"] for i in order[:TOP_N]]
+
+
+def reclassify(con):
+    """Apres un changement de filtre, repasse les candidates des cibles deja classees."""
+    camps = con.execute("""SELECT DISTINCT c.* FROM campaigns c JOIN images i ON i.campaign_id = c.id
+                           WHERE i.rank <= ? AND COALESCE(i.filtre, 0) < ?""", (TOP_N, FILTER_VERSION)).fetchall()
+    if not camps:
+        return
+    count = "SELECT COUNT(*) FROM images WHERE artifact IS NOT NULL"
+    before = con.execute(count).fetchone()[0]
+    for camp in camps:
+        score_campaign(con, camp, touch=False)
+    removed = con.execute(count).fetchone()[0] - before
+    db.journal(con, log, f"Filtre des images incomplètes : {len(camps)} cibles reclassées,"
+                         f" {removed} candidates écartées.")
+
+
+def connect():
+    con = db.connect(SONDES_DB)
+    con.executescript(SCHEMA)
+    if "filtre" not in [c[1] for c in con.execute("PRAGMA table_info(images)")]:
+        con.execute("ALTER TABLE images ADD COLUMN filtre INTEGER")
+    return con
 
 
 def describe_pending(con, limit=1):
@@ -242,13 +322,13 @@ def run_once(con, embed):
 def main():
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
     IMG_DIR.mkdir(parents=True, exist_ok=True)
-    con = db.connect(SONDES_DB)
-    con.executescript(SCHEMA)
+    con = connect()
     for inst, target in CAMPAIGNS:
         con.execute("INSERT OR IGNORE INTO campaigns(instrument, target) VALUES (?,?)", (inst, target))
     con.commit()
     embed = Embedder()
     db.journal(con, log, "Mission Sondes Fantômes démarrée.")
+    reclassify(con)
     while True:
         try:
             run_once(con, embed)
