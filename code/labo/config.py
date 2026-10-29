@@ -25,12 +25,14 @@ CAMPAIGNS = [
     ("New Horizons LORRI", "Arrokoth"),
 ]
 
-# Nom de la sonde de chaque camera, donne a l'IA pour qu'elle n'en invente pas.
-PROBES = {"Galileo SSI": "sonde Galileo (en orbite autour de Jupiter de 1995 a 2003)",
-          "Voyager ISS": "sondes Voyager 1 et 2 (survols de 1979 a 1989)",
-          "Cassini ISS": "sonde Cassini (en orbite autour de Saturne de 2004 a 2017)",
-          "New Horizons LORRI": "sonde New Horizons (Pluton en 2015, Arrokoth en 2019)",
-          "New Horizons MVIC": "sonde New Horizons (Pluton en 2015, Arrokoth en 2019)"}
+# Engin qui porte chaque camera (« la camera X de ... »), donne a l'IA pour qu'elle n'en invente pas.
+HUBBLE = "du télescope spatial Hubble (en orbite autour de la Terre depuis 1990)"
+PROBES = {"Galileo SSI": "de la sonde Galileo (en orbite autour de Jupiter de 1995 à 2003)",
+          "Voyager ISS": "des sondes Voyager 1 et 2 (survols de 1979 à 1989)",
+          "Cassini ISS": "de la sonde Cassini (en orbite autour de Saturne de 2004 à 2017)",
+          "New Horizons LORRI": "de la sonde New Horizons (Pluton en 2015, Arrokoth en 2019)",
+          "New Horizons MVIC": "de la sonde New Horizons (Pluton en 2015, Arrokoth en 2019)",
+          "Hubble ACS": HUBBLE, "Hubble WFPC2": HUBBLE, "Hubble WFC3": HUBBLE, "Hubble NICMOS": HUBBLE}
 
 # Ce que disent les photos prises juste avant et apres une piste (voir labo.sondes.sequence).
 SEQUENCE_TEXT = {
@@ -43,13 +45,18 @@ SEQUENCE_TEXT = {
 }
 
 # Une fois les campagnes de depart finies, la fouille s'etend a toutes les cibles
-# de ces cameras (environ 560 000 images au total).
+# de ces cameras (environ 560 000 images au total), puis aux photos des planetes prises par Hubble
+# (environ 20 000 de plus). Les spectrometres (VIMS, UVIS...) ne donnent pas de vraies photos : pas fouilles.
 IMAGING_INSTRUMENTS = [
     "Galileo SSI",
     "Voyager ISS",
     "New Horizons LORRI",
     "New Horizons MVIC",
     "Cassini ISS",
+    "Hubble WFPC2",
+    "Hubble ACS",
+    "Hubble WFC3",
+    "Hubble NICMOS",
 ]
 
 # Mission 2 : facons de signaler a la culture qu'elle a rate la balle.
@@ -58,6 +65,10 @@ FEEDBACK_MODES = {
     "silent": "silence après une balle ratée",
     "none": "aucun retour",
 }
+# Taille de la culture (20 000 = ce que le processeur tient encore un peu plus vite que le temps reel).
+# Chaque recette garde la taille sur laquelle elle a ete jouee : seules celles de la taille actuelle
+# se comparent entre elles, les anciennes restent en archive.
+CULTURE_SIZE = 20000
 
 # Publication des recherches sur GitHub (voir labo.publication).
 PUBLICATION_SETTINGS = DATA / "publication.json"

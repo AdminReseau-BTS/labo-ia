@@ -6,7 +6,7 @@ import time
 from flask import Flask, abort, jsonify, redirect, render_template_string, request
 
 from . import direct, vpn
-from .config import (DEPLOY_KEY, FEEDBACK_MODES, NEURO_DB, OPUS_DETAIL, OPUS_PREVIEWS, PUBLICATION_STATUS,
+from .config import (CULTURE_SIZE, DEPLOY_KEY, FEEDBACK_MODES, NEURO_DB, OPUS_DETAIL, OPUS_PREVIEWS, PUBLICATION_STATUS,
                      SONDES_DB, VEILLE_DB)
 from .db import connect, rows, scalar
 
@@ -92,7 +92,8 @@ def index():
         "recipes": scalar(NEURO_DB, "SELECT COUNT(*) FROM recipes WHERE learning IS NOT NULL"),
     }
     recipes = []
-    for r in rows(NEURO_DB, "SELECT * FROM recipes WHERE learning IS NOT NULL ORDER BY learning DESC LIMIT 8"):
+    for r in rows(NEURO_DB, "SELECT * FROM recipes WHERE learning IS NOT NULL AND neurons=?"
+                            " ORDER BY learning DESC LIMIT 8", (CULTURE_SIZE,)):
         p = json.loads(r["params"])
         recipes.append({**dict(r), "mode": FEEDBACK_MODES.get(p["mode"], p["mode"]), "p": p})
     best_chart = None
@@ -314,7 +315,7 @@ PAGE = """<!doctype html>
     <div class="stat"><b>{{ sondes.images }}</b><span>images analysées</span></div>
     <div class="stat"><b>{{ sondes.last_hour }}</b><span>dans la dernière heure</span></div>
     <div class="stat"><b>{{ sondes.done }}/{{ sondes.total }}</b><span>cibles terminées</span></div>
-    <div class="stat"><b>{{ sondes.described }}</b><span>candidates décrites par l'IA</span></div>
+    <div class="stat"><b>{{ sondes.described }}</b><span>pistes examinées par l'IA</span></div>
   </div>
   {% if sondes.current %}
   <p class="note">En cours : {{ sondes.current.target }} ({{ sondes.current.instrument }}),
@@ -357,8 +358,9 @@ PAGE = """<!doctype html>
 
 <section>
   <h2>Labo de neurones</h2>
-  <p class="sub">Une culture de 1000 neurones simulés, branchée sur le SDK officiel de Cortical Labs,
-  apprend à jouer à Pong. Le labo invente des protocoles d'entraînement, les teste et garde les meilleurs.</p>
+  <p class="sub">Une culture de 20 000 neurones simulés, branchée sur le SDK officiel de Cortical Labs,
+  apprend à jouer à Pong. Le labo invente des protocoles d'entraînement, les teste et garde les meilleurs.
+  Les recettes jouées avant sur 1 000 neurones restent en archive.</p>
   <div class="stats">
     <div class="stat"><b>{{ neuro.sessions }}</b><span>parties jouées</span></div>
     <div class="stat"><b>{{ ("%.1f" if neuro.sim_hours < 10 else "%.0f")|format(neuro.sim_hours)|replace(".", ",") }} h</b><span>de vie de culture simulée</span></div>
@@ -481,6 +483,7 @@ figure.no img { opacity:.45; filter:grayscale(1); }
 <section>
   <h2>Sondes Fantômes</h2>
   <p class="sub" id="s-status">En attente…</p>
+  <p class="sub" id="s-ia"></p>
   <h3>Les dernières photos regardées</h3>
   <div class="grid" id="s-grid"></div>
   <p class="note">Les photos ratées (trop sombres, vides, abîmées pendant la transmission…) sont écartées.
@@ -509,6 +512,7 @@ function showSondes(s, now) {
   if (!s) return;
   const age = now - s.t;
   $("s-status").textContent = (s.status || "") + (age > 900 ? " (pas de nouvelles depuis " + ago(age) + " : voir la page Erreurs)" : "");
+  $("s-ia").textContent = s.ia ? "En parallèle : " + s.ia : "";
   const key = s.recent.length ? s.recent[0].opus_id : "";
   if (key === lastSondes) return;
   lastSondes = key;

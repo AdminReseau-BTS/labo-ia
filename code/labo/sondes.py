@@ -12,6 +12,7 @@ import io
 import json
 import logging
 import statistics
+import threading
 import time
 from collections import Counter, deque
 from datetime import datetime, timedelta
@@ -32,18 +33,34 @@ from .config import (CAMPAIGNS, IMAGING_INSTRUMENTS, IMG_DIR, LOG_FORMAT, OPUS_A
 
 log = logging.getLogger("sondes")
 RECENT = deque(maxlen=18)  # dernieres photos analysees, pour la page « En direct »
+STATE = {"status": None, "target": None, "instrument": None, "ia": None}
+LIVE_LOCK = threading.Lock()  # la fouille et l'IA locale ecrivent toutes deux l'etat en direct
+
+
+def publish_state():
+    with LIVE_LOCK:
+        direct.write("sondes", {**STATE, "recent": list(RECENT)})
 
 
 def show(status, camp=None):
-    """Dit a la page « En direct » ce que fait la mission en ce moment."""
-    direct.write("sondes", {"status": status, "target": camp["target"] if camp else None,
-                            "instrument": camp["instrument"] if camp else None, "recent": list(RECENT)})
+    """Dit a la page « En direct » ce que fait la fouille en ce moment."""
+    STATE.update(status=status, target=camp["target"] if camp else None,
+                 instrument=camp["instrument"] if camp else None)
+    publish_state()
+
+
+def show_ai(text):
+    """Dit a la page « En direct » ce que fait l'IA locale, en parallele de la fouille."""
+    STATE["ia"] = text
+    publish_state()
 
 PAGE = 100
 POLITE_DELAY = 0.5   # pause entre deux telechargements, pour menager les serveurs publics
 TOP_N = 10           # candidates gardees (et decrites) par groupe
+# L'IA examine d'abord le top 10 de chaque astre, puis, quand tout est fait, creuse plus loin dans le classement.
+AI_DEPTHS = (TOP_N, 25, 50)
 MIN_GROUP = 30       # en dessous, pas assez d'images pour savoir ce qui est "normal"
-KNN_REF_MAX = 20000  # echantillon de reference pour les tres gros groupes
+KNN_REF_MAX = 50000  # echantillon de reference pour les tres gros groupes (plus grand = « normal » mieux connu)
 FILTER_VERSION = 3  # a augmenter quand le filtre d'images ratees change : les candidates y repasseront
 FILL_GRAY = 105      # valeur des zones sans donnees dans les apercus OPUS
 # Images techniques (calibration, poses dans le noir...) : leurs "anomalies" sont des defauts d'instrument.
@@ -237,11 +254,12 @@ def process_page(con, embed, camp, items, times):
             "INSERT INTO images(opus_id, campaign_id, time1, small, emb, artifact, filtre, added_at)"
             " VALUES (?,?,?,?,?,?,?,?)",
             (oid, camp["id"], times.get(oid), small, embed(img).tobytes(), reason, FILTER_VERSION, time.time()))
+        con.commit()  # tout de suite : l'IA locale ecrit dans la meme base, en parallele
         added += 1
-        RECENT.appendleft({"opus_id": oid, "small": small, "reason": reason, "time1": times.get(oid)})
+        with LIVE_LOCK:
+            RECENT.appendleft({"opus_id": oid, "small": small, "reason": reason, "time1": times.get(oid)})
         show(f"Analyse des photos de {camp['target']}", camp)
         time.sleep(POLITE_DELAY)
-    con.commit()
     return added
 
 
@@ -283,8 +301,8 @@ def score_campaign(con, camp, touch=True):
     while True:
         rows = con.execute("SELECT opus_id, emb, small, filtre FROM images WHERE campaign_id=? AND artifact IS NULL",
                            (camp["id"],)).fetchall()
-        con.execute("UPDATE images SET score=NULL, rank=NULL WHERE campaign_id=?", (camp["id"],))
         if len(rows) < MIN_GROUP:
+            con.execute("UPDATE images SET score=NULL, rank=NULL WHERE campaign_id=?", (camp["id"],))
             con.commit()
             return []
         score = isolation(np.stack([np.frombuffer(r["emb"], dtype=np.float32) for r in rows]))
@@ -292,8 +310,12 @@ def score_campaign(con, camp, touch=True):
         # Les meilleures candidates analysees avec un ancien filtre y repassent. S'il en tombe, on
         # reclasse sans elles, pour que "l'ordinaire" ne soit pas mesure avec des images ratees.
         stale = [rows[i] for i in order[:TOP_N] if (rows[i]["filtre"] or 0) < FILTER_VERSION]
-        if not sum(recheck(con, r) for r in stale):
+        dropped = sum(recheck(con, r) for r in stale)
+        con.commit()
+        if not dropped:
             break
+    # Ecritures groupees a la fin, une fois le calcul fait : la base n'est bloquee qu'un instant.
+    con.execute("UPDATE images SET score=NULL, rank=NULL WHERE campaign_id=?", (camp["id"],))
     con.executemany("UPDATE images SET score=?, rank=? WHERE opus_id=?",
                     [(float(score[i]), pos + 1, rows[i]["opus_id"]) for pos, i in enumerate(order)])
     con.commit()
@@ -487,7 +509,7 @@ def write_dossier(r, ctx, description):
     """Dossier complet d'une trouvaille : hypotheses pour et contre, contexte, verifications."""
     prompt = (
         f"Tu es planetologue et tu ecris pour le grand public, en francais simple. Une photo de {r['target']} prise par "
-        f"la camera {r['instrument']} de la {PROBES.get(r['instrument'], 'sonde spatiale')} le {r['time1']} a ete "
+        f"la camera {r['instrument']} {PROBES.get(r['instrument'], 'd une sonde spatiale')} le {r['time1']} a ete "
         "reperee comme inhabituelle, puis jugee digne d'un regard humain.\n"
         f"Ce qu'on y voit (description faite en regardant la photo) : {description}\n"
         f"Informations sur la prise de vue :\n{context_text(ctx)}\n\n"
@@ -502,29 +524,37 @@ def write_dossier(r, ctx, description):
     return llm.ask(prompt, schema=DOSSIER_SCHEMA)
 
 
+def pending(con, limit):
+    """Prochaines pistes a examiner : le top 10 de chaque astre d'abord, puis plus loin dans le classement."""
+    for depth in AI_DEPTHS:
+        rows = con.execute(
+            """SELECT i.opus_id, i.time1, i.small, i.rank, i.campaign_id, c.instrument, c.target,
+                      (SELECT COUNT(*) FROM images j WHERE j.campaign_id = i.campaign_id AND j.artifact IS NULL) AS n
+               FROM images i JOIN campaigns c ON c.id = i.campaign_id
+               LEFT JOIN descriptions d ON d.opus_id = i.opus_id
+               WHERE i.rank <= ? AND d.opus_id IS NULL ORDER BY i.rank LIMIT ?""", (depth, limit)).fetchall()
+        if rows:
+            return rows
+    return []
+
+
 def describe_pending(con, limit=1):
-    """Fait examiner par l'IA locale les meilleures candidates pas encore examinees."""
+    """Fait examiner par l'IA locale les meilleures pistes pas encore examinees."""
     if not llm.available():
         return 0
-    rows = con.execute(
-        """SELECT i.opus_id, i.time1, i.small, i.rank, i.campaign_id, c.instrument, c.target,
-                  (SELECT COUNT(*) FROM images j WHERE j.campaign_id = i.campaign_id AND j.artifact IS NULL) AS n
-           FROM images i JOIN campaigns c ON c.id = i.campaign_id
-           LEFT JOIN descriptions d ON d.opus_id = i.opus_id
-           WHERE i.rank <= ? AND d.opus_id IS NULL ORDER BY i.rank LIMIT ?""",
-        (TOP_N, limit)).fetchall()
+    rows = pending(con, limit)
     for r in rows:
-        show(f"Le labo rassemble la fiche NASA d'une photo bizarre de {r['target']}", r)
+        show_ai(f"le labo rassemble la fiche NASA d'une photo bizarre de {r['target']} (n°{r['rank']})")
         ctx = build_context(con, r)
-        show(f"L'IA locale examine une photo bizarre de {r['target']}", r)
+        show_ai(f"l'IA locale examine une photo bizarre de {r['target']} (n°{r['rank']})")
         try:
             path = fetch_preview(r["small"].replace("_small.", "_med."), r["opus_id"])
         except requests.RequestException:
             path = fetch_preview(r["small"], r["opus_id"])
         prompt = (
-            f"Tu es planetologue. Cette image d'archive vient de la camera {r['instrument']} de la "
-            f"{PROBES.get(r['instrument'], 'sonde spatiale')}, cible : {r['target']}, prise le {r['time1']}. "
-            "Ne cite pas d'autre sonde ni d'autre instrument. Un algorithme l'a reperee comme "
+            f"Tu es planetologue. Cette image d'archive vient de la camera {r['instrument']} "
+            f"{PROBES.get(r['instrument'], 'd une sonde spatiale')}, cible : {r['target']}, prise le {r['time1']}. "
+            "Ne cite pas d'autre engin spatial ni d'autre instrument. Un algorithme l'a reperee comme "
             "inhabituelle par rapport aux autres images de cette cible.\n"
             f"Informations officielles sur la prise de vue :\n{context_text(ctx)}\n\n"
             "Dans 'description', en 3 ou 4 phrases simples en francais, comprehensibles par quelqu'un qui n'y connait "
@@ -534,15 +564,23 @@ def describe_pending(con, limit=1):
             "calibration, navigation, bord de la planete, anneaux, etoile, ombre, angle de vue inhabituel), "
             "'interessant' seulement si cela merite vraiment un regard humain. Dans le doute entre 'connu' et "
             "'interessant', choisis 'connu'. N'invente aucun fait.")
-        out = llm.ask(prompt, image_path=path, schema=VERDICT_SCHEMA)
+        try:
+            out = llm.ask(prompt, image_path=path, schema=VERDICT_SCHEMA)
+            description = str(out["description"]).strip()
+        except (ValueError, KeyError):
+            # Reponse illisible : on passe a la suite plutot que de bloquer l'examen sur cette photo.
+            log.warning("reponse illisible de l'IA pour %s, piste mise de cote", r["opus_id"])
+            con.execute("INSERT OR REPLACE INTO descriptions VALUES (?,?,?,?)",
+                        (r["opus_id"], "L'IA du labo n'a pas réussi à examiner cette photo.", time.time(), None))
+            con.commit()
+            continue
         verdict = out["verdict"] if out.get("verdict") in VERDICTS else "connu"
-        description = str(out["description"]).strip()
         if verdict == "interessant" and llm.ask(DEFECT_CHECK, image_path=path, schema=DEFECT_SCHEMA).get("defaut"):
             verdict = "defaut"
         con.execute("INSERT OR REPLACE INTO descriptions VALUES (?,?,?,?)", (r["opus_id"], description, time.time(), verdict))
         con.commit()
         if verdict == "interessant":
-            show(f"L'IA locale écrit le dossier d'une trouvaille sur {r['target']}", r)
+            show_ai(f"l'IA locale écrit le dossier d'une trouvaille sur {r['target']}")
             dossier = write_dossier(r, ctx, description)
             con.execute("INSERT OR REPLACE INTO dossiers VALUES (?,?,?)", (r["opus_id"], json.dumps(dossier), time.time()))
             con.commit()
@@ -551,6 +589,24 @@ def describe_pending(con, limit=1):
             from .veille import notify
             notify(f"Labo IA : {title}", f"{r['target']} : {description}", 3, click=OPUS_DETAIL + r["opus_id"])
     return len(rows)
+
+
+def examine_forever():
+    """L'IA locale examine les pistes une par une, en parallele de la fouille (qui ne l'attend plus)."""
+    con = connect()
+    con.execute("PRAGMA busy_timeout = 600000")  # la fouille peut tenir la base quelques minutes en classant un astre
+    while True:
+        try:
+            if not describe_pending(con):
+                show_ai("l'IA locale attend de nouvelles pistes" if llm.available() else None)
+                time.sleep(300)
+        except (requests.RequestException, OSError) as e:
+            log.warning("IA locale ou archive NASA injoignable (%s), nouvel essai dans 5 min", e)
+            show_ai("IA locale ou archive NASA injoignable : nouvel essai dans 5 minutes")
+            time.sleep(300)
+        except Exception:  # l'examen ne doit jamais s'arreter pour de bon
+            log.exception("examen d'une piste interrompu")
+            time.sleep(300)
 
 
 def discover_campaigns(con):
@@ -572,7 +628,7 @@ def run_once(con, embed):
     if camp is None:
         added = discover_campaigns(con)
         if added:
-            db.journal(con, log, f"Liste de départ terminée : {added} nouvelles cibles ajoutées à la fouille.")
+            db.journal(con, log, f"{added} nouvelles cibles ajoutées à la fouille.")
         else:
             db.journal(con, log, "Toute l'archive d'imagerie est fouillée. Nouvelle vérification dans 24 h.")
             show("Toute l'archive est fouillée : en attente de nouvelles photos (vérification toutes les 24 h)")
@@ -597,19 +653,20 @@ def run_once(con, embed):
             db.journal(con, log, f"{name} : {total} images analysées, candidate n°1 : {top[0]}.{end}")
         elif done:
             db.journal(con, log, f"{name} : seulement {total} images, trop peu pour comparer.{end}")
-    describe_pending(con)
 
 
 def main():
     logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
     IMG_DIR.mkdir(parents=True, exist_ok=True)
     con = connect()
+    con.execute("PRAGMA busy_timeout = 120000")  # l'IA locale ecrit aussi dans la base, en parallele
     for inst, target in CAMPAIGNS:
         con.execute("INSERT OR IGNORE INTO campaigns(instrument, target) VALUES (?,?)", (inst, target))
     con.commit()
     embed = Embedder()
     db.journal(con, log, "Mission Sondes Fantômes démarrée.")
     reclassify(con)
+    threading.Thread(target=examine_forever, name="examen", daemon=True).start()
     while True:
         try:
             run_once(con, embed)

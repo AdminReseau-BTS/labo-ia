@@ -1,6 +1,6 @@
 """Mission 2 - Labo de neurones simules.
 
-Le labo cherche, jour et nuit, comment apprendre Pong a une culture de 1000
+Le labo cherche, jour et nuit, comment apprendre Pong a une culture de 20 000
 neurones virtuels (labo.culture), sur le modele de l'experience DishBrain de
 Cortical Labs (Kagan et al., Neuron 2022) faite avec de vrais neurones.
 
@@ -17,6 +17,7 @@ import logging
 import os
 import time
 from collections import deque
+from pathlib import Path
 
 import numpy as np
 import requests
@@ -25,11 +26,29 @@ os.environ.setdefault("CL_SDK_ACCELERATED_TIME", "1")  # aussi vite que le proce
 os.environ.setdefault("CL_SDK_VISUALISATION", "0")
 import cl  # noqa: E402
 from cl import BurstDesign, ChannelSet, StimDesign  # noqa: E402
+from cl._sim import _data_buffer  # noqa: E402
 
 from . import culture, db, direct, llm  # noqa: E402
-from .config import FEEDBACK_MODES, LOG_FORMAT, NEURO_DB  # noqa: E402
+from .config import CULTURE_SIZE, FEEDBACK_MODES, LOG_FORMAT, NEURO_DB  # noqa: E402
 
 log = logging.getLogger("neurones")
+
+# En temps accelere, la boucle de cl-sdk n'attend que 0,1 s le processus qui calcule les neurones, puis
+# abandonne la partie. Sur un serveur partage (IA locale, autres machines de l'hote), une simple pause du
+# systeme suffit. On attend comme le reste du SDK (30 s) : le calcul est le meme, seule la patience change.
+PRODUCER_GRACE_S = 30.0
+_wait_for_timestamp = _data_buffer.SharedDataBuffer.wait_for_timestamp
+
+
+def _patient_wait(self, target_timestamp, timeout_seconds=None):
+    if timeout_seconds is not None:
+        timeout_seconds = max(timeout_seconds, PRODUCER_GRACE_S)
+    return _wait_for_timestamp(self, target_timestamp, timeout_seconds)
+
+
+_data_buffer.SharedDataBuffer.wait_for_timestamp = _patient_wait
+
+CULTURE_FILE = Path("/dev/shm") / f"labo-culture-{os.getpid()}.pkl"  # culture construite d'avance, en RAM
 
 TICKS_PER_SECOND = 100
 WARMUP_S = 60         # la culture vit seule une minute avant la partie
@@ -40,7 +59,7 @@ CONFIRM_EVERY = 10    # une contre-epreuve toutes les 10 recettes
 MIN_EFFECT = 0.05     # en dessous de 5 points, on ne parle pas d'apprentissage
 FRAME_TICKS = 5       # page « En direct » : une image de la partie toutes les 50 ms simulees...
 CLIP_FRAMES = 200     # ... soit les 10 dernieres secondes de jeu
-LIVE_EVERY = 1.5      # ... envoyees toutes les 1,5 s (la simulation va ~6 fois plus vite que le temps reel)
+LIVE_EVERY = 1.5      # ... envoyees toutes les 1,5 s (a 20 000 neurones, la simulation va a peu pres en temps reel)
 
 # Disposition sur la puce (canal = ligne * 8 + colonne), inspiree de DishBrain :
 # 8 electrodes sensorielles au centre, zones motrices "haut" et "bas" en diagonale.
@@ -68,7 +87,7 @@ DISHBRAIN = {"mode": "fep", "sens_amp": 1.0, "fb_amp": 1.0, "fb_seconds": 4.0, "
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS recipes (
     id INTEGER PRIMARY KEY, params TEXT, origin TEXT, created_at REAL,
-    early REAL, late REAL, learning REAL, hit_rate REAL, confirmed REAL, control REAL);
+    early REAL, late REAL, learning REAL, hit_rate REAL, confirmed REAL, control REAL, neurons INTEGER);
 CREATE TABLE IF NOT EXISTS sessions (
     id INTEGER PRIMARY KEY, recipe_id INTEGER, seed INTEGER, plastic INTEGER, t REAL,
     sim_s REAL, wall REAL, hits INTEGER, misses INTEGER, early REAL, late REAL,
@@ -212,17 +231,20 @@ class Pong:
 
 
 def run_session(recipe, seed, plastic, info=None):
-    cl.sim.set_simulator_data_source(
-        "labo.culture:create_source",
-        config={"seed": int(seed), "plastic": bool(plastic),
-                "stdp_tau_ms": float(recipe["stdp_tau"]), "target_hz": float(recipe["target_hz"])},
-        metadata=culture.METADATA)
-    game = Pong(recipe, np.random.default_rng(seed), info)
+    config = {"seed": int(seed), "plastic": bool(plastic), "n": CULTURE_SIZE,
+              "stdp_tau_ms": float(recipe["stdp_tau"]), "target_hz": float(recipe["target_hz"])}
     start = time.time()
+    culture.prepare(CULTURE_FILE, **config)
+    cl.sim.set_simulator_data_source("labo.culture:create_source", config={**config, "path": str(CULTURE_FILE)},
+                                     metadata=culture.METADATA)
+    game = Pong(recipe, np.random.default_rng(seed), info)
     sim_s = WARMUP_S + GAME_MIN * 60
-    with cl.open(wait_until_recordable=False) as neurons:
-        for tick in neurons.loop(TICKS_PER_SECOND, stop_after_seconds=sim_s, ignore_jitter=True):
-            game.tick(neurons, tick.iteration / TICKS_PER_SECOND - WARMUP_S, tick.analysis.spikes)
+    try:
+        with cl.open(wait_until_recordable=False) as neurons:
+            for tick in neurons.loop(TICKS_PER_SECOND, stop_after_seconds=sim_s, ignore_jitter=True):
+                game.tick(neurons, tick.iteration / TICKS_PER_SECOND - WARMUP_S, tick.analysis.spikes)
+    finally:
+        CULTURE_FILE.unlink(missing_ok=True)
     gc.collect()
     return {**game.result(), "sim_s": sim_s, "wall": time.time() - start}
 
@@ -231,7 +253,14 @@ def play(con, recipe_id, recipe, seed, plastic, what="Test"):
     info = {"what": f"{what} de la recette n°{recipe_id}", "recipe": describe(recipe),
             "seed": int(seed), "plastic": bool(plastic)}
     try:
-        res = run_session(recipe, seed, plastic, info)
+        try:
+            res = run_session(recipe, seed, plastic, info)
+        except TimeoutError:
+            # Le simulateur abandonne s'il prend trop de retard quand le processeur est tres occupe
+            # (IA locale, autre mission) : on rejoue la meme session une fois, apres une pause.
+            log.warning("simulateur en retard (recette %s, culture %s) : session rejouée", recipe_id, seed)
+            time.sleep(60)
+            res = run_session(recipe, seed, plastic, info)
     except Exception:  # le labo tourne 24 h/24 : une session ratee ne doit pas l'arreter
         log.exception("session interrompue (recette %s, culture %s)", recipe_id, seed)
         time.sleep(30)
@@ -277,7 +306,7 @@ def mutate(parent, rng):
 def ask_llm(rows):
     lines = [f"- n°{r['id']} : {r['params']} -> {r['learning'] * 100:+.0f} points" for r in rows[:12]]
     prompt = (
-        "Tu diriges un labo qui essaie d'apprendre Pong a une culture de 1000 neurones simules "
+        f"Tu diriges un labo qui essaie d'apprendre Pong a une culture de {CULTURE_SIZE} neurones simules "
         "(comme l'experience DishBrain). Voici les meilleures recettes deja testees, avec le gain "
         "de balles renvoyees entre le debut et la fin de la partie :\n" + "\n".join(lines) +
         f"\nBornes des parametres : {json.dumps(SPACE)}. Modes : {json.dumps(FEEDBACK_MODES, ensure_ascii=False)}."
@@ -288,8 +317,8 @@ def ask_llm(rows):
 
 
 def propose(con, rng):
-    rows = con.execute("SELECT id, params, learning FROM recipes WHERE learning IS NOT NULL"
-                       " ORDER BY learning DESC").fetchall()
+    rows = con.execute("SELECT id, params, learning FROM recipes WHERE learning IS NOT NULL AND neurons=?"
+                       " ORDER BY learning DESC", (CULTURE_SIZE,)).fetchall()
     if not rows:
         return dict(DISHBRAIN), "protocole DishBrain"
     if len(rows) % 5 == 4 and llm.available():
@@ -309,8 +338,8 @@ def mean_learning(results):
 
 
 def evaluate(con, recipe, origin):
-    rid = con.execute("INSERT INTO recipes(params, origin, created_at) VALUES (?,?,?)",
-                      (json.dumps(recipe), origin, time.time())).lastrowid
+    rid = con.execute("INSERT INTO recipes(params, origin, created_at, neurons) VALUES (?,?,?,?)",
+                      (json.dumps(recipe), origin, time.time(), CULTURE_SIZE)).lastrowid
     con.commit()
     results = [r for r in (play(con, rid, recipe, s, True) for s in SEARCH_SEEDS) if r]
     if not results:
@@ -320,7 +349,7 @@ def evaluate(con, recipe, origin):
     late = float(np.mean([r["late"] for r in results]))
     hits = sum(r["hits"] for r in results)
     total = hits + sum(r["misses"] for r in results)
-    best = con.execute("SELECT MAX(learning) FROM recipes").fetchone()[0]
+    best = con.execute("SELECT MAX(learning) FROM recipes WHERE neurons=?", (CULTURE_SIZE,)).fetchone()[0]
     con.execute("UPDATE recipes SET early=?, late=?, learning=?, hit_rate=? WHERE id=?",
                 (early, late, late - early, hits / total if total else 0.0, rid))
     con.commit()
@@ -334,8 +363,8 @@ def evaluate(con, recipe, origin):
 
 def confirm_best(con):
     """Rejoue la meilleure recette sur des cultures neuves, avec et sans plasticite."""
-    row = con.execute("SELECT * FROM recipes WHERE learning IS NOT NULL AND control IS NULL"
-                      " ORDER BY learning DESC LIMIT 1").fetchone()
+    row = con.execute("SELECT * FROM recipes WHERE learning IS NOT NULL AND control IS NULL AND neurons=?"
+                      " ORDER BY learning DESC LIMIT 1", (CULTURE_SIZE,)).fetchone()
     if row is None or row["learning"] < MIN_EFFECT:
         return
     recipe = json.loads(row["params"])
@@ -361,8 +390,12 @@ def main():
     logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
     con = db.connect(NEURO_DB)
     con.executescript(SCHEMA)
+    if "neurons" not in {c[1] for c in con.execute("PRAGMA table_info(recipes)")}:
+        # Les recettes d'avant la taille reglable ont toutes ete jouees sur 1 000 neurones.
+        con.execute("ALTER TABLE recipes ADD COLUMN neurons INTEGER DEFAULT 1000")
+        con.commit()
     rng = np.random.default_rng()
-    db.journal(con, log, "Labo de neurones démarré.")
+    db.journal(con, log, f"Labo de neurones démarré ({CULTURE_SIZE:,} neurones par culture).".replace(",", " "))
     while True:
         recipe, origin = propose(con, rng)
         if evaluate(con, recipe, origin) % CONFIRM_EVERY == 0:

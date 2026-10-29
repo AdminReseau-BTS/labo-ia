@@ -11,18 +11,18 @@ Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a 
 
 ## Où en est le labo
 
-*Mis à jour automatiquement le 29/10/2026 à 09:15 UTC.*
+*Mis à jour automatiquement le 29/10/2026 à 15:00 UTC.*
 
 | | |
 |---|---:|
-| Photos de la NASA passées en revue | 56 572 |
-| Astres entièrement passés en revue | 59 sur 185 |
-| Parties de Pong jouées par les neurones | 372 (99,2 h de jeu) |
-| Façons d'entraîner essayées | 103 |
-| Meilleur progrès observé, avant vérification | +12 points (recette n°18) |
-| Progrès confirmés après vérification | 0 sur 10 |
+| Photos de la NASA passées en revue | 70 617 |
+| Astres entièrement passés en revue | 60 sur 185 |
+| Parties de Pong jouées par les neurones | 442 (117,9 h de jeu) |
+| Façons d'entraîner essayées | 124 |
+| Meilleur progrès observé, avant vérification | -2 points (recette n°132) |
+| Progrès confirmés après vérification | 0 sur 11 |
 
-**La recette qui a le mieux marché (n°18)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
+**La recette qui a le mieux marché (n°132)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
 
 ![Courbe d'apprentissage de la meilleure recette](resultats/courbe-meilleure-recette.svg)
 
@@ -32,11 +32,11 @@ Dernier rapport : [2026-10-29](rapports/2026-10-29.md)
 
 ### Sondes Fantômes : les trouvailles
 
-Pas encore de trouvaille. Chaque photo qui sort de l'ordinaire doit d'abord être examinée par l'IA du labo, qui écarte les défauts d'image et les choses déjà connues. Seules les photos qui méritent vraiment un regard humain apparaîtront ici, et dans la page [Trouvailles](trouvailles/).
+Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 19 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
 
 ### Labo de neurones : ce qui marche vraiment
 
-**Pour l'instant, aucune façon d'entraîner les neurones n'a passé la vérification.** Le labo a rejoué ses 10 meilleures recettes sur des neurones neufs : à chaque fois, le progrès a disparu.
+**Pour l'instant, aucune façon d'entraîner les neurones n'a passé la vérification.** Le labo a rejoué ses 11 meilleures recettes sur des neurones neufs : 10 fois sur 11, le progrès a disparu ; 1 fois sur 11, des neurones figés, incapables d'apprendre, ont progressé tout autant.
 
 Autrement dit : les beaux scores du début venaient surtout de la chance, pas d'un vrai apprentissage. Ce n'est pas un échec : c'est un vrai résultat, qui montre qu'il ne faut pas croire un bon score sans le vérifier. Le labo continue de chercher.
 
@@ -70,7 +70,7 @@ Une photo bizarre n'est pas forcément une découverte. Le plus souvent, c'est u
 6. **Contexte factuel de chaque candidate**, avant tout avis de l'IA : sa fiche OPUS complète (distance au centre de l'astre, résolution, angle de phase, taille en pixels, filtre, temps de pose, identifiant et note de l'observation), comparée aux médianes de 8 images ordinaires du même groupe tirées au hasard ; et les images du même groupe prises à ±2 h, dont on regarde si elles sont aussi isolées (score ≥ 0,95), pour distinguer un phénomène qui dure d'un accident d'une seule image.
 7. **Jugement par une IA locale** (Ollama avec gemma3:4b, gratuite et hors ligne), qui reçoit l'image et ce contexte : défaut, connu ou intéressant. Un « intéressant » doit passer une seconde question indépendante centrée sur les défauts, puis l'IA rédige un dossier structuré (hypothèses avec arguments pour et contre, vérifications à faire).
 
-La fouille commence par huit cibles (Io, Europe, Miranda, Triton, Hypérion, Encelade, Pluton, Arrokoth), puis s'étend à toutes les cibles des cinq caméras, soit environ 560 000 images.
+La fouille commence par huit cibles (Io, Europe, Miranda, Triton, Hypérion, Encelade, Pluton, Arrokoth), puis s'étend à toutes les cibles des cinq caméras, soit environ 560 000 images, puis aux photos des planètes prises par le télescope spatial Hubble (environ 20 000 de plus). L'IA locale examine d'abord les 10 photos les plus étranges de chaque astre, puis creuse jusqu'à la 50ᵉ.
 
 </details>
 
@@ -80,7 +80,7 @@ La fouille commence par huit cibles (Io, Europe, Miranda, Triton, Hypérion, Enc
 
 En 2022, l'entreprise australienne Cortical Labs a posé environ 800 000 vrais neurones vivants sur une puce électronique, et leur a appris à jouer à Pong (le tout premier jeu vidéo : une raquette, une balle) en quelques minutes ([Kagan et al., *Neuron*](https://doi.org/10.1016/j.neuron.2022.09.001)). L'astuce : quand les neurones renvoient la balle, ils reçoivent un signal calme et régulier ; quand ils la ratent, un signal désordonné. Les neurones semblent préférer le calme, et finissent par mieux jouer. Mais pourquoi exactement, les chercheurs en débattent encore.
 
-Le labo refait cette expérience **sur ordinateur**, avec 1 000 neurones simulés, et sans jamais s'arrêter.
+Le labo refait cette expérience **sur ordinateur**, avec 20 000 neurones simulés, et sans jamais s'arrêter. (Il a commencé avec 1 000 ; ces premières recettes restent en archive, mais ne se comparent pas aux nouvelles.)
 
 ### Comment ça marche, simplement
 
@@ -91,16 +91,16 @@ Le labo refait cette expérience **sur ordinateur**, avec 1 000 neurones simulé
 
 ### Ce qu'il faut savoir
 
-1 000 neurones simulés, ce n'est pas un vrai cerveau ni une vraie culture de neurones. Ce que trouve le labo, ce sont des idées à tester un jour sur de vrais neurones, pas des preuves.
+20 000 neurones simulés, ce n'est pas un vrai cerveau (un cerveau humain en compte environ 86 milliards), ni une vraie culture de neurones (celle de DishBrain en avait 40 fois plus). Ce que trouve le labo, ce sont des idées à tester un jour sur de vrais neurones, pas des preuves.
 
 <details>
 <summary><b>Détails techniques</b></summary>
 
 ### La culture virtuelle
 
-- **1 000 neurones impulsionnels** (modèle d'Izhikevich), dont 80 % excitateurs et 20 % inhibiteurs, posés sur une puce de 8 × 8 électrodes, avec des connexions surtout locales.
+- **20 000 neurones impulsionnels** (modèle d'Izhikevich), dont 80 % excitateurs et 20 % inhibiteurs, posés sur une puce de 8 × 8 électrodes. Chacun est relié à une quarantaine de voisins, surtout proches (environ 800 000 synapses en tout).
 - **Plasticité** : les synapses excitatrices se renforcent ou s'affaiblissent selon l'ordre des impulsions (STDP). Une fatigue synaptique à court terme produit les bouffées d'activité typiques des vraies cultures, et une homéostasie empêche le réseau de s'emballer ou de s'éteindre.
-- **Électrodes** : chacune enregistre les neurones tout proches. Une stimulation excite les neurones autour de l'électrode, et d'autant plus loin que le courant est fort.
+- **Électrodes** : chacune enregistre les quelques neurones collés à elle, comme une vraie électrode. Une stimulation excite les neurones autour de l'électrode, et d'autant plus loin que le courant est fort.
 - **Branchée sur le SDK officiel de Cortical Labs** ([cl-sdk](https://pypi.org/project/cl-sdk/)) comme source de données de son simulateur : le code de l'expérience utilise la même API que la vraie puce CL1, et pourrait tourner tel quel sur de vrais neurones.
 
 ### Le jeu

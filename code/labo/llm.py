@@ -17,13 +17,15 @@ def available():
     return any(m.get("name", "").startswith(OLLAMA_MODEL) for m in tags.get("models", []))
 
 
-def ask(prompt, image_path=None, schema=None, timeout=1200):
-    """Pose une question au modele. Avec un schema JSON, renvoie un dict."""
+def ask(prompt, image_path=None, schema=None, timeout=3600):
+    """Pose une question au modele. Avec un schema JSON, renvoie un dict.
+    Delai large : l'IA passe apres les missions pour le processeur, une reponse peut prendre longtemps."""
     payload = {
         "model": OLLAMA_MODEL,
         "prompt": prompt,
         "stream": False,
         "options": {"temperature": 0.4},
+        "keep_alive": -1,  # le modele reste en memoire (la RAM est la) : pas de rechargement entre deux pistes
     }
     if image_path:
         payload["images"] = [base64.b64encode(Path(image_path).read_bytes()).decode()]
