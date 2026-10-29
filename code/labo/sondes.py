@@ -30,7 +30,7 @@ POLITE_DELAY = 0.5   # pause entre deux telechargements, pour menager les serveu
 TOP_N = 10           # candidates gardees (et decrites) par groupe
 MIN_GROUP = 30       # en dessous, pas assez d'images pour savoir ce qui est "normal"
 KNN_REF_MAX = 20000  # echantillon de reference pour les tres gros groupes
-FILTER_VERSION = 2   # a augmenter quand le filtre d'images ratees change : les candidates y repasseront
+FILTER_VERSION = 3  # a augmenter quand le filtre d'images ratees change : les candidates y repasseront
 FILL_GRAY = 105      # valeur des zones sans donnees dans les apercus OPUS
 # Images techniques (calibration, poses dans le noir...) : leurs "anomalies" sont des defauts d'instrument.
 SKIP_TARGET_WORDS = ("calibration", "dark", "plaque", "flat", "bias", "none", "unknown")
@@ -77,21 +77,32 @@ def runs(mask):
 
 
 def missing_data(gray):
-    """Part de l'image sans donnees : marges grises des apercus OPUS, ou lignes perdues (bandes noires).
+    """Donnees manquantes : (part en marges grises des apercus OPUS, part en lignes perdues,
+    nombre de bandes perdues en plein milieu de l'image).
 
-    Une bande noire n'est une perte de donnees que si elle coupe l'image net : claire juste
-    au-dessus et juste au-dessous, sur les memes colonnes. Le ciel noir autour d'un astre, lui,
+    Une bande sombre et uniforme n'est une perte de donnees que si elle coupe l'image net : claire
+    juste au-dessus et juste au-dessous, sur les memes colonnes. Le ciel noir autour d'un astre, lui,
     a des bords courbes.
     """
-    rs, cs = gray.std(axis=1), gray.std(axis=0)
-    fill = max(((rs < 1.5) & (np.abs(gray.mean(axis=1) - FILL_GRAY) <= 2)).mean(),
+    rs, cs, rm = gray.std(axis=1), gray.std(axis=0), gray.mean(axis=1)
+    fill = max(((rs < 1.5) & (np.abs(rm - FILL_GRAY) <= 2)).mean(),
                ((cs < 1.5) & (np.abs(gray.mean(axis=0) - FILL_GRAY) <= 2)).mean())
-    lost = 0
-    for a, b in runs((rs < 1.5) & (gray.mean(axis=1) < 2)):
-        sides = [np.median(s, axis=0) >= 8 for s in (gray[max(a - 4, 0):a], gray[b:b + 4]) if len(s)]
-        if (len(sides) == 2 and (sides[0] & sides[1]).mean() >= 0.3) or (len(sides) == 1 and sides[0].mean() >= 0.5):
+    lost, inner = 0, 0
+    for a, b in runs((rs < 1.5) & (rm < 12)):
+        sides = [np.median(s, axis=0) >= rm[a:b].mean() + 8 for s in (gray[max(a - 4, 0):a], gray[b:b + 4]) if len(s)]
+        if len(sides) == 2 and (sides[0] & sides[1]).mean() >= 0.3:
+            lost, inner = lost + b - a, inner + 1
+        elif len(sides) == 1 and sides[0].mean() >= 0.5:
             lost += b - a
-    return max(fill, lost / len(gray))
+    return fill, lost / len(gray), inner
+
+
+def anisotropy(gray):
+    """Ecart entre lignes voisines rapporte a l'ecart entre colonnes voisines (ou l'inverse).
+    ~1,3 pour une vraie scene, jusqu'a ~3,5 pour les bandes de Saturne, plus pour une image striee."""
+    v = np.abs(np.diff(gray, axis=0)).mean() + 0.5
+    h = np.abs(np.diff(gray, axis=1)).mean() + 0.5
+    return max(v / h, h / v)
 
 
 def artifact_reason(gray):
@@ -102,8 +113,12 @@ def artifact_reason(gray):
         return "image presque noire"
     if (gray > 250).mean() > 0.5:
         return "image saturee"
-    if missing_data(gray) >= 0.04:
+    fill, lost, inner = missing_data(gray)
+    # Les apercus Voyager ont souvent un mince bord noir en haut : on ne compte une bande au bord qu'au-dela de 6 %.
+    if fill >= 0.04 or lost >= 0.06 or inner:
         return "image incomplete"
+    if anisotropy(gray) >= 3.8:
+        return "image striee"
     # Ecart moyen entre pixels voisins rapporte au contraste : ~0.1 pour une vraie scene,
     # ~1 pour du bruit pur. Seuil volontairement haut pour garder les images bruitees mais structurees.
     fine = (np.abs(np.diff(gray, axis=0)).mean() + np.abs(np.diff(gray, axis=1)).mean()) / 2
@@ -232,7 +247,7 @@ def reclassify(con):
     for camp in camps:
         score_campaign(con, camp, touch=False)
     removed = con.execute(count).fetchone()[0] - before
-    db.journal(con, log, f"Filtre des images incomplètes : {len(camps)} cibles reclassées,"
+    db.journal(con, log, f"Filtre des images incomplètes ou striées (v{FILTER_VERSION}) : {len(camps)} cibles reclassées,"
                          f" {removed} candidates écartées.")
 
 

@@ -11,20 +11,20 @@ Ce dépôt est son carnet de recherche : la présentation ci-dessous, [un rappor
 
 ## Où en est le labo
 
-*Mis à jour automatiquement le 29/10/2026 à 03:21 UTC.*
+*Mis à jour automatiquement le 29/10/2026 à 03:50 UTC.*
 
 | Indicateur | Valeur |
 |---|---:|
-| Images d'archives analysées | 41 017 |
-| Cibles entièrement fouillées | 47 / 185 |
-| Parties de Pong jouées | 258 (68,8 h de culture simulée) |
-| Recettes d'entraînement testées | 71 |
+| Images d'archives analysées | 42 175 |
+| Cibles entièrement fouillées | 50 / 185 |
+| Parties de Pong jouées | 269 (71,7 h de culture simulée) |
+| Recettes d'entraînement testées | 75 |
 | Meilleur progrès (avant contre-épreuve) | +12 points (recette n°18) |
 | Apprentissages confirmés par contre-épreuve | 0 sur 7 |
 
 **Dernières candidates de Sondes Fantômes** (cliquer pour ouvrir la fiche NASA) :
 
-<a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-1-s-c3495037"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6113/DATA/C34950XX/C3495037_small.jpg" width="110" alt="Rhea, n°1" title="Rhea, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-1-s-c3495015"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6113/DATA/C34950XX/C3495015_small.jpg" width="110" alt="Rhea, n°2" title="Rhea, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-1-s-c3480918"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6112/DATA/C34809XX/C3480918_small.jpg" width="110" alt="System, n°1" title="System, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-1-s-c3504542"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6114/DATA/C35045XX/C3504542_small.jpg" width="110" alt="System, n°2" title="System, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c1040802"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8204/DATA/C10408XX/C1040802_small.jpg" width="110" alt="Nereid, n°1" title="Nereid, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c1148555"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8208/DATA/C11485XX/C1148555_small.jpg" width="110" alt="Nereid, n°2" title="Nereid, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-s-c4372931"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6211/DATA/C43729XX/C4372931_small.jpg" width="110" alt="Iapetus, n°1" title="Iapetus, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-s-c4372947"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6211/DATA/C43729XX/C4372947_small.jpg" width="110" alt="Iapetus, n°2" title="Iapetus, n°2"></a>
+<a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-j-c2064928"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_5xxx/VGISS_5213/DATA/C20649XX/C2064928_small.jpg" width="110" alt="Europa, n°1" title="Europa, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-j-c2046905"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_5xxx/VGISS_5210/DATA/C20469XX/C2046905_small.jpg" width="110" alt="Europa, n°2" title="Europa, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c1242957"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8210/DATA/C12429XX/C1242957_small.jpg" width="110" alt="Star, n°1" title="Star, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c1242706"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8210/DATA/C12427XX/C1242706_small.jpg" width="110" alt="Star, n°2" title="Star, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-s-c4430317"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6215/DATA/C44303XX/C4430317_small.jpg" width="110" alt="Phoebe, n°1" title="Phoebe, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-s-c4430137"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6215/DATA/C44301XX/C4430137_small.jpg" width="110" alt="Phoebe, n°2" title="Phoebe, n°2"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-1-s-c3495037"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6113/DATA/C34950XX/C3495037_small.jpg" width="110" alt="Rhea, n°1" title="Rhea, n°1"></a> <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-1-s-c3495057"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_6xxx/VGISS_6113/DATA/C34950XX/C3495057_small.jpg" width="110" alt="Rhea, n°2" title="Rhea, n°2"></a>
 
 **Meilleure recette (n°18)**, balles renvoyées minute par minute :
 
@@ -43,7 +43,7 @@ Les archives planétaires publiques contiennent des centaines de milliers d'imag
 1. **Les données** viennent de l'API publique [OPUS](https://opus.pds-rings.seti.org) du PDS Ring-Moon Systems Node (NASA). Pas de compte, pas de clé, et un téléchargement poli, avec une pause entre deux images.
 2. **Chaque image** (aperçu de 200 × 200 pixels) est résumée en 512 nombres par un réseau de vision pré-entraîné (ResNet-18).
 3. **Une image n'est étrange que par rapport à ses semblables** : elle est comparée seulement aux autres images de la même cible prises par le même instrument. Deux mesures sont combinées : la distance moyenne à ses 10 plus proches voisines, et un score d'Isolation Forest calculé sur une réduction à 32 dimensions.
-4. **Les images ratées sont écartées** : presque noires, saturées, uniformes, incomplètes (marges ou bandes sans données), ou faites presque uniquement de bruit.
+4. **Les images ratées sont écartées** : presque noires, saturées, uniformes, incomplètes (marges ou bandes sans données), striées de lignes brouillées, ou faites presque uniquement de bruit.
 5. **Les 10 images les plus isolées de chaque groupe deviennent des candidates.** Si une IA locale est installée (Ollama avec gemma3:4b, gratuite et hors ligne), elle décrit chaque candidate et dit si cela ressemble à un défaut d'image, à quelque chose de connu, ou à quelque chose qui mérite d'être vérifié.
 
 La fouille commence par huit cibles (Io, Europe, Miranda, Triton, Hypérion, Encelade, Pluton, Arrokoth), puis s'étend à toutes les cibles des cinq caméras, soit environ 560 000 images.
