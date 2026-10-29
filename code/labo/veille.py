@@ -16,6 +16,7 @@ import subprocess
 import sys
 import time
 import traceback
+from pathlib import Path
 
 import requests
 
@@ -181,8 +182,10 @@ def check_services(con):
         restarts = int(props.get("NRestarts") or 0)
         before = get(con, f"redemarrages:{unit}")
         if before is not None and restarts > int(before):
-            record(con, "erreur", name, "a planté et a redémarré tout seul", last_lines(unit),
-                   resume="Il tourne de nouveau, mais regarde pourquoi il s'est arrêté.")
+            # Juste apres un demarrage du serveur, un service peut redemarrer en attendant le reseau : simple avertissement.
+            booting = float(Path("/proc/uptime").read_text().split()[0]) < 600
+            record(con, "avertissement" if booting else "erreur", name, "a planté et a redémarré tout seul",
+                   last_lines(unit), resume="Il tourne de nouveau, mais regarde pourquoi il s'est arrêté.")
         put(con, f"redemarrages:{unit}", restarts)
         if props.get("ActiveState") not in ("active", "activating", "reloading"):
             record(con, "erreur", name, "est arrêté", last_lines(unit),

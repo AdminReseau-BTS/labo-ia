@@ -4,12 +4,17 @@ Parcourt les images d'archives des sondes spatiales via l'API publique OPUS
 (PDS Ring-Moon Systems Node, NASA). Chaque image recoit une empreinte calculee par
 un reseau de neurones de vision (ResNet18), puis est comparee a toutes les autres
 images de la meme cible prises par le meme instrument. Les plus isolees deviennent
-des "candidates", decrites par l'IA locale si elle est installee.
+des "candidates". Chacune recoit un contexte factuel (fiche officielle de la prise de vue,
+comparaison avec les photos habituelles de l'astre, photos prises juste avant et apres),
+puis est jugee par l'IA locale ; celles qui meritent un regard humain ont un dossier complet.
 """
 import io
+import json
 import logging
+import statistics
 import time
-from collections import deque
+from collections import Counter, deque
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import numpy as np
@@ -22,7 +27,8 @@ from sklearn.neighbors import NearestNeighbors
 from torchvision.models import ResNet18_Weights, resnet18
 
 from . import db, direct, llm
-from .config import CAMPAIGNS, IMAGING_INSTRUMENTS, IMG_DIR, LOG_FORMAT, OPUS_API, OPUS_PREVIEWS, SONDES_DB
+from .config import (CAMPAIGNS, IMAGING_INSTRUMENTS, IMG_DIR, LOG_FORMAT, OPUS_API, OPUS_DETAIL, OPUS_PREVIEWS,
+                     PROBES, SEQUENCE_TEXT, SONDES_DB)
 
 log = logging.getLogger("sondes")
 RECENT = deque(maxlen=18)  # dernieres photos analysees, pour la page « En direct »
@@ -46,6 +52,47 @@ SKIP_TARGET_WORDS = ("calibration", "dark", "plaque", "flat", "bias", "none", "u
 VERDICTS = ("defaut", "connu", "interessant")
 VERDICT_SCHEMA = {"type": "object", "required": ["description", "verdict"],
                   "properties": {"description": {"type": "string"}, "verdict": {"type": "string", "enum": list(VERDICTS)}}}
+# Une petite IA se trompe souvent : une photo jugee "interessant" repasse une question independante,
+# centree sur les defauts. Si elle y voit un defaut (bruit, lignes...), elle n'est pas mise en avant.
+DEFECT_CHECK = ("Regarde cette image d'archive d'une sonde spatiale. Est-ce surtout un defaut technique plutot "
+                "qu'une vraie scene : bruit ou grain aleatoire, parasites, points colores sans forme nette, lignes "
+                "ou bandes, image floue, vide, coupee ou ratee ? Reponds true dans 'defaut' si c'est le cas, sinon false.")
+DEFECT_SCHEMA = {"type": "object", "required": ["defaut"], "properties": {"defaut": {"type": "boolean"}}}
+# Mots des noms d'observation et des notes de la NASA, traduits en indices pour l'IA et pour le lecteur.
+# Les noms d'observation sont colles (« 15ISECLIPS04 ») : on cherche donc des morceaux de mots, assez longs
+# pour ne pas se tromper.
+OBS_HINTS = (
+    ("ECLIP", "prise pendant une éclipse : l'astre est dans l'ombre de sa planète, seules ses propres lueurs se voient"),
+    ("AUROR", "observation d'aurores"),
+    ("LIGHTN", "recherche d'éclairs"),
+    ("PLUME", "recherche de panaches (volcans, geysers)"),
+    ("LIMB", "vise le bord de l'astre (le limbe), là où l'atmosphère et les panaches se voient de profil"),
+    ("TERMINAT", "vise le terminateur, la frontière entre le jour et la nuit, où les reliefs font de longues ombres"),
+    ("NIGHT", "vise le côté nuit"),
+    ("OPNAV", "image de navigation : sert à repérer la position de la sonde grâce aux étoiles"),
+    ("CALIB", "image de calibration de l'appareil"),
+    ("MOSAIC", "fait partie d'une mosaïque (plusieurs photos assemblées)"),
+    ("HIGHEST RES", "une des photos les plus détaillées de cet astre"),
+    ("HI RES", "photo à haute résolution"),
+    ("HIRES", "photo à haute résolution"),
+    ("GLOBAL", "vue de l'astre en entier"),
+    ("COLOR", "fait partie d'une série en couleurs (plusieurs filtres)"),
+    ("RINGS", "vise aussi les anneaux"),
+)
+SEQUENCE_HOURS = 2     # fenetre ou l'on cherche les photos prises juste avant et apres
+ODD_SCORE = 0.95       # isolement au-dessus duquel une photo voisine est elle aussi inhabituelle
+TYPICAL_SAMPLE = 8     # photos ordinaires tirees au hasard pour decrire "l'habitude" d'un astre
+DOSSIER_SCHEMA = {
+    "type": "object", "required": ["titre", "ce_quon_voit", "pourquoi", "hypotheses", "contexte", "a_verifier",
+                                   "conclusion"],
+    "properties": {
+        "titre": {"type": "string"}, "ce_quon_voit": {"type": "string"}, "pourquoi": {"type": "string"},
+        "hypotheses": {"type": "array", "items": {
+            "type": "object", "required": ["idee", "pour", "contre", "probabilite"],
+            "properties": {"idee": {"type": "string"}, "pour": {"type": "string"}, "contre": {"type": "string"},
+                           "probabilite": {"type": "string", "enum": ["faible", "moyenne", "forte"]}}}},
+        "contexte": {"type": "string"}, "a_verifier": {"type": "array", "items": {"type": "string"}},
+        "conclusion": {"type": "string"}}}
 
 HTTP = requests.Session()
 HTTP.headers["User-Agent"] = "labo-ia-sondes-fantomes/1.0 (recherche d'anomalies, projet perso)"
@@ -62,6 +109,9 @@ CREATE TABLE IF NOT EXISTS images (
 CREATE INDEX IF NOT EXISTS images_campaign ON images(campaign_id, rank);
 CREATE TABLE IF NOT EXISTS descriptions (opus_id TEXT PRIMARY KEY, text TEXT, created_at REAL, verdict TEXT);
 CREATE TABLE IF NOT EXISTS journal (t REAL, msg TEXT);
+CREATE TABLE IF NOT EXISTS contexte (opus_id TEXT PRIMARY KEY, data TEXT, created_at REAL);
+CREATE TABLE IF NOT EXISTS habitudes (campaign_id INTEGER PRIMARY KEY, data TEXT, created_at REAL);
+CREATE TABLE IF NOT EXISTS dossiers (opus_id TEXT PRIMARY KEY, data TEXT, created_at REAL);
 """
 
 
@@ -275,39 +325,231 @@ def connect():
     return con
 
 
+def metadata(opus_id):
+    """Fiche officielle complete d'une image (OPUS), ou None si l'archive ne la donne pas."""
+    try:
+        return get_json(f"metadata/{opus_id}.json")
+    except (requests.RequestException, ValueError):
+        return None
+    finally:
+        time.sleep(POLITE_DELAY)
+
+
+def as_number(x):
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return None
+
+
+def summarize(meta, target):
+    """Ce que la fiche dit de la prise de vue : quelques nombres et le nom de l'observation."""
+    if not meta:
+        return {}
+    flat = {k: v for sec in meta.values() for k, v in sec.items() if v not in (None, "")}
+    geo = meta.get(f"{target} Surface Geometry Constraints") or {}
+
+    def pick(d, *suffixes):
+        return next((v for k, v in d.items() for s in suffixes if k.lower().endswith(s) and v not in (None, "")), None)
+
+    note = flat.get("note") or ""
+    return {
+        "date": flat.get("time1"), "pose_s": as_number(flat.get("observationduration")),
+        "filtre": pick(flat, "filter", "filter1"), "camera": pick(flat, "camera"),
+        "distance_km": as_number(pick(geo, "_centerdistance1")),
+        "resolution_km": as_number(pick(geo, "_centerresolution1")),
+        "phase_deg": as_number(pick(geo, "_centerphaseangle1")),
+        "taille_px": as_number(pick(geo, "_diameterpixels")),
+        "observation": pick(flat, "observationid", "activityname"),
+        "phase_mission": pick(flat, "missionphasename", "missionphase"), "orbite": pick(flat, "orbitnumber"),
+        "note": None if note.startswith("VICAR") else note,
+    }
+
+
+def hints(fiche):
+    text = f"{fiche.get('observation') or ''} {fiche.get('note') or ''}".upper()
+    return list(dict.fromkeys(h for key, h in OBS_HINTS if key in text))
+
+
+def typical(con, camp, target):
+    """Ce qui est habituel pour cet astre : fiches de quelques photos ordinaires tirees au hasard (une fois par astre)."""
+    row = con.execute("SELECT data FROM habitudes WHERE campaign_id=?", (camp,)).fetchone()
+    if row:
+        return json.loads(row[0])
+    sample = con.execute("SELECT opus_id, small FROM images WHERE campaign_id=? AND artifact IS NULL AND score < 0.5"
+                         " ORDER BY random() LIMIT ?", (camp, TYPICAL_SAMPLE)).fetchall()
+    fiches = [f for f in (summarize(metadata(s["opus_id"]), target) for s in sample) if f]
+    data = {"images": [{"opus_id": s["opus_id"], "small": s["small"]} for s in sample[:4]]}
+    for k in ("pose_s", "distance_km", "resolution_km", "phase_deg", "taille_px"):
+        values = [f[k] for f in fiches if f.get(k) is not None]
+        data[k] = statistics.median(values) if values else None
+    filters = Counter(f["filtre"] for f in fiches if f.get("filtre"))
+    data["filtre"] = filters.most_common(1)[0][0] if filters else None
+    con.execute("INSERT OR REPLACE INTO habitudes VALUES (?,?,?)", (camp, json.dumps(data), time.time()))
+    return data
+
+
+def km(x):
+    return f"{x:,.0f} km".replace(",", " ")
+
+
+def differences(f, usual):
+    """Ce qui distingue cette prise de vue des photos habituelles de l'astre, en phrases simples."""
+    out = []
+    d, u = f.get("distance_km"), usual.get("distance_km")
+    if d and u and (d < u / 3 or d > u * 3):
+        out.append(f"prise {'beaucoup plus près' if d < u else 'beaucoup plus loin'} que d'habitude"
+                   f" ({km(d)} contre {km(u)} en général)")
+    p, up = f.get("phase_deg"), usual.get("phase_deg")
+    if p is not None and p >= 150:
+        out.append(f"prise à contre-jour (angle de phase {p:.0f}° : le Soleil est presque derrière l'astre)")
+    elif p is not None and up is not None and abs(p - up) >= 40:
+        out.append(f"éclairage très différent de d'habitude (angle de phase {p:.0f}° contre {up:.0f}° ;"
+                   " 0° = Soleil dans le dos de la sonde, 180° = contre-jour)")
+    t, ut = f.get("pose_s"), usual.get("pose_s")
+    if t and ut and (t > ut * 5 or t < ut / 5):
+        out.append(f"temps de pose {'bien plus long' if t > ut else 'bien plus court'} que d'habitude"
+                   f" ({t:.3g} s contre {ut:.3g} s)")
+    if f.get("filtre") and usual.get("filtre") and f["filtre"] != usual["filtre"]:
+        out.append(f"filtre « {f['filtre']} », alors que la plupart des photos sont prises en « {usual['filtre']} »")
+    size = f.get("taille_px")
+    if size is not None and size < 15:
+        out.append(f"l'astre ne mesure que {size:.0f} pixels sur la photo : presque un point")
+    return out
+
+
+def sequence(con, camp, opus_id, time1):
+    """Photos du meme astre prises juste avant et juste apres. Si elles sont aussi inhabituelles, le
+    phenomene dure ; si elles sont normales, c'est bref, ou c'est un accident de cette seule image."""
+    try:
+        t = datetime.fromisoformat(time1)
+    except (TypeError, ValueError):
+        return None
+    lo, hi = ((t + timedelta(hours=h)).isoformat() for h in (-SEQUENCE_HOURS, SEQUENCE_HOURS))
+    near = con.execute("SELECT opus_id, small, time1, score, artifact FROM images WHERE campaign_id=?"
+                       " AND time1 BETWEEN ? AND ? AND opus_id != ?", (camp, lo, hi, opus_id)).fetchall()
+    found = []
+    for n in near:
+        try:
+            found.append((round((datetime.fromisoformat(n["time1"]) - t).total_seconds() / 60, 1), n))
+        except ValueError:
+            continue
+    found.sort(key=lambda x: x[0])
+    picked = [x for x in found if x[0] < 0][-2:] + [x for x in found if x[0] > 0][:2]
+    neighbours = [{"opus_id": n["opus_id"], "small": n["small"], "minutes": m, "ratee": n["artifact"] is not None,
+                   "inhabituelle": n["score"] is not None and n["score"] >= ODD_SCORE} for m, n in picked]
+    usable = [n for n in neighbours if not n["ratee"]]
+    if not usable:
+        verdict = "seule"
+    elif sum(n["inhabituelle"] for n in usable) * 2 >= len(usable):
+        verdict = "dure"
+    else:
+        verdict = "isolee"
+    return {"voisines": neighbours, "verdict": verdict}
+
+
+def build_context(con, r):
+    """Tout ce qu'on sait de la prise de vue, avant de demander l'avis de l'IA."""
+    fiche = summarize(metadata(r["opus_id"]), r["target"])
+    usual = typical(con, r["campaign_id"], r["target"])
+    ctx = {"fiche": fiche, "indices": hints(fiche), "differences": differences(fiche, usual), "habituel": usual,
+           "sequence": sequence(con, r["campaign_id"], r["opus_id"], r["time1"]), "rang": r["rank"], "groupe": r["n"]}
+    con.execute("INSERT OR REPLACE INTO contexte VALUES (?,?,?)", (r["opus_id"], json.dumps(ctx), time.time()))
+    con.commit()
+    return ctx
+
+
+def context_text(ctx):
+    """Le contexte en quelques lignes, pour l'IA."""
+    f, lines = ctx["fiche"], []
+    if f.get("observation"):
+        lines.append(f"nom de l'observation à la NASA : {f['observation']}")
+    if f.get("note"):
+        lines.append(f"note de la NASA : {f['note']}")
+    if f.get("phase_mission") or f.get("orbite"):
+        lines.append(f"moment de la mission : {f.get('phase_mission') or 'orbite ' + str(f['orbite'])}")
+    if f.get("filtre"):
+        lines.append(f"filtre : {f['filtre']}")
+    if f.get("pose_s") is not None:
+        lines.append(f"temps de pose : {f['pose_s']:.3g} s")
+    if f.get("distance_km"):
+        lines.append(f"distance à l'astre : {km(f['distance_km'])}")
+    if f.get("phase_deg") is not None:
+        lines.append(f"angle de phase : {f['phase_deg']:.0f}°")
+    lines += [f"indice : {h}" for h in ctx["indices"]] + [f"différence : {d}" for d in ctx["differences"]]
+    if ctx["sequence"]:
+        lines.append("photos voisines : " + SEQUENCE_TEXT[ctx["sequence"]["verdict"]])
+    lines.append(f"rang : n°{ctx['rang']} sur {ctx['groupe']} photos de cet astre, de la plus étrange à la plus banale")
+    return "\n".join(f"- {line}" for line in lines)
+
+
+def write_dossier(r, ctx, description):
+    """Dossier complet d'une trouvaille : hypotheses pour et contre, contexte, verifications."""
+    prompt = (
+        f"Tu es planetologue et tu ecris pour le grand public, en francais simple. Une photo de {r['target']} prise par "
+        f"la camera {r['instrument']} de la {PROBES.get(r['instrument'], 'sonde spatiale')} le {r['time1']} a ete "
+        "reperee comme inhabituelle, puis jugee digne d'un regard humain.\n"
+        f"Ce qu'on y voit (description faite en regardant la photo) : {description}\n"
+        f"Informations sur la prise de vue :\n{context_text(ctx)}\n\n"
+        "Ecris son dossier. 'titre' : un titre court et parlant. 'ce_quon_voit' : 2 ou 3 phrases. 'pourquoi' : pourquoi "
+        "elle sort du lot, en t'appuyant sur les informations ci-dessus. 'hypotheses' : 3 explications possibles, de la "
+        "plus banale (defaut de l'appareil, angle de vue) a la plus interessante, chacune avec un argument pour, un "
+        "argument contre et une probabilite. 'contexte' : ce que la science sait deja de cet astre et qui aide a "
+        "comprendre la photo ; uniquement des faits generaux tres connus, et dis-le si tu n'es pas sur. 'a_verifier' : "
+        "2 a 4 verifications concretes qu'un humain pourrait faire (par exemple regarder les photos voisines, la photo "
+        "brute, d'autres filtres, des articles). 'conclusion' : 1 ou 2 phrases honnetes. N'invente ni nom de cratere, "
+        "ni date, ni chiffre qui ne soit pas donne ici.")
+    return llm.ask(prompt, schema=DOSSIER_SCHEMA)
+
+
 def describe_pending(con, limit=1):
-    """Fait decrire par l'IA locale les meilleures candidates pas encore decrites."""
+    """Fait examiner par l'IA locale les meilleures candidates pas encore examinees."""
     if not llm.available():
         return 0
     rows = con.execute(
-        """SELECT i.opus_id, i.time1, i.small, c.instrument, c.target FROM images i
-           JOIN campaigns c ON c.id = i.campaign_id
+        """SELECT i.opus_id, i.time1, i.small, i.rank, i.campaign_id, c.instrument, c.target,
+                  (SELECT COUNT(*) FROM images j WHERE j.campaign_id = i.campaign_id AND j.artifact IS NULL) AS n
+           FROM images i JOIN campaigns c ON c.id = i.campaign_id
            LEFT JOIN descriptions d ON d.opus_id = i.opus_id
            WHERE i.rank <= ? AND d.opus_id IS NULL ORDER BY i.rank LIMIT ?""",
         (TOP_N, limit)).fetchall()
     for r in rows:
-        show(f"L'IA locale décrit une photo bizarre de {r['target']}", r)
+        show(f"Le labo rassemble la fiche NASA d'une photo bizarre de {r['target']}", r)
+        ctx = build_context(con, r)
+        show(f"L'IA locale examine une photo bizarre de {r['target']}", r)
         try:
             path = fetch_preview(r["small"].replace("_small.", "_med."), r["opus_id"])
         except requests.RequestException:
             path = fetch_preview(r["small"], r["opus_id"])
         prompt = (
-            f"Tu es planetologue. Cette image d'archive vient de l'instrument {r['instrument']}, "
-            f"cible : {r['target']}, prise le {r['time1']}. Un algorithme l'a reperee comme "
-            "inhabituelle par rapport aux autres images de cette cible. Dans 'description', en 3 ou 4 "
-            "phrases simples en francais, comprehensibles par quelqu'un qui n'y connait rien : decris ce "
-            "que tu vois et explique ton avis. Dans 'verdict', choisis : 'defaut' si c'est un defaut "
-            "d'image (bruit, saturation, lignes perdues, image ratee ou vide), 'connu' si c'est quelque "
-            "chose de banal ou deja connu (bord de la planete, anneaux, etoile, ombre, prise de vue "
-            "inhabituelle), 'interessant' seulement si cela merite vraiment un regard humain. Dans le "
-            "doute entre 'connu' et 'interessant', choisis 'connu'. N'invente aucun fait.")
+            f"Tu es planetologue. Cette image d'archive vient de la camera {r['instrument']} de la "
+            f"{PROBES.get(r['instrument'], 'sonde spatiale')}, cible : {r['target']}, prise le {r['time1']}. "
+            "Ne cite pas d'autre sonde ni d'autre instrument. Un algorithme l'a reperee comme "
+            "inhabituelle par rapport aux autres images de cette cible.\n"
+            f"Informations officielles sur la prise de vue :\n{context_text(ctx)}\n\n"
+            "Dans 'description', en 3 ou 4 phrases simples en francais, comprehensibles par quelqu'un qui n'y connait "
+            "rien : decris ce que tu vois et explique ton avis, en t'aidant des informations ci-dessus. Dans 'verdict', "
+            "choisis : 'defaut' si c'est un defaut d'image (bruit, saturation, lignes perdues, image ratee ou vide), "
+            "'connu' si c'est banal ou si les informations l'expliquent (eclipse, contre-jour, astre minuscule, "
+            "calibration, navigation, bord de la planete, anneaux, etoile, ombre, angle de vue inhabituel), "
+            "'interessant' seulement si cela merite vraiment un regard humain. Dans le doute entre 'connu' et "
+            "'interessant', choisis 'connu'. N'invente aucun fait.")
         out = llm.ask(prompt, image_path=path, schema=VERDICT_SCHEMA)
         verdict = out["verdict"] if out.get("verdict") in VERDICTS else "connu"
-        con.execute("INSERT OR REPLACE INTO descriptions VALUES (?,?,?,?)",
-                    (r["opus_id"], str(out["description"]).strip(), time.time(), verdict))
+        description = str(out["description"]).strip()
+        if verdict == "interessant" and llm.ask(DEFECT_CHECK, image_path=path, schema=DEFECT_SCHEMA).get("defaut"):
+            verdict = "defaut"
+        con.execute("INSERT OR REPLACE INTO descriptions VALUES (?,?,?,?)", (r["opus_id"], description, time.time(), verdict))
         con.commit()
         if verdict == "interessant":
-            db.journal(con, log, f"Trouvaille possible sur {r['target']} ({r['instrument']}) : {r['opus_id']}.")
+            show(f"L'IA locale écrit le dossier d'une trouvaille sur {r['target']}", r)
+            dossier = write_dossier(r, ctx, description)
+            con.execute("INSERT OR REPLACE INTO dossiers VALUES (?,?,?)", (r["opus_id"], json.dumps(dossier), time.time()))
+            con.commit()
+            title = str(dossier.get("titre") or f"trouvaille possible sur {r['target']}")
+            db.journal(con, log, f"Trouvaille sur {r['target']} ({r['instrument']}) : « {title} » ({r['opus_id']}).")
+            from .veille import notify
+            notify(f"Labo IA : {title}", f"{r['target']} : {description}", 3, click=OPUS_DETAIL + r["opus_id"])
     return len(rows)
 
 

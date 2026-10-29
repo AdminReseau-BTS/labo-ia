@@ -1,6 +1,6 @@
 # Sondes Fantômes : toutes les cibles classées
 
-*Mis à jour le 29/10/2026 à 07:20 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange, sauf celles que l'IA du labo a jugées ratées. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
+*Mis à jour le 29/10/2026 à 09:15 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange, sauf celles que l'IA du labo a jugées ratées. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
 
 ## Enceladus (Cassini ISS)
 
@@ -665,6 +665,23 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 | 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-u-c2676357"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_7xxx/VGISS_7205/DATA/C26763XX/C2676357_small.jpg" width="90" alt="Miranda, n°8" title="Miranda, n°8"></a> | 1986-01-21 | 0.925 | pas encore examinée |
 | 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-u-c2684413"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_7xxx/VGISS_7206/DATA/C26844XX/C2684413_small.jpg" width="90" alt="Miranda, n°9" title="Miranda, n°9"></a> | 1986-01-24 | 0.920 | pas encore examinée |
 | 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-u-c2684409"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_7xxx/VGISS_7206/DATA/C26844XX/C2684409_small.jpg" width="90" alt="Miranda, n°10" title="Miranda, n°10"></a> | 1986-01-24 | 0.891 | pas encore examinée |
+
+## Neptune (Voyager ISS)
+
+1 900 images analysées, dont 27 écartées comme ratées ; fouille en cours. Classement du 29/10/2026 à 07:36 UTC.
+
+| Rang | Image | Date | Score | Avis de l'IA du labo |
+|---:|---|---|---:|---|
+| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c0902611"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8201/DATA/C09026XX/C0902611_small.jpg" width="90" alt="Neptune, n°1" title="Neptune, n°1"></a> | 1989-06-07 | 1.000 | pas encore examinée |
+| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c0943841"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8201/DATA/C09438XX/C0943841_small.jpg" width="90" alt="Neptune, n°2" title="Neptune, n°2"></a> | 1989-06-21 | 0.998 | pas encore examinée |
+| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c0944138"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8201/DATA/C09441XX/C0944138_small.jpg" width="90" alt="Neptune, n°3" title="Neptune, n°3"></a> | 1989-06-21 | 0.995 | pas encore examinée |
+| 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c0916323"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8201/DATA/C09163XX/C0916323_small.jpg" width="90" alt="Neptune, n°4" title="Neptune, n°4"></a> | 1989-06-11 | 0.994 | pas encore examinée |
+| 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c0896658"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8201/DATA/C08966XX/C0896658_small.jpg" width="90" alt="Neptune, n°5" title="Neptune, n°5"></a> | 1989-06-05 | 0.994 | pas encore examinée |
+| 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c0944100"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8201/DATA/C09441XX/C0944100_small.jpg" width="90" alt="Neptune, n°6" title="Neptune, n°6"></a> | 1989-06-21 | 0.992 | pas encore examinée |
+| 7 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c0944301"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8201/DATA/C09443XX/C0944301_small.jpg" width="90" alt="Neptune, n°7" title="Neptune, n°7"></a> | 1989-06-21 | 0.990 | pas encore examinée |
+| 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c0943937"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8201/DATA/C09439XX/C0943937_small.jpg" width="90" alt="Neptune, n°8" title="Neptune, n°8"></a> | 1989-06-21 | 0.990 | pas encore examinée |
+| 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c0943824"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8201/DATA/C09438XX/C0943824_small.jpg" width="90" alt="Neptune, n°9" title="Neptune, n°9"></a> | 1989-06-21 | 0.990 | pas encore examinée |
+| 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=vg-iss-2-n-c0909616"><img src="https://opus.pds-rings.seti.org/holdings/previews/VGISS_8xxx/VGISS_8201/DATA/C09096XX/C0909616_small.jpg" width="90" alt="Neptune, n°10" title="Neptune, n°10"></a> | 1989-06-09 | 0.988 | pas encore examinée |
 
 ## Neptune Rings (Voyager ISS)
 

@@ -20,8 +20,8 @@ import sys
 import time
 from pathlib import Path
 
-from .config import (BASE, DATA, DEPLOY_KEY, FEEDBACK_MODES, LOG_FORMAT, NEURO_DB, OPUS_PREVIEWS,
-                     PUBLICATION_SETTINGS, PUBLICATION_STATUS, SONDES_DB)
+from .config import (BASE, DATA, DEPLOY_KEY, FEEDBACK_MODES, LOG_FORMAT, NEURO_DB, OPUS_PREVIEWS, PROBES,
+                     PUBLICATION_SETTINGS, PUBLICATION_STATUS, SEQUENCE_TEXT, SONDES_DB)
 from .db import rows, scalar
 from .web import OPUS_DETAIL, chart, mean_curve, pts
 
@@ -69,7 +69,7 @@ HEADER = """# Labo IA
 1. **Sondes Fantômes : chercher l'image bizarre dans les archives de la NASA.** Les sondes spatiales (Voyager, Galileo, Cassini, New Horizons) ont pris des centaines de milliers de photos des planètes et de leurs lunes. Personne ne les a toutes regardées en détail. Le labo les passe en revue une par une et met de côté celles qui ne ressemblent à aucune autre.
 2. **Labo de neurones : apprendre à des neurones à jouer à Pong.** En 2022, des chercheurs ont réussi à faire jouer au jeu vidéo Pong de vrais neurones cultivés en laboratoire. Personne ne sait vraiment pourquoi ça marche. Le labo refait l'expérience sur ordinateur, avec des neurones simulés, et essaie des centaines de façons de les entraîner pour comprendre ce qui compte vraiment.
 
-Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a trouvé (juste en dessous), [un rapport par jour](rapports/), tous les résultats ([images](resultats/sondes.md), [neurones](resultats/neurones.md)) et son [code source](code/labo/). Il se met à jour tout seul toutes les 6 heures.
+Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a trouvé (juste en dessous), **[les trouvailles et leurs dossiers](trouvailles/)**, [un rapport par jour](rapports/), tous les résultats ([images](resultats/sondes.md), [neurones](resultats/neurones.md)) et son [code source](code/labo/). Il se met à jour tout seul toutes les 6 heures.
 
 """
 
@@ -86,6 +86,7 @@ Quand une sonde photographie une lune, les scientifiques regardent surtout les i
 3. Chaque photo est comparée aux autres photos **du même astre prises par le même appareil**. Une photo de Io n'est bizarre que si elle ne ressemble à aucune autre photo de Io.
 4. Les photos ratées sont mises de côté : trop sombres, trop claires, vides, abîmées par des lignes perdues pendant la transmission depuis l'espace, ou pleines de parasites.
 5. Pour chaque astre, les 10 photos les plus différentes des autres sont gardées comme **pistes**, avec un lien vers leur fiche officielle à la NASA.
+6. Chaque piste est ensuite **enquêtée** : le labo lit sa fiche officielle (distance, éclairage, filtre, nom de l'observation), la compare aux photos ordinaires du même astre et regarde les photos prises juste avant et juste après. Avec tout ça, l'IA du labo regarde la photo et tranche : défaut d'image, chose connue, ou vraie piste. Les vraies pistes ont un **[dossier complet](trouvailles/)** avec des hypothèses et de quoi les vérifier.
 
 ### Ce qu'il faut savoir
 
@@ -98,7 +99,9 @@ Une photo bizarre n'est pas forcément une découverte. Le plus souvent, c'est u
 2. **Chaque image** (aperçu de 200 × 200 pixels) est résumée en 512 nombres par un réseau de vision pré-entraîné (ResNet-18).
 3. **Une image n'est étrange que par rapport à ses semblables** : elle est comparée seulement aux autres images de la même cible prises par le même instrument. Deux mesures sont combinées : la distance moyenne à ses 10 plus proches voisines, et un score d'Isolation Forest calculé sur une réduction à 32 dimensions.
 4. **Les images ratées sont écartées** : presque noires, saturées, uniformes, incomplètes (marges ou bandes sans données), striées de lignes brouillées, ou faites presque uniquement de bruit.
-5. **Les 10 images les plus isolées de chaque groupe deviennent des candidates.** Si une IA locale est installée (Ollama avec gemma3:4b, gratuite et hors ligne), elle décrit chaque candidate et dit si cela ressemble à un défaut d'image, à quelque chose de connu, ou à quelque chose qui mérite d'être vérifié.
+5. **Les 10 images les plus isolées de chaque groupe deviennent des candidates.**
+6. **Contexte factuel de chaque candidate**, avant tout avis de l'IA : sa fiche OPUS complète (distance au centre de l'astre, résolution, angle de phase, taille en pixels, filtre, temps de pose, identifiant et note de l'observation), comparée aux médianes de 8 images ordinaires du même groupe tirées au hasard ; et les images du même groupe prises à ±2 h, dont on regarde si elles sont aussi isolées (score ≥ 0,95), pour distinguer un phénomène qui dure d'un accident d'une seule image.
+7. **Jugement par une IA locale** (Ollama avec gemma3:4b, gratuite et hors ligne), qui reçoit l'image et ce contexte : défaut, connu ou intéressant. Un « intéressant » doit passer une seconde question indépendante centrée sur les défauts, puis l'IA rédige un dossier structuré (hypothèses avec arguments pour et contre, vérifications à faire).
 
 La fouille commence par huit cibles (Io, Europe, Miranda, Triton, Hypérion, Encelade, Pluton, Arrokoth), puis s'étend à toutes les cibles des cinq caméras, soit environ 560 000 images.
 
@@ -311,34 +314,186 @@ def best_recipe():
     return best[0] if best else None
 
 
+FINDS = "trouvailles"
+LIKELY = {"forte": "probable", "moyenne": "possible", "faible": "peu probable"}
+DISCLAIMER = ("> **À lire avant.** Ce dossier a été écrit automatiquement par l'IA du labo, un petit modèle qui tourne"
+              " sur un ordinateur à la maison (gemma3, 4 milliards de paramètres). Les chiffres de la fiche viennent"
+              " de la NASA ; les explications, elles, sont des pistes à vérifier, pas une découverte confirmée.")
+
+
+def find_rows():
+    """Trouvailles : photos jugees dignes d'un regard humain, avec leur contexte et leur dossier."""
+    found = [dict(r) for r in rows(SONDES_DB, """
+        SELECT i.opus_id, i.small, i.rank, i.time1, c.target, c.instrument, d.text, d.created_at,
+               x.data AS contexte, s.data AS dossier
+        FROM descriptions d JOIN images i ON i.opus_id = d.opus_id JOIN campaigns c ON c.id = i.campaign_id
+        LEFT JOIN contexte x ON x.opus_id = d.opus_id LEFT JOIN dossiers s ON s.opus_id = d.opus_id
+        WHERE d.verdict = 'interessant' ORDER BY d.created_at DESC""")]
+    for f in found:
+        f["ctx"] = json.loads(f["contexte"]) if f["contexte"] else {}
+        f["dos"] = json.loads(f["dossier"]) if f["dossier"] else {}
+        f["name"] = BODIES.get(f["target"], f["target"])
+        f["title"] = f["dos"].get("titre") or f"Une photo inhabituelle de {f['name']}"
+        slug = re.sub(r"[^a-z0-9]+", "-", f["target"].lower()).strip("-")
+        f["page"] = f"{time.strftime('%Y-%m-%d', time.gmtime(f['created_at']))}-{slug}-{f['opus_id']}.md"
+    return found
+
+
+def medium(small):
+    return OPUS_PREVIEWS + small.replace("_small.", "_med.")
+
+
+def fiche_table(fiche):
+    labels = (("date", "Prise le (UTC)", lambda v: v[:16].replace("T", " à ")),
+              ("camera", "Caméra", str), ("filtre", "Filtre", str),
+              ("pose_s", "Temps de pose", lambda v: f"{dec(v, '.3g')} s"),
+              ("distance_km", "Distance à l'astre", lambda v: f"{num(round(v))} km"),
+              ("resolution_km", "Détail visible", lambda v: f"{dec(v, '.2f')} km par pixel"),
+              ("phase_deg", "Angle de phase", lambda v: f"{v:.0f}° (0° = Soleil dans le dos, 180° = contre-jour)"),
+              ("taille_px", "Taille de l'astre sur la photo", lambda v: f"{num(round(v))} pixels"),
+              ("observation", "Nom de l'observation (NASA)", str), ("note", "Note de la NASA", str),
+              ("phase_mission", "Moment de la mission", str), ("orbite", "Orbite", str))
+    lines = ["| | |", "|---|---|"]
+    lines += [f"| {label} | {cell(fmt(fiche[k]))} |" for k, label, fmt in labels if fiche.get(k) not in (None, "")]
+    return lines if len(lines) > 2 else ["La fiche de cette photo n'a pas pu être lue."]
+
+
+def find_page(f):
+    """Dossier complet d'une trouvaille : la photo, sa fiche, la comparaison, les hypotheses."""
+    ctx, dos = f["ctx"], f["dos"]
+    probe = (PROBES.get(f["instrument"]) or "").split(" (")[0]
+    out = [f"# {f['title']}", "",
+           f"**{f['name']}** · caméra {f['instrument']}{f' de la {probe}' if probe else ''}"
+           f" · photo du {(f['time1'] or '–')[:10]} · repérée par le labo le {long_date(f['created_at'])}", "",
+           f'<a href="{html.escape(OPUS_DETAIL + f["opus_id"])}"><img src="{html.escape(medium(f["small"]))}"'
+           f' width="480" alt="{html.escape(f["title"])}"></a>', "",
+           "*Cliquer sur la photo ouvre sa fiche officielle à la NASA, avec l'image brute.*", "", DISCLAIMER, "",
+           "## Ce qu'on voit", "", dos.get("ce_quon_voit") or f["text"], ""]
+    why = []
+    if ctx.get("rang"):
+        why.append(f"Parmi les {num(ctx['groupe'])} photos de {f['name']} prises par cette caméra, l'algorithme du labo"
+                   f" la classe **n°{ctx['rang']}** des plus différentes des autres.")
+    why += [f"D'après la fiche de la NASA : {d}." for d in ctx.get("differences", [])]
+    why += [f"Ce que dit le nom de l'observation : {h}." for h in ctx.get("indices", [])]
+    out += ["## Pourquoi elle sort du lot", ""] + [f"- {w}" for w in why] + [""]
+    if dos.get("pourquoi"):
+        out += [dos["pourquoi"], ""]
+    out += ["## La fiche de la photo", ""] + fiche_table(ctx.get("fiche") or {}) + [""]
+    seq = ctx.get("sequence")
+    if seq:
+        out += ["## Avant et après : le phénomène dure-t-il ?", "", SEQUENCE_TEXT[seq["verdict"]], ""]
+        if seq["voisines"]:
+            out += [" ".join(
+                f'<a href="{html.escape(OPUS_DETAIL + n["opus_id"])}"><img src="{html.escape(OPUS_PREVIEWS + n["small"])}"'
+                f' width="120" title="{n["minutes"]:+g} min" alt="{n["minutes"]:+g} min"></a>' for n in seq["voisines"]),
+                "", "Minutes avant (–) ou après (+) la photo : "
+                + ", ".join(f"{n['minutes']:+g}" + (" (inhabituelle aussi)" if n["inhabituelle"] else "")
+                            + (" (ratée)" if n["ratee"] else "") for n in seq["voisines"]) + ".", ""]
+    usual = (ctx.get("habituel") or {}).get("images")
+    if usual:
+        out += [f"## Pour comparer : des photos ordinaires de {f['name']}", "",
+                thumbs([{**u, "rank": "ordinaire", "target": f["name"]} for u in usual], 120), ""]
+    if dos.get("hypotheses"):
+        out += ["## Les hypothèses", "", "De la plus banale à la plus intéressante :", ""]
+        for i, h in enumerate(dos["hypotheses"], 1):
+            out += [f"### {i}. {h.get('idee', '')} ({LIKELY.get(h.get('probabilite'), h.get('probabilite', ''))})", "",
+                    f"- **Pour :** {h.get('pour', '')}", f"- **Contre :** {h.get('contre', '')}", ""]
+    if dos.get("contexte"):
+        out += ["## Ce que la science sait déjà", "", dos["contexte"], ""]
+    checks = dos.get("a_verifier") or []
+    out += ["## Comment vérifier", ""] + [f"{i}. {c}" for i, c in enumerate(checks, 1)]
+    out += [f"{len(checks) + 1}. Ouvrir la [fiche officielle]({OPUS_DETAIL + f['opus_id']}) et télécharger l'image"
+            " brute, sans compression.", ""]
+    if dos.get("conclusion"):
+        out += ["## Conclusion du labo", "", dos["conclusion"], ""]
+    out += ["---", "", f"[Toutes les trouvailles](README.md) · [Toutes les photos de {f['name']} classées]"
+            f"(../resultats/sondes.md) · Identifiant NASA : `{f['opus_id']}`", ""]
+    return "\n".join(out)
+
+
+def finds_index(found):
+    """Page d'accueil de la categorie Trouvailles : la methode, les trouvailles, les curiosites expliquees."""
+    count = lambda q: scalar(SONDES_DB, q) or 0
+    verdicts = {r["verdict"]: r["n"] for r in rows(SONDES_DB, "SELECT verdict, COUNT(*) AS n FROM descriptions GROUP BY verdict")}
+    out = ["# Trouvailles", "",
+           "Les photos d'archives de la NASA que le labo juge dignes d'un regard humain, chacune avec son dossier"
+           " complet : ce qu'on voit, pourquoi elle sort du lot, la fiche de la prise de vue, les photos prises juste"
+           " avant et après, des hypothèses avec leurs arguments pour et contre, et comment vérifier.", "",
+           "## Comment une photo devient une trouvaille", "",
+           f"1. **{num(count('SELECT COUNT(*) FROM images'))} photos** ont été passées en revue.",
+           f"2. **{num(count('SELECT COUNT(*) FROM images WHERE artifact IS NOT NULL'))}** ont été écartées comme"
+           " ratées (noires, saturées, incomplètes, striées ou pleines de bruit).",
+           f"3. Pour chaque astre, les 10 photos les plus différentes des autres deviennent des pistes :"
+           f" **{num(count('SELECT COUNT(*) FROM images WHERE rank <= 10'))}** pour l'instant.",
+           f"4. Pour chaque piste, le labo lit la fiche officielle de la NASA (distance, éclairage, filtre, nom de"
+           f" l'observation), la compare aux photos ordinaires du même astre et regarde les photos prises juste avant"
+           f" et après. Puis l'IA du labo regarde la photo : **{num(sum(verdicts.values()))}** examinées,"
+           f" {num(verdicts.get('defaut', 0))} défauts d'image, {num(verdicts.get('connu', 0))} explicables par"
+           " quelque chose de connu ou de banal.",
+           f"5. Une photo jugée intéressante passe une seconde question indépendante (« n'est-ce pas plutôt un défaut"
+           f" ? »). Si elle la passe, l'IA écrit son dossier : **{len(found)} trouvaille{'s' if len(found) > 1 else ''}**.",
+           "", "## Les trouvailles", ""]
+    if found:
+        out += ["| Photo | Trouvaille | Hypothèse la plus probable |", "|---|---|---|"]
+        for f in found:
+            hyps = f["dos"].get("hypotheses") or []
+            order = {"forte": 0, "moyenne": 1, "faible": 2}
+            best = min(hyps, key=lambda h: order.get(h.get("probabilite"), 3)) if hyps else None
+            img = (f'<a href="{f["page"]}"><img src="{html.escape(OPUS_PREVIEWS + f["small"])}" width="140"'
+                   f' alt="{html.escape(f["name"])}"></a>')
+            out.append(f"| {img} | **[{cell(f['title'])}]({f['page']})**<br>{cell(f['name'])}, {cell(f['instrument'])},"
+                       f" {(f['time1'] or '–')[:10]} | {cell(best['idee']) if best else '–'} |")
+    else:
+        out.append("Aucune pour l'instant : toutes les pistes examinées s'expliquent par un défaut d'image ou par"
+                   " quelque chose de connu. C'est normal, et c'est voulu : le labo préfère ne rien montrer plutôt que"
+                   " de montrer n'importe quoi. L'examen continue, environ une photo toutes les 10 minutes.")
+    curios = rows(SONDES_DB, """
+        SELECT i.opus_id, i.small, i.time1, c.target, c.instrument, d.text, x.data AS contexte FROM images i
+        JOIN campaigns c ON c.id = i.campaign_id JOIN descriptions d ON d.opus_id = i.opus_id
+        LEFT JOIN contexte x ON x.opus_id = i.opus_id
+        WHERE i.rank = 1 AND d.verdict = 'connu' ORDER BY c.target""")
+    if curios:
+        out += ["", "## Curiosités expliquées", "",
+                "La photo la plus étrange de chaque astre, quand elle s'explique par quelque chose de connu. Pas des"
+                " découvertes, mais de belles bizarreries, et la raison pour laquelle elles ne trompent pas le labo.", "",
+                "| Photo | Astre | L'explication |", "|---|---|---|"]
+        for c in curios:
+            ctx = json.loads(c["contexte"]) if c["contexte"] else {}
+            facts = "".join(f"<br>• {cell(x)}" for x in ctx.get("indices", []) + ctx.get("differences", []))
+            name = BODIES.get(c["target"], c["target"])
+            out.append(f"| {thumbs([{**c, 'rank': 1, 'target': name}], 110)} | **{cell(name)}**<br>{cell(c['instrument'])},"
+                       f" {(c['time1'] or '–')[:10]} | {cell(c['text'])}{facts} |")
+    out += ["", "---", "", "*Page mise à jour automatiquement par le labo. Retour à la [présentation](../README.md).*", ""]
+    return "\n".join(out)
+
+
 def discoveries():
     """Ce que le labo a trouve jusqu'ici, en clair, pour les deux missions."""
     out = ["## Ce que le labo a trouvé", ""]
     # Seules les photos que l'IA du labo juge vraiment interessantes sont montrees : pas les defauts.
-    finds = rows(SONDES_DB, """
-        SELECT i.opus_id, i.small, i.rank, i.time1, c.target, c.instrument, d.text FROM descriptions d
-        JOIN images i ON i.opus_id = d.opus_id JOIN campaigns c ON c.id = i.campaign_id
-        WHERE d.verdict = 'interessant' AND i.rank <= 10 ORDER BY d.created_at DESC LIMIT 12""")
+    finds = find_rows()
     judged = scalar(SONDES_DB, "SELECT COUNT(*) FROM descriptions WHERE verdict IS NOT NULL")
     out += ["### Sondes Fantômes : les trouvailles", ""]
     if finds:
         out += [f"L'IA du labo a examiné {num(judged)} photos qui sortaient de l'ordinaire. La plupart s'expliquent"
                 " par un défaut d'image ou par quelque chose de déjà connu. Celles-ci, en revanche, méritent un regard"
-                " humain. Ce ne sont pas encore des découvertes confirmées. Cliquer sur une photo ouvre sa fiche à"
-                " la NASA.", "", "| Photo | Où et quand | Ce qu'en dit l'IA du labo |", "|---|---|---|"]
-        for f in finds:
-            name = BODIES.get(f["target"], f["target"])
-            out.append(f"| {thumbs([{**f, 'target': name}], 140)} | **{cell(name)}**<br>{cell(f['instrument'])}"
-                       f"<br>{(f['time1'] or '–')[:10]} | {cell(f['text'])} |")
-        out.append("")
+                " humain. Chacune a son dossier complet : la fiche de la prise de vue, les photos d'avant et d'après,"
+                " des hypothèses et comment vérifier.", "", "| Photo | Trouvaille |", "|---|---|"]
+        for f in finds[:8]:
+            img = (f'<a href="{FINDS}/{f["page"]}"><img src="{html.escape(OPUS_PREVIEWS + f["small"])}" width="140"'
+                   f' alt="{html.escape(f["name"])}"></a>')
+            out.append(f"| {img} | **[{cell(f['title'])}]({FINDS}/{f['page']})**<br>{cell(f['name'])},"
+                       f" {cell(f['instrument'])}, {(f['time1'] or '–')[:10]}<br>{cell(f['text'])} |")
+        out += ["", f"**[Voir toutes les trouvailles et leurs dossiers]({FINDS}/)**", ""]
     elif judged:
         out += [f"Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné {num(judged)} photos qui"
                 " sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà"
-                " connu. Les vraies trouvailles apparaîtront ici.", ""]
+                f" connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles]({FINDS}/), qui montre"
+                " déjà les curiosités expliquées.", ""]
     else:
         out += ["Pas encore de trouvaille. Chaque photo qui sort de l'ordinaire doit d'abord être examinée par l'IA"
                 " du labo, qui écarte les défauts d'image et les choses déjà connues. Seules les photos qui méritent"
-                " vraiment un regard humain apparaîtront ici.", ""]
+                f" vraiment un regard humain apparaîtront ici, et dans la page [Trouvailles]({FINDS}/).", ""]
     checks = rows(NEURO_DB, "SELECT * FROM recipes WHERE control IS NOT NULL")
     if checks:
         good = sorted((r for r in checks if confirmed(r)), key=lambda r: r["control"] - r["confirmed"])
@@ -412,15 +567,12 @@ def report(now, number):
         out += ["### Astres comparés aujourd'hui", "",
                 ", ".join(f"{BODIES.get(c['target'], c['target'])} ({c['instrument']}, {num(c['n'])} photos)"
                           for c in scored) + ".", ""]
-    finds = rows(SONDES_DB, """
-        SELECT i.opus_id, i.small, i.rank, c.target, d.text FROM descriptions d
-        JOIN images i ON i.opus_id = d.opus_id JOIN campaigns c ON c.id = i.campaign_id
-        WHERE d.verdict = 'interessant' AND d.created_at >= ? ORDER BY d.created_at""", (day,))
+    finds = [f for f in find_rows() if f["created_at"] >= day]
     if finds:
         out += ["### Trouvailles du jour", ""]
         for f in finds:
-            name = BODIES.get(f["target"], f["target"])
-            out += [f"**{name}** : {f['text']}", "", thumbs([{**f, "target": name}], 160), ""]
+            out += [f"**[{f['title']}](../{FINDS}/{f['page']})** ({f['name']}) : {f['text']}", "",
+                    thumbs([{**f, "target": f["name"]}], 160), ""]
     entries = rows(SONDES_DB, "SELECT * FROM journal WHERE t >= ? ORDER BY t", (day,))
     if entries:
         out += ["### Journal", ""] + [f"- {hm(e['t'])} : {e['msg']}" for e in entries] + [""]
@@ -521,6 +673,11 @@ def write_all(now):
     write(REPO / "resultats" / "sondes.md", sondes_results(now))
     write(REPO / "resultats" / "neurones.md", neurones_results(now, bool(svg)))
     write(reports / f"{today}.md", report(now, len(earlier) + 1))
+    found = find_rows()
+    shutil.rmtree(REPO / FINDS, ignore_errors=True)
+    write(REPO / FINDS / "README.md", finds_index(found))
+    for f in found:
+        write(REPO / FINDS / f["page"], find_page(f))
     code = REPO / "code" / "labo"
     shutil.rmtree(code, ignore_errors=True)
     code.mkdir(parents=True)

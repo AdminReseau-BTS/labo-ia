@@ -7,20 +7,20 @@
 1. **Sondes Fantômes : chercher l'image bizarre dans les archives de la NASA.** Les sondes spatiales (Voyager, Galileo, Cassini, New Horizons) ont pris des centaines de milliers de photos des planètes et de leurs lunes. Personne ne les a toutes regardées en détail. Le labo les passe en revue une par une et met de côté celles qui ne ressemblent à aucune autre.
 2. **Labo de neurones : apprendre à des neurones à jouer à Pong.** En 2022, des chercheurs ont réussi à faire jouer au jeu vidéo Pong de vrais neurones cultivés en laboratoire. Personne ne sait vraiment pourquoi ça marche. Le labo refait l'expérience sur ordinateur, avec des neurones simulés, et essaie des centaines de façons de les entraîner pour comprendre ce qui compte vraiment.
 
-Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a trouvé (juste en dessous), [un rapport par jour](rapports/), tous les résultats ([images](resultats/sondes.md), [neurones](resultats/neurones.md)) et son [code source](code/labo/). Il se met à jour tout seul toutes les 6 heures.
+Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a trouvé (juste en dessous), **[les trouvailles et leurs dossiers](trouvailles/)**, [un rapport par jour](rapports/), tous les résultats ([images](resultats/sondes.md), [neurones](resultats/neurones.md)) et son [code source](code/labo/). Il se met à jour tout seul toutes les 6 heures.
 
 ## Où en est le labo
 
-*Mis à jour automatiquement le 29/10/2026 à 07:20 UTC.*
+*Mis à jour automatiquement le 29/10/2026 à 09:15 UTC.*
 
 | | |
 |---|---:|
-| Photos de la NASA passées en revue | 55 072 |
+| Photos de la NASA passées en revue | 56 572 |
 | Astres entièrement passés en revue | 59 sur 185 |
-| Parties de Pong jouées par les neurones | 347 (92,5 h de jeu) |
-| Façons d'entraîner essayées | 96 |
+| Parties de Pong jouées par les neurones | 372 (99,2 h de jeu) |
+| Façons d'entraîner essayées | 103 |
 | Meilleur progrès observé, avant vérification | +12 points (recette n°18) |
-| Progrès confirmés après vérification | 0 sur 9 |
+| Progrès confirmés après vérification | 0 sur 10 |
 
 **La recette qui a le mieux marché (n°18)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
 
@@ -32,11 +32,11 @@ Dernier rapport : [2026-10-29](rapports/2026-10-29.md)
 
 ### Sondes Fantômes : les trouvailles
 
-Pas encore de trouvaille. Chaque photo qui sort de l'ordinaire doit d'abord être examinée par l'IA du labo, qui écarte les défauts d'image et les choses déjà connues. Seules les photos qui méritent vraiment un regard humain apparaîtront ici.
+Pas encore de trouvaille. Chaque photo qui sort de l'ordinaire doit d'abord être examinée par l'IA du labo, qui écarte les défauts d'image et les choses déjà connues. Seules les photos qui méritent vraiment un regard humain apparaîtront ici, et dans la page [Trouvailles](trouvailles/).
 
 ### Labo de neurones : ce qui marche vraiment
 
-**Pour l'instant, aucune façon d'entraîner les neurones n'a passé la vérification.** Le labo a rejoué ses 9 meilleures recettes sur des neurones neufs : à chaque fois, le progrès a disparu.
+**Pour l'instant, aucune façon d'entraîner les neurones n'a passé la vérification.** Le labo a rejoué ses 10 meilleures recettes sur des neurones neufs : à chaque fois, le progrès a disparu.
 
 Autrement dit : les beaux scores du début venaient surtout de la chance, pas d'un vrai apprentissage. Ce n'est pas un échec : c'est un vrai résultat, qui montre qu'il ne faut pas croire un bon score sans le vérifier. Le labo continue de chercher.
 
@@ -53,6 +53,7 @@ Quand une sonde photographie une lune, les scientifiques regardent surtout les i
 3. Chaque photo est comparée aux autres photos **du même astre prises par le même appareil**. Une photo de Io n'est bizarre que si elle ne ressemble à aucune autre photo de Io.
 4. Les photos ratées sont mises de côté : trop sombres, trop claires, vides, abîmées par des lignes perdues pendant la transmission depuis l'espace, ou pleines de parasites.
 5. Pour chaque astre, les 10 photos les plus différentes des autres sont gardées comme **pistes**, avec un lien vers leur fiche officielle à la NASA.
+6. Chaque piste est ensuite **enquêtée** : le labo lit sa fiche officielle (distance, éclairage, filtre, nom de l'observation), la compare aux photos ordinaires du même astre et regarde les photos prises juste avant et juste après. Avec tout ça, l'IA du labo regarde la photo et tranche : défaut d'image, chose connue, ou vraie piste. Les vraies pistes ont un **[dossier complet](trouvailles/)** avec des hypothèses et de quoi les vérifier.
 
 ### Ce qu'il faut savoir
 
@@ -65,7 +66,9 @@ Une photo bizarre n'est pas forcément une découverte. Le plus souvent, c'est u
 2. **Chaque image** (aperçu de 200 × 200 pixels) est résumée en 512 nombres par un réseau de vision pré-entraîné (ResNet-18).
 3. **Une image n'est étrange que par rapport à ses semblables** : elle est comparée seulement aux autres images de la même cible prises par le même instrument. Deux mesures sont combinées : la distance moyenne à ses 10 plus proches voisines, et un score d'Isolation Forest calculé sur une réduction à 32 dimensions.
 4. **Les images ratées sont écartées** : presque noires, saturées, uniformes, incomplètes (marges ou bandes sans données), striées de lignes brouillées, ou faites presque uniquement de bruit.
-5. **Les 10 images les plus isolées de chaque groupe deviennent des candidates.** Si une IA locale est installée (Ollama avec gemma3:4b, gratuite et hors ligne), elle décrit chaque candidate et dit si cela ressemble à un défaut d'image, à quelque chose de connu, ou à quelque chose qui mérite d'être vérifié.
+5. **Les 10 images les plus isolées de chaque groupe deviennent des candidates.**
+6. **Contexte factuel de chaque candidate**, avant tout avis de l'IA : sa fiche OPUS complète (distance au centre de l'astre, résolution, angle de phase, taille en pixels, filtre, temps de pose, identifiant et note de l'observation), comparée aux médianes de 8 images ordinaires du même groupe tirées au hasard ; et les images du même groupe prises à ±2 h, dont on regarde si elles sont aussi isolées (score ≥ 0,95), pour distinguer un phénomène qui dure d'un accident d'une seule image.
+7. **Jugement par une IA locale** (Ollama avec gemma3:4b, gratuite et hors ligne), qui reçoit l'image et ce contexte : défaut, connu ou intéressant. Un « intéressant » doit passer une seconde question indépendante centrée sur les défauts, puis l'IA rédige un dossier structuré (hypothèses avec arguments pour et contre, vérifications à faire).
 
 La fouille commence par huit cibles (Io, Europe, Miranda, Triton, Hypérion, Encelade, Pluton, Arrokoth), puis s'étend à toutes les cibles des cinq caméras, soit environ 560 000 images.
 

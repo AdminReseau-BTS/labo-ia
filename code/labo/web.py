@@ -1,41 +1,22 @@
-"""Tableau de bord du labo, sur le port 8080 : libre sur le reseau local, protege par une cle
-secrete quand on vient d'Internet par le tunnel Cloudflare (voir labo.tunnel)."""
-import hmac
+"""Tableau de bord du labo, sur le port 8080 : visible sur le reseau local et, depuis le telephone,
+par le VPN Tailscale (voir labo.vpn). Rien n'est expose sur Internet."""
 import json
 import time
 
 from flask import Flask, abort, jsonify, redirect, render_template_string, request
 
-from . import direct, tunnel
-from .config import (DEPLOY_KEY, FEEDBACK_MODES, NEURO_DB, OPUS_PREVIEWS, PUBLICATION_STATUS, SONDES_DB,
-                     VEILLE_DB)
+from . import direct, vpn
+from .config import (DEPLOY_KEY, FEEDBACK_MODES, NEURO_DB, OPUS_DETAIL, OPUS_PREVIEWS, PUBLICATION_STATUS,
+                     SONDES_DB, VEILLE_DB)
 from .db import connect, rows, scalar
 
 app = Flask(__name__)
-OPUS_DETAIL = "https://opus.pds-rings.seti.org/opus/#/view=detail&detail="
-
-
-@app.before_request
-def guard():
-    """Depuis Internet (tunnel Cloudflare), il faut la cle secrete du lien ; sur le reseau local, rien ne change.
-    Cloudflare ajoute l'en-tete Cf-Connecting-Ip a tout ce qui passe par le tunnel."""
-    if "Cf-Connecting-Ip" not in request.headers:
-        return None
-    key = tunnel.access_key()
-    if hmac.compare_digest(request.args.get("cle", ""), key):
-        resp = redirect(request.path)
-        resp.set_cookie("cle", key, max_age=90 * 86400, httponly=True, secure=True, samesite="Lax")
-        return resp
-    if not hmac.compare_digest(request.cookies.get("cle", ""), key):
-        return "Accès réservé : ouvre le lien complet du Labo IA (celui qui contient la clé).", 403
-    return None
 
 
 @app.context_processor
 def unseen_errors():
-    """Nombre d'erreurs pas encore vues, affiche dans le menu de chaque page, et lien pour le telephone."""
-    return {"unseen": scalar(VEILLE_DB, "SELECT COUNT(*) FROM erreurs WHERE vue=0 AND niveau='erreur'"),
-            "phone_link": tunnel.link()}
+    """Nombre d'erreurs pas encore vues, affiche dans le menu de chaque page."""
+    return {"unseen": scalar(VEILLE_DB, "SELECT COUNT(*) FROM erreurs WHERE vue=0 AND niveau='erreur'")}
 
 
 @app.template_filter("when")
@@ -87,9 +68,20 @@ def index():
         "current": (rows(SONDES_DB, "SELECT * FROM campaigns WHERE done=0 ORDER BY id LIMIT 1") or [None])[0],
     }
     candidates = rows(SONDES_DB, """
-        SELECT i.*, c.instrument, c.target, d.text FROM images i
+        SELECT i.*, c.instrument, c.target, d.text, d.verdict FROM images i
         JOIN campaigns c ON c.id = i.campaign_id LEFT JOIN descriptions d ON d.opus_id = i.opus_id
         WHERE i.rank <= 3 ORDER BY c.scored_at DESC, c.id, i.rank LIMIT 24""")
+    # Trouvailles : photos que l'IA du labo juge dignes d'un regard humain (apres sa double verification).
+    finds = rows(SONDES_DB, """
+        SELECT i.*, c.instrument, c.target, d.text, d.created_at,
+               json_extract(s.data, '$.titre') AS titre, json_extract(s.data, '$.conclusion') AS conclusion
+        FROM descriptions d JOIN images i ON i.opus_id = d.opus_id JOIN campaigns c ON c.id = i.campaign_id
+        LEFT JOIN dossiers s ON s.opus_id = d.opus_id
+        WHERE d.verdict = 'interessant' ORDER BY d.created_at DESC LIMIT 12""")
+    verdicts = {r[0]: r[1] for r in rows(SONDES_DB, "SELECT verdict, COUNT(*) FROM descriptions GROUP BY verdict")}
+    to_judge = scalar(SONDES_DB, """SELECT COUNT(*) FROM images i LEFT JOIN descriptions d ON d.opus_id = i.opus_id
+                                    WHERE i.rank <= 10 AND d.opus_id IS NULL""")
+    alerts = rows(VEILLE_DB, "SELECT * FROM erreurs WHERE vue=0 ORDER BY niveau='erreur' DESC, derniere DESC LIMIT 6")
     groups = rows(SONDES_DB, """
         SELECT c.*, COUNT(i.opus_id) AS n FROM campaigns c JOIN images i ON i.campaign_id = c.id
         WHERE c.scored_at IS NOT NULL GROUP BY c.id ORDER BY c.scored_at DESC LIMIT 15""")
@@ -119,6 +111,7 @@ def index():
     deploy_key = key.read_text().strip() if pub is None and key.exists() else None
     return render_template_string(
         PAGE, now=when(now), sondes=sondes, candidates=candidates, groups=groups, neuro=neuro,
+        finds=finds, verdicts=verdicts, to_judge=to_judge, alerts=alerts,
         recipes=recipes, best_chart=best_chart, previews=OPUS_PREVIEWS, opus_detail=OPUS_DETAIL, pub=pub,
         deploy_key=deploy_key,
         journal_sondes=rows(SONDES_DB, "SELECT * FROM journal ORDER BY t DESC LIMIT 12"),
@@ -155,6 +148,7 @@ def errors():
     show_all = request.args.get("tout") == "1"
     return render_template_string(
         ERRORS, now=when(time.time()), topic=veille.settings()["ntfy"], test=request.args.get("test"),
+        phone=vpn.links(),
         # Par defaut : les erreurs pas encore vues ou de la semaine, et tout ce qui date de moins de 24 h.
         show_all=show_all, errors=rows(VEILLE_DB, "SELECT * FROM erreurs" + ("" if show_all else
                                        " WHERE (niveau='erreur' AND (vue=0 OR derniere > unixepoch() - 7 * 86400))"
@@ -210,6 +204,8 @@ h3 { margin:22px 0 8px; font-size:13px; color:var(--muted); text-transform:upper
 main { display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(min(460px, 100%), 1fr));
        padding-bottom:40px; }
 section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; min-width:0; }
+section.wide { grid-column:1 / -1; }
+.grid.finds { grid-template-columns:repeat(auto-fill, minmax(min(260px, 100%), 1fr)); }
 .stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-top:14px; }
 .stat { border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
 .stat b { display:block; font-size:22px; font-variant-numeric:tabular-nums; }
@@ -268,6 +264,48 @@ PAGE = """<!doctype html>
   {% endif %}
 </header>
 <main>
+<section class="wide">
+  <h2>Trouvailles</h2>
+  <p class="sub">L'IA du labo examine une par une les photos qui sortent de l'ordinaire, et met de côté les défauts
+  d'image et les choses déjà connues. Seules celles qui méritent un regard humain apparaissent ici.</p>
+  <div class="stats">
+    <div class="stat"><b>{{ verdicts.get("interessant", 0) }}</b><span>à regarder</span></div>
+    <div class="stat"><b>{{ verdicts.get("connu", 0) }}</b><span>déjà connues ou banales</span></div>
+    <div class="stat"><b>{{ verdicts.get("defaut", 0) }}</b><span>défauts d'image</span></div>
+    <div class="stat"><b>{{ to_judge }}</b><span>en attente d'examen</span></div>
+  </div>
+  {% if finds %}
+  <div class="grid finds" style="margin-top:14px">
+  {% for f in finds %}
+    <figure>
+      <a href="{{ opus_detail }}{{ f.opus_id }}" target="_blank" rel="noopener">
+        <img src="{{ previews }}{{ f.small }}" alt="{{ f.target }}, {{ f.instrument }}" loading="lazy"></a>
+      <figcaption>{% if f.titre %}<strong class="pos">{{ f.titre }}</strong><br>{% endif %}
+      <strong>{{ f.target }}</strong> · {{ f.instrument }} · {{ (f.time1 or "")[:10] }}<br>{{ f.text }}
+      {% if f.conclusion %}<br><em>{{ f.conclusion }}</em>{% endif %}</figcaption>
+    </figure>
+  {% endfor %}
+  </div>
+  {% if pub and pub.url %}<p class="note">Dossiers complets (fiche NASA, photos d'avant et d'après, hypothèses) :
+  <a href="{{ pub.url }}/tree/main/trouvailles" target="_blank" rel="noopener">page Trouvailles sur GitHub</a>.</p>{% endif %}
+  {% else %}
+  <p class="note">Pas encore de trouvaille. {% if to_judge %}L'IA examine les photos en ce moment (environ
+  10 minutes par photo, sans carte graphique).{% else %}Rien à examiner pour l'instant.{% endif %}</p>
+  {% endif %}
+</section>
+
+<section class="wide">
+  <h2>Alertes {% if alerts %}<span class="badge">{{ alerts|length }}</span>{% endif %}</h2>
+  {% if alerts %}
+  <ol class="journal">
+  {% for a in alerts %}<li><time>{{ a.derniere|when }}</time><strong class="{{ 'neg' if a.niveau == 'erreur' }}">{{ a.source }}</strong> : {{ a.titre }}{% if a.nombre > 1 %} <span class="note">({{ a.nombre }} fois)</span>{% endif %}</li>{% endfor %}
+  </ol>
+  <p class="note"><a href="/erreurs">Voir le détail et marquer comme vu</a></p>
+  {% else %}
+  <p class="note">Aucune alerte : tout tourne normalement. <a href="/erreurs">Historique</a></p>
+  {% endif %}
+</section>
+
 <section>
   <h2>Sondes Fantômes</h2>
   <p class="sub">Une IA de vision compare chaque image d'archive des sondes (Voyager, Galileo, Cassini,
@@ -291,6 +329,7 @@ PAGE = """<!doctype html>
       <a href="{{ opus_detail }}{{ c.opus_id }}" target="_blank" rel="noopener">
         <img src="{{ previews }}{{ c.small }}" alt="{{ c.target }}, {{ c.instrument }}" loading="lazy"></a>
       <figcaption><strong>{{ c.target }}</strong> · n°{{ c.rank }}<br>{{ c.instrument }} · {{ (c.time1 or "")[:10] }}
+      {% if c.verdict %}<br><span class="{{ 'pos' if c.verdict == 'interessant' else '' }}">{{ {"interessant": "À regarder", "connu": "Déjà connu ou banal", "defaut": "Défaut d'image"}[c.verdict] }}</span>{% endif %}
       {% if c.text %}<br>{{ c.text|truncate(180) }}{% endif %}</figcaption>
     </figure>
   {% endfor %}
@@ -561,12 +600,13 @@ ol.steps { margin:6px 0 10px; padding-left:20px; }
 <main style="display:block">
 <section style="margin-bottom:16px">
   <h2>Voir le labo depuis ton téléphone</h2>
-  {% if phone_link %}
-  <p class="note">Ce lien marche de partout, même hors de chez toi. Il contient une clé secrète : garde-le pour toi.
-  Il change si le serveur redémarre ; le nouveau lien t'est alors envoyé en notification.</p>
-  <p><code>{{ phone_link }}</code></p>
+  <p class="note">Le labo passe par un VPN privé (Tailscale) : rien n'est ouvert sur Internet, seuls tes appareils
+  le voient. Installe l'appli <b>Tailscale</b> sur ton téléphone, connecte-toi avec le même compte que le labo, puis
+  ouvre cette adresse (de partout, même en 4G) :</p>
+  {% if phone %}
+  <p>{% if phone.nom %}<code>{{ phone.nom }}</code> ou {% endif %}<code>{{ phone.ip }}</code></p>
   {% else %}
-  <p class="note">Le tunnel vers Internet n'est pas ouvert pour l'instant.</p>
+  <p class="note">Le labo n'est pas encore relié au VPN.</p>
   {% endif %}
 </section>
 <section style="margin-bottom:16px">
