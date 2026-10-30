@@ -11,18 +11,18 @@ Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a 
 
 ## Où en est le labo
 
-*Mis à jour automatiquement le 30/10/2026 à 09:00 UTC.*
+*Mis à jour automatiquement le 30/10/2026 à 15:04 UTC.*
 
 | | |
 |---|---:|
-| Photos de la NASA passées en revue | 124 668 |
-| Astres entièrement passés en revue | 133 sur 185 |
-| Parties de Pong jouées par les neurones | 512 (136,5 h de jeu) |
-| Façons d'entraîner essayées | 145 |
-| Meilleur progrès observé, avant vérification | +5 points (recette n°149) |
+| Photos de la NASA passées en revue | 142 935 |
+| Astres entièrement passés en revue | 156 sur 185 |
+| Parties de Pong jouées par les neurones | 536 (142,9 h de jeu) |
+| Façons d'entraîner essayées | 152 |
+| Meilleur progrès observé, avant vérification | +30 points (recette n°158) |
 | Progrès confirmés après vérification | 1 sur 12 |
 
-**La recette qui a le mieux marché (n°149)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
+**La recette qui a le mieux marché (n°158)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
 
 ![Courbe d'apprentissage de la meilleure recette](resultats/courbe-meilleure-recette.svg)
 
@@ -32,7 +32,7 @@ Dernier rapport : [2026-10-30](rapports/2026-10-30.md)
 
 ### Sondes Fantômes : les trouvailles
 
-Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 82 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
+Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 103 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
 
 ### Labo de neurones : ce qui marche vraiment
 
