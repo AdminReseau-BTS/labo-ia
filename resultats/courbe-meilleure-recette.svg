@@ -3,5 +3,6 @@
 <line x1="30" x2="610" y1="100.0" y2="100.0" stroke="#8b949e" stroke-opacity="0.35"/><text x="26" y="104.0" text-anchor="end">25%</text>
 <line x1="30" x2="610" y1="30.0" y2="30.0" stroke="#8b949e" stroke-opacity="0.35"/><text x="26" y="34.0" text-anchor="end">50%</text>
 <text x="30" y="192">minute 1</text><text x="610" y="192" text-anchor="end">minute 15</text>
-<polyline points="30.0,88.9 71.4,97.1 112.9,116.2 154.3,123.9 195.7,97.5 237.1,93.3 278.6,111.7 320.0,107.8 361.4,106.0 402.9,103.9 444.3,98.9 485.7,73.8 527.1,99.3 568.6,93.9 610.0,88.6" fill="none" stroke="#2f6fde" stroke-width="2.5" stroke-linejoin="round"/><rect x="30" y="210" width="14" height="3" fill="#2f6fde"/><text x="50" y="215">avec plasticité</text>
+<polyline points="30.0,100.9 71.4,125.9 112.9,121.2 154.3,131.6 195.7,102.6 237.1,96.5 278.6,112.3 320.0,96.6 361.4,104.0 402.9,118.3 444.3,81.4 485.7,85.5 527.1,93.9 568.6,97.5 610.0,101.5" fill="none" stroke="#2f6fde" stroke-width="2.5" stroke-linejoin="round"/><rect x="30" y="210" width="14" height="3" fill="#2f6fde"/><text x="50" y="215">avec plasticité</text>
+<polyline points="30.0,60.3 71.4,125.0 112.9,132.7 154.3,131.6 195.7,88.6 237.1,91.9 278.6,114.0 320.0,132.7 361.4,109.7 402.9,39.7 444.3,110.5 485.7,142.0 527.1,54.0 568.6,106.3 610.0,119.2" fill="none" stroke="#8b949e" stroke-width="2.5" stroke-linejoin="round"/><rect x="250" y="210" width="14" height="3" fill="#8b949e"/><text x="270" y="215">culture figée (témoin)</text>
 </svg>

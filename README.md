@@ -11,18 +11,18 @@ Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a 
 
 ## Où en est le labo
 
-*Mis à jour automatiquement le 30/10/2026 à 03:04 UTC.*
+*Mis à jour automatiquement le 30/10/2026 à 09:00 UTC.*
 
 | | |
 |---|---:|
-| Photos de la NASA passées en revue | 106 951 |
-| Astres entièrement passés en revue | 61 sur 185 |
-| Parties de Pong jouées par les neurones | 489 (130,4 h de jeu) |
-| Façons d'entraîner essayées | 140 |
-| Meilleur progrès observé, avant vérification | +5 points (recette n°143) |
-| Progrès confirmés après vérification | 0 sur 11 |
+| Photos de la NASA passées en revue | 124 668 |
+| Astres entièrement passés en revue | 133 sur 185 |
+| Parties de Pong jouées par les neurones | 512 (136,5 h de jeu) |
+| Façons d'entraîner essayées | 145 |
+| Meilleur progrès observé, avant vérification | +5 points (recette n°149) |
+| Progrès confirmés après vérification | 1 sur 12 |
 
-**La recette qui a le mieux marché (n°143)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
+**La recette qui a le mieux marché (n°149)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
 
 ![Courbe d'apprentissage de la meilleure recette](resultats/courbe-meilleure-recette.svg)
 
@@ -32,13 +32,11 @@ Dernier rapport : [2026-10-30](rapports/2026-10-30.md)
 
 ### Sondes Fantômes : les trouvailles
 
-Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 60 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
+Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 82 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
 
 ### Labo de neurones : ce qui marche vraiment
 
-**Pour l'instant, aucune façon d'entraîner les neurones n'a passé la vérification.** Le labo a rejoué ses 11 meilleures recettes sur des neurones neufs : 10 fois sur 11, le progrès a disparu ; 1 fois sur 11, des neurones figés, incapables d'apprendre, ont progressé tout autant.
-
-Autrement dit : les beaux scores du début venaient surtout de la chance, pas d'un vrai apprentissage. Ce n'est pas un échec : c'est un vrai résultat, qui montre qu'il ne faut pas croire un bon score sans le vérifier. Le labo continue de chercher.
+**1 recette sur 12 a passé la vérification** : les neurones capables d'apprendre progressent nettement plus que les neurones figés. La plus nette, la recette n°149, fait gagner +12 points aux neurones qui apprennent, contre +0 aux neurones figés. Détails dans [les résultats complets](resultats/neurones.md).
 
 ## Mission 1 : Sondes Fantômes
 
