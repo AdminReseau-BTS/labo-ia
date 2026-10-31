@@ -1,6 +1,6 @@
 # Sondes Fantômes : toutes les cibles classées
 
-*Mis à jour le 31/10/2026 à 15:00 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange, sauf celles que l'IA du labo a jugées ratées. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
+*Mis à jour le 31/10/2026 à 21:04 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange, sauf celles que l'IA du labo a jugées ratées. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
 
 ## Aegaeon (Cassini ISS)
 
@@ -817,20 +817,19 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 ## Sky (Cassini ISS)
 
-3 157 images analysées, dont 1 748 écartées comme ratées ; fouille en cours. Classement du 31/10/2026 à 14:57 UTC.
+20 094 images analysées, dont 9 275 écartées comme ratées ; fouille en cours. Classement du 31/10/2026 à 20:47 UTC.
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1383260345"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_1xxx/COISS_1007/data/1383135525_1383288479/W1383260345_2_small.jpg" width="90" alt="Sky, n°1" title="Sky, n°1"></a> | 2001-10-31 | 0.994 | pas encore examinée |
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1405438755"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_1xxx/COISS_1008/data/1405415729_1405442107/N1405438755_1_small.jpg" width="90" alt="Sky, n°2" title="Sky, n°2"></a> | 2002-07-15 | 0.994 | pas encore examinée |
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1383311159"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_1xxx/COISS_1007/data/1383288512_1383620505/W1383311159_1_small.jpg" width="90" alt="Sky, n°3" title="Sky, n°3"></a> | 2001-11-01 | 0.992 | pas encore examinée |
-| 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1405427415"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_1xxx/COISS_1008/data/1405415729_1405442107/W1405427415_1_small.jpg" width="90" alt="Sky, n°4" title="Sky, n°4"></a> | 2002-07-15 | 0.988 | pas encore examinée |
-| 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1405427561"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_1xxx/COISS_1008/data/1405415729_1405442107/W1405427561_1_small.jpg" width="90" alt="Sky, n°5" title="Sky, n°5"></a> | 2002-07-15 | 0.987 | pas encore examinée |
-| 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1313632596"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_1xxx/COISS_1001/data/1295221411_1313633653/W1313632596_1_small.jpg" width="90" alt="Sky, n°6" title="Sky, n°6"></a> | 1999-08-18 | 0.987 | pas encore examinée |
-| 7 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1405427366"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_1xxx/COISS_1008/data/1405415729_1405442107/W1405427366_1_small.jpg" width="90" alt="Sky, n°7" title="Sky, n°7"></a> | 2002-07-15 | 0.981 | pas encore examinée |
-| 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1383263939"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_1xxx/COISS_1007/data/1383135525_1383288479/W1383263939_1_small.jpg" width="90" alt="Sky, n°8" title="Sky, n°8"></a> | 2001-10-31 | 0.980 | pas encore examinée |
-| 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1405434975"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_1xxx/COISS_1008/data/1405415729_1405442107/W1405434975_1_small.jpg" width="90" alt="Sky, n°9" title="Sky, n°9"></a> | 2002-07-15 | 0.980 | pas encore examinée |
-| 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1383262966"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_1xxx/COISS_1007/data/1383135525_1383288479/W1383262966_1_small.jpg" width="90" alt="Sky, n°10" title="Sky, n°10"></a> | 2001-10-31 | 0.979 | pas encore examinée |
+| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1639827399"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2059/data/1639661998_1639828731/W1639827399_4_small.jpg" width="90" alt="Sky, n°1" title="Sky, n°1"></a> | 2009-12-18 | 0.998 | pas encore examinée |
+| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1500063766"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2014/data/1500060254_1500210689/W1500063766_2_small.jpg" width="90" alt="Sky, n°2" title="Sky, n°2"></a> | 2005-07-14 | 0.997 | Déjà connu ou banal. Cette image montre un paysage montagneux très détaillé, probablement sur Saturne, avec des motifs de failles et de fractures en forme de bandes. La prise de vue a été réalisée avec une courte durée d'exposition (0.005 secondes), ce qui est inhabituel par rapport aux autres images de la mission Cassini.  Les informations complémentaires indiquent que cette image a été identifiée comme |
+| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1604167308"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2049/data/1604111692_1604168387/N1604167308_2_small.jpg" width="90" alt="Sky, n°3" title="Sky, n°3"></a> | 2008-10-31 | 0.996 | pas encore examinée |
+| 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1604167325"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2049/data/1604111692_1604168387/N1604167325_2_small.jpg" width="90" alt="Sky, n°4" title="Sky, n°4"></a> | 2008-10-31 | 0.995 | pas encore examinée |
+| 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1604167191"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2049/data/1604111692_1604168387/N1604167191_2_small.jpg" width="90" alt="Sky, n°5" title="Sky, n°5"></a> | 2008-10-31 | 0.994 | pas encore examinée |
+| 7 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1604167225"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2049/data/1604111692_1604168387/N1604167225_2_small.jpg" width="90" alt="Sky, n°7" title="Sky, n°7"></a> | 2008-10-31 | 0.994 | pas encore examinée |
+| 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1547073788"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2028/data/1546983673_1547152283/W1547073788_1_small.jpg" width="90" alt="Sky, n°8" title="Sky, n°8"></a> | 2007-01-09 | 0.994 | pas encore examinée |
+| 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1635843345"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2058/data/1635809569_1636079456/N1635843345_1_small.jpg" width="90" alt="Sky, n°9" title="Sky, n°9"></a> | 2009-11-02 | 0.993 | pas encore examinée |
+| 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1757436934"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2085/data/1757258657_1757635754/W1757436934_1_small.jpg" width="90" alt="Sky, n°10" title="Sky, n°10"></a> | 2013-09-09 | 0.993 | pas encore examinée |
 
 ## Star (Cassini ISS)
 
@@ -1013,7 +1012,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059883700"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059883700R_small.jpg" width="90" alt="Bet Ari, n°2" title="Bet Ari, n°2"></a> | 1990-11-30 | 0.938 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059883800"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059883800R_small.jpg" width="90" alt="Bet Ari, n°3" title="Bet Ari, n°3"></a> | 1990-11-30 | 0.938 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059885700"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059885700R_small.jpg" width="90" alt="Bet Ari, n°4" title="Bet Ari, n°4"></a> | 1990-11-30 | 0.917 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059884145"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059884145R_small.jpg" width="90" alt="Bet Ari, n°5" title="Bet Ari, n°5"></a> | 1990-11-30 | 0.906 | pas encore examinée |
@@ -1030,7 +1028,7 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
 | 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0062302800"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0006/RAW_CAL/C0062302800R_small.jpg" width="90" alt="Black Sky, n°1" title="Black Sky, n°1"></a> | 1990-12-17 | 0.994 | Déjà connu ou banal. Cette image, prise par la sonde Galileo, montre un ciel sombre et uniforme, probablement la surface de Jupiter, baptisée « Black Sky ». Elle a été capturée en utilisant un filtre vert, ce qui est inhabituel car la plupart des images de cette zone étaient prises en infrarouge. Les informations suggèrent que cette image est notable car elle est différente des autres prises sur cette même zone de Jupiter. Les photos prises juste avant et après sont normales, ce qui suggère que cette image pourrait être un phénomène bref, un accident ou un simple changement de cadrage. |
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061331600"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0004/RAW_CAL/C0061331600R_small.jpg" width="90" alt="Black Sky, n°2" title="Black Sky, n°2"></a> | 1990-12-11 | 0.992 | pas encore examinée |
+| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061331600"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0004/RAW_CAL/C0061331600R_small.jpg" width="90" alt="Black Sky, n°2" title="Black Sky, n°2"></a> | 1990-12-11 | 0.992 | Déjà connu ou banal. Cette image, prise par la caméra Galileo SSI de la sonde Galileo, présente un motif de lignes très marqué, divisé en quatre quadrants. Elle est inhabituelle car elle a été prise avec un filtre |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059336400"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059336400R_small.jpg" width="90" alt="Black Sky, n°3" title="Black Sky, n°3"></a> | N/A | 0.991 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059336200"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059336200R_small.jpg" width="90" alt="Black Sky, n°4" title="Black Sky, n°4"></a> | N/A | 0.989 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0061337645"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0004/RAW_CAL/C0061337645R_small.jpg" width="90" alt="Black Sky, n°5" title="Black Sky, n°5"></a> | 1990-12-11 | 0.989 | pas encore examinée |
@@ -1046,7 +1044,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0401513300"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0019/C9/CALLISTO/C0401513300R_small.jpg" width="90" alt="Callisto, n°2" title="Callisto, n°2"></a> | 1997-06-25 | 0.996 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0605145166"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0023/C30/CALLISTO/C0605145166R_small.jpg" width="90" alt="Callisto, n°3" title="Callisto, n°3"></a> | 2001-05-25 | 0.990 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0413382827"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0019/C10/CALLISTO/C0413382827R_small.jpg" width="90" alt="Callisto, n°4" title="Callisto, n°4"></a> | 1997-09-16 | 0.988 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0401513423"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0019/C9/CALLISTO/C0401513423R_small.jpg" width="90" alt="Callisto, n°5" title="Callisto, n°5"></a> | 1997-06-25 | 0.988 | pas encore examinée |
@@ -1108,7 +1105,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059878245"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059878245R_small.jpg" width="90" alt="Gam Ori, n°2" title="Gam Ori, n°2"></a> | 1990-11-30 | 0.909 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059880845"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059880845R_small.jpg" width="90" alt="Gam Ori, n°3" title="Gam Ori, n°3"></a> | 1990-11-30 | 0.909 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059881100"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059881100R_small.jpg" width="90" alt="Gam Ori, n°4" title="Gam Ori, n°4"></a> | 1990-11-30 | 0.886 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059878300"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059878300R_small.jpg" width="90" alt="Gam Ori, n°5" title="Gam Ori, n°5"></a> | 1990-11-30 | 0.852 | pas encore examinée |
@@ -1124,7 +1120,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0349761226"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0017/G1/GANYMEDE/C0349761226R_small.jpg" width="90" alt="Ganymede, n°2" title="Ganymede, n°2"></a> | 1996-06-27 | 0.990 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0584054846"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0023/G29/GANYMEDE/C0584054846R_small.jpg" width="90" alt="Ganymede, n°3" title="Ganymede, n°3"></a> | 2000-12-28 | 0.986 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0552445313"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0023/G28/GANYMEDE/C0552445313R_small.jpg" width="90" alt="Ganymede, n°4" title="Ganymede, n°4"></a> | 2000-05-20 | 0.978 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0389923946"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0018/G7/GANYMEDE/C0389923946R_small.jpg" width="90" alt="Ganymede, n°5" title="Ganymede, n°5"></a> | 1997-04-05 | 0.978 | pas encore examinée |
@@ -1140,7 +1135,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0107318313"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0007/GASPRA/C0107318313R_small.jpg" width="90" alt="Gaspra, n°2" title="Gaspra, n°2"></a> | 1991-10-29 | 0.989 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0102786545"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0007/RAW_CAL/C0102786545R_small.jpg" width="90" alt="Gaspra, n°3" title="Gaspra, n°3"></a> | 1991-09-28 | 0.985 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0105025645"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0007/RAW_CAL/C0105025645R_small.jpg" width="90" alt="Gaspra, n°4" title="Gaspra, n°4"></a> | 1991-10-13 | 0.962 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0107313852"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0007/GASPRA/C0107313852R_small.jpg" width="90" alt="Gaspra, n°5" title="Gaspra, n°5"></a> | 1991-10-29 | 0.962 | pas encore examinée |
@@ -1171,7 +1165,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0202561945"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0016/IDA/C0202561945R_small.jpg" width="90" alt="Ida, n°2" title="Ida, n°2"></a> | 1993-08-28 | 0.955 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0202561745"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0016/IDA/C0202561745R_small.jpg" width="90" alt="Ida, n°3" title="Ida, n°3"></a> | 1993-08-28 | 0.938 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0202562339"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0016/IDA/C0202562339R_small.jpg" width="90" alt="Ida, n°4" title="Ida, n°4"></a> | 1993-08-28 | 0.938 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0202562778"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0016/IDA/C0202562778R_small.jpg" width="90" alt="Ida, n°5" title="Ida, n°5"></a> | 1993-08-28 | 0.938 | pas encore examinée |
@@ -1202,7 +1195,7 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0416091000"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0019/C10/JUPITER/C0416091000R_small.jpg" width="90" alt="Jupiter, n°2" title="Jupiter, n°2"></a> | 1997-10-06 | 0.987 | pas encore examinée |
+| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0416091000"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0019/C10/JUPITER/C0416091000R_small.jpg" width="90" alt="Jupiter, n°2" title="Jupiter, n°2"></a> | 1997-10-06 | 0.987 | Déjà connu ou banal. Cette image, prise par la caméra Galileo SSI, montre un ciel étoilé avec des nuages et des points lumineux. Elle a été prise à une grande distance de Jupiter (6 622 661 km) et à contre-jour, avec un temps de pose exceptionnellement long (12,8 secondes).  L'utilisation du filtre |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0420481446"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0020/E11/JUPITER/C0420481446R_small.jpg" width="90" alt="Jupiter, n°3" title="Jupiter, n°3"></a> | 1997-11-05 | 0.986 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0416080145"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0019/C10/JUPITER/C0416080145R_small.jpg" width="90" alt="Jupiter, n°4" title="Jupiter, n°4"></a> | 1997-10-05 | 0.979 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0420481401"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0020/E11/JUPITER/C0420481401R_small.jpg" width="90" alt="Jupiter, n°5" title="Jupiter, n°5"></a> | 1997-11-05 | 0.976 | pas encore examinée |
@@ -1233,7 +1226,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0165061100"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0010/MOON/C0165061100R_small.jpg" width="90" alt="Moon, n°2" title="Moon, n°2"></a> | 1992-12-08 | 0.991 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059902100"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0003/RAW_CAL/C0059902100R_small.jpg" width="90" alt="Moon, n°3" title="Moon, n°3"></a> | 1990-11-30 | 0.990 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0165042000"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0010/MOON/C0165042000R_small.jpg" width="90" alt="Moon, n°4" title="Moon, n°4"></a> | 1992-12-08 | 0.985 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0165063200"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0010/MOON/C0165063200R_small.jpg" width="90" alt="Moon, n°5" title="Moon, n°5"></a> | 1992-12-08 | 0.984 | pas encore examinée |
@@ -1249,7 +1241,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059876045"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059876045R_small.jpg" width="90" alt="Pleiades, n°2" title="Pleiades, n°2"></a> | 1990-11-30 | 0.904 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059876200"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059876200R_small.jpg" width="90" alt="Pleiades, n°3" title="Pleiades, n°3"></a> | 1990-11-30 | 0.894 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059875045"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059875045R_small.jpg" width="90" alt="Pleiades, n°4" title="Pleiades, n°4"></a> | 1990-11-30 | 0.894 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059874500"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059874500R_small.jpg" width="90" alt="Pleiades, n°5" title="Pleiades, n°5"></a> | 1990-11-30 | 0.872 | pas encore examinée |
@@ -1266,7 +1257,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
 | 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059870645"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059870645R_small.jpg" width="90" alt="Tau Cet, n°1" title="Tau Cet, n°1"></a> | 1990-11-30 | 0.895 | Déjà connu ou banal. Cette image, prise par la caméra Galileo SSI, montre une surface de Tau Cet d'une couleur violet foncé. Elle est caractérisée par un aspect granuleux et des lignes verticales, probablement dues à la résolution de l'instrument. Ce cliché est inhabituel car il a été capturé avec un filtre violet, alors que la plupart des images de cette cible étaient prises en infrarouge. Les photos prises juste avant et après sont normales, ce qui suggère que cette image pourrait être un phénomène bref, un accident ou un problème de cadrage. |
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059871545"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059871545R_small.jpg" width="90" alt="Tau Cet, n°2" title="Tau Cet, n°2"></a> | 1990-11-30 | 0.872 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059870700"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059870700R_small.jpg" width="90" alt="Tau Cet, n°3" title="Tau Cet, n°3"></a> | 1990-11-30 | 0.849 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059872245"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059872245R_small.jpg" width="90" alt="Tau Cet, n°4" title="Tau Cet, n°4"></a> | 1990-11-30 | 0.814 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0059870600"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/RAW_CAL/C0059870600R_small.jpg" width="90" alt="Tau Cet, n°5" title="Tau Cet, n°5"></a> | 1990-11-30 | 0.791 | pas encore examinée |
@@ -1288,7 +1278,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0018077300"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/VENUS/C0018077300R_small.jpg" width="90" alt="Venus, n°2" title="Venus, n°2"></a> | 1990-02-10 | 0.974 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0018077645"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/VENUS/C0018077645R_small.jpg" width="90" alt="Venus, n°3" title="Venus, n°3"></a> | 1990-02-10 | 0.954 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0018077345"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/VENUS/C0018077345R_small.jpg" width="90" alt="Venus, n°4" title="Venus, n°4"></a> | 1990-02-10 | 0.941 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=go-ssi-c0018077045"><img src="https://opus.pds-rings.seti.org/holdings/previews/GO_0xxx/GO_0002/VENUS/C0018077045R_small.jpg" width="90" alt="Venus, n°5" title="Venus, n°5"></a> | 1990-02-10 | 0.928 | pas encore examinée |
