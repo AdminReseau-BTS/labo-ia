@@ -1,6 +1,6 @@
 # Sondes Fantômes : toutes les cibles classées
 
-*Mis à jour le 31/10/2026 à 03:04 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange, sauf celles que l'IA du labo a jugées ratées. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
+*Mis à jour le 31/10/2026 à 09:02 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange, sauf celles que l'IA du labo a jugées ratées. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
 
 ## Aegaeon (Cassini ISS)
 
@@ -25,7 +25,6 @@
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1660300168"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2064/data/1660296674_1660311598/N1660300168_1_small.jpg" width="90" alt="Albiorix, n°1" title="Albiorix, n°1"></a> | 2010-08-12 | 1.000 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1864298585"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2110/data/1864288456_1864307312/N1864298585_8_small.jpg" width="90" alt="Albiorix, n°2" title="Albiorix, n°2"></a> | 2017-01-28 | 1.000 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1660314292"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2064/data/1660311668_1660327219/N1660314292_1_small.jpg" width="90" alt="Albiorix, n°3" title="Albiorix, n°3"></a> | 2010-08-12 | 0.999 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1833260849"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2102/data/1833252929_1833286473/N1833260849_3_small.jpg" width="90" alt="Albiorix, n°4" title="Albiorix, n°4"></a> | 2016-02-04 | 0.998 | pas encore examinée |
@@ -80,7 +79,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1812822089"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2097/data/1812674143_1812956555/N1812822089_1_small.jpg" width="90" alt="Atlas, n°1" title="Atlas, n°1"></a> | 2015-06-12 | 0.999 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1824604058"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2100/data/1824603345_1824707053/N1824604058_1_small.jpg" width="90" alt="Atlas, n°2" title="Atlas, n°2"></a> | 2015-10-27 | 0.996 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1602518365"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2049/data/1602469889_1602565392/W1602518365_1_small.jpg" width="90" alt="Atlas, n°3" title="Atlas, n°3"></a> | 2008-10-12 | 0.994 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1828133480"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2100/data/1828129458_1828242442/W1828133480_1_small.jpg" width="90" alt="Atlas, n°4" title="Atlas, n°4"></a> | 2015-12-06 | 0.994 | pas encore examinée |
@@ -97,7 +95,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1651837742"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2062/data/1651446135_1651845787/N1651837742_1_small.jpg" width="90" alt="Bebhionn, n°1" title="Bebhionn, n°1"></a> | 2010-05-06 | 1.000 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1648533129"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2061/data/1648397760_1648581524/N1648533129_1_small.jpg" width="90" alt="Bebhionn, n°2" title="Bebhionn, n°2"></a> | 2010-03-29 | 0.999 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1651835480"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2062/data/1651446135_1651845787/N1651835480_1_small.jpg" width="90" alt="Bebhionn, n°3" title="Bebhionn, n°3"></a> | 2010-05-06 | 0.998 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1808569361"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2096/data/1808547670_1808588211/N1808569361_1_small.jpg" width="90" alt="Bebhionn, n°4" title="Bebhionn, n°4"></a> | 2015-04-24 | 0.998 | pas encore examinée |
@@ -130,7 +127,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1727787215"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2078/data/1727768838_1727812668/W1727787215_1_small.jpg" width="90" alt="Bestla, n°1" title="Bestla, n°1"></a> | 2012-10-01 | 1.000 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1725830062"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2076/data/1725795448_1725875021/W1725830062_1_small.jpg" width="90" alt="Bestla, n°2" title="Bestla, n°2"></a> | 2012-09-08 | 0.999 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1558092629"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2032/data/1557923015_1558291986/N1558092629_1_small.jpg" width="90" alt="Bestla, n°3" title="Bestla, n°3"></a> | 2007-05-17 | 0.998 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1727787198"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2078/data/1727768838_1727812668/W1727787198_1_small.jpg" width="90" alt="Bestla, n°4" title="Bestla, n°4"></a> | 2012-10-01 | 0.997 | pas encore examinée |
@@ -189,6 +185,23 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 | 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1611809612"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2052/data/1611761759_1611809839/W1611809612_1_small.jpg" width="90" alt="Daphnis, n°9" title="Daphnis, n°9"></a> | 2009-01-28 | 0.972 | pas encore examinée |
 | 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1626332632"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2056/data/1626245310_1626407985/W1626332632_1_small.jpg" width="90" alt="Daphnis, n°10" title="Daphnis, n°10"></a> | 2009-07-15 | 0.970 | pas encore examinée |
 
+## Dione (Cassini ISS)
+
+4 505 images analysées, dont 448 écartées comme ratées ; fouille en cours. Classement du 31/10/2026 à 08:51 UTC.
+
+| Rang | Image | Date | Score | Avis de l'IA du labo |
+|---:|---|---|---:|---|
+| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1569815251"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2037/data/1569814754_1569836775/N1569815251_1_small.jpg" width="90" alt="Dione, n°1" title="Dione, n°1"></a> | 2007-09-30 | 0.995 | pas encore examinée |
+| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1492468624"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2011/data/1492361687_1492468624/N1492468624_2_small.jpg" width="90" alt="Dione, n°2" title="Dione, n°2"></a> | 2005-04-17 | 0.995 | pas encore examinée |
+| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1569827571"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2037/data/1569814754_1569836775/N1569827571_1_small.jpg" width="90" alt="Dione, n°3" title="Dione, n°3"></a> | 2007-09-30 | 0.992 | pas encore examinée |
+| 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1507745489"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2016/data/1507744658_1507850846/N1507745489_2_small.jpg" width="90" alt="Dione, n°4" title="Dione, n°4"></a> | 2005-10-11 | 0.992 | pas encore examinée |
+| 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1507745522"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2016/data/1507744658_1507850846/N1507745522_2_small.jpg" width="90" alt="Dione, n°5" title="Dione, n°5"></a> | 2005-10-11 | 0.991 | pas encore examinée |
+| 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1507745557"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2016/data/1507744658_1507850846/N1507745557_2_small.jpg" width="90" alt="Dione, n°6" title="Dione, n°6"></a> | 2005-10-11 | 0.991 | pas encore examinée |
+| 7 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1525557714"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2022/data/1525505443_1525661737/W1525557714_1_small.jpg" width="90" alt="Dione, n°7" title="Dione, n°7"></a> | 2006-05-05 | 0.991 | pas encore examinée |
+| 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1522008586"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2021/data/1521893048_1522014377/W1522008586_1_small.jpg" width="90" alt="Dione, n°8" title="Dione, n°8"></a> | 2006-03-25 | 0.990 | pas encore examinée |
+| 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1533966524"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2024/data/1533946760_1534055448/N1533966524_1_small.jpg" width="90" alt="Dione, n°9" title="Dione, n°9"></a> | 2006-08-11 | 0.989 | pas encore examinée |
+| 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1569827092"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2037/data/1569814754_1569836775/N1569827092_4_small.jpg" width="90" alt="Dione, n°10" title="Dione, n°10"></a> | 2007-09-30 | 0.988 | pas encore examinée |
+
 ## Enceladus (Cassini ISS)
 
 12 379 images analysées, dont 2 616 écartées comme ratées ; fouille terminée. Classement du 28/10/2026 à 20:36 UTC.
@@ -210,7 +223,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1757517455"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2085/data/1757258657_1757635754/W1757517455_1_small.jpg" width="90" alt="Epimetheus, n°1" title="Epimetheus, n°1"></a> | 2013-09-10 | 1.000 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1757517387"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2085/data/1757258657_1757635754/W1757517387_1_small.jpg" width="90" alt="Epimetheus, n°2" title="Epimetheus, n°2"></a> | 2013-09-10 | 0.997 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1866366709"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2111/data/1866225336_1866366879/N1866366709_1_small.jpg" width="90" alt="Epimetheus, n°3" title="Epimetheus, n°3"></a> | 2017-02-21 | 0.994 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1864504928"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2110/data/1864498146_1864511329/N1864504928_1_small.jpg" width="90" alt="Epimetheus, n°4" title="Epimetheus, n°4"></a> | 2017-01-30 | 0.994 | pas encore examinée |
@@ -227,7 +239,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1738702347"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2080/data/1738660096_1738716728/W1738702347_1_small.jpg" width="90" alt="Erriapus, n°1" title="Erriapus, n°1"></a> | 2013-02-04 | 1.000 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1738702398"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2080/data/1738660096_1738716728/W1738702398_1_small.jpg" width="90" alt="Erriapus, n°2" title="Erriapus, n°2"></a> | 2013-02-04 | 0.999 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1738702415"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2080/data/1738660096_1738716728/W1738702415_1_small.jpg" width="90" alt="Erriapus, n°3" title="Erriapus, n°3"></a> | 2013-02-04 | 0.999 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1738702381"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2080/data/1738660096_1738716728/W1738702381_1_small.jpg" width="90" alt="Erriapus, n°4" title="Erriapus, n°4"></a> | 2013-02-04 | 0.998 | pas encore examinée |
@@ -324,7 +335,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1760115351"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2086/data/1760115351_1760272825/W1760115351_1_small.jpg" width="90" alt="Helene, n°1" title="Helene, n°1"></a> | 2013-10-10 | 0.997 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1696389478"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2071/data/1696329488_1696440486/W1696389478_1_small.jpg" width="90" alt="Helene, n°2" title="Helene, n°2"></a> | 2011-10-04 | 0.996 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1760115283"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2086/data/1759651531_1760115334/W1760115283_1_small.jpg" width="90" alt="Helene, n°3" title="Helene, n°3"></a> | 2013-10-10 | 0.995 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1607850437"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2050/data/1607728012_1607851067/W1607850437_7_small.jpg" width="90" alt="Helene, n°4" title="Helene, n°4"></a> | 2008-12-13 | 0.995 | pas encore examinée |
@@ -388,7 +398,7 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1674431930"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2067/data/1674420362_1674442546/N1674431930_6_small.jpg" width="90" alt="Ijiraq, n°1" title="Ijiraq, n°1"></a> | 2011-01-22 | 0.999 | pas encore examinée |
+| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1674431930"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2067/data/1674420362_1674442546/N1674431930_6_small.jpg" width="90" alt="Ijiraq, n°1" title="Ijiraq, n°1"></a> | 2011-01-22 | 0.999 | Déjà connu ou banal. Cette image a été prise par la caméra Cassini de la sonde spatiale Cassini, alors qu'elle orbitait autour de Saturne. Elle montre un ciel nocturne étoilé, avec de nombreuses étoiles visibles. Cependant, une zone particulière du ciel présente un motif inhabituel, comme l'indique le rapport de l'algorithme. Les images prises juste avant et après sont normales, ce qui suggère que ce motif pourrait être un phénomène bref, un artefact ou un problème de cadrage. |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1751229347"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2083/data/1751227384_1751283675/W1751229347_1_small.jpg" width="90" alt="Ijiraq, n°2" title="Ijiraq, n°2"></a> | 2013-06-29 | 0.999 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1790609174"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2092/data/1790587308_1790610212/N1790609174_1_small.jpg" width="90" alt="Ijiraq, n°3" title="Ijiraq, n°3"></a> | 2014-09-28 | 0.998 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1751270603"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2083/data/1751227384_1751283675/W1751270603_1_small.jpg" width="90" alt="Ijiraq, n°4" title="Ijiraq, n°4"></a> | 2013-06-30 | 0.997 | pas encore examinée |
@@ -421,7 +431,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1856403015"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2108/data/1856400688_1856496099/W1856403015_1_small.jpg" width="90" alt="Janus, n°1" title="Janus, n°1"></a> | 2016-10-29 | 0.986 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1741893218"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2081/data/1741622806_1742282623/W1741893218_1_small.jpg" width="90" alt="Janus, n°2" title="Janus, n°2"></a> | 2013-03-13 | 0.982 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1498793905"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2013/data/1498712985_1498825765/W1498793905_1_small.jpg" width="90" alt="Janus, n°3" title="Janus, n°3"></a> | 2005-06-30 | 0.979 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1865271926"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2110/data/1865194073_1865291779/N1865271926_1_small.jpg" width="90" alt="Janus, n°4" title="Janus, n°4"></a> | 2017-02-08 | 0.978 | pas encore examinée |
@@ -463,6 +472,23 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 | 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1667082096"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2066/data/1666492816_1667089944/N1667082096_1_small.jpg" width="90" alt="Kari, n°8" title="Kari, n°8"></a> | 2010-10-29 | 0.950 | pas encore examinée |
 | 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1636127968"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2058/data/1636079518_1636231171/W1636127968_1_small.jpg" width="90" alt="Kari, n°9" title="Kari, n°9"></a> | 2009-11-05 | 0.939 | pas encore examinée |
 | 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1667094292"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2066/data/1667090208_1667151746/N1667094292_1_small.jpg" width="90" alt="Kari, n°10" title="Kari, n°10"></a> | 2010-10-30 | 0.935 | pas encore examinée |
+
+## Kiviuq (Cassini ISS)
+
+4 761 images analysées, dont 632 écartées comme ratées ; fouille terminée. Classement du 31/10/2026 à 07:26 UTC.
+
+| Rang | Image | Date | Score | Avis de l'IA du labo |
+|---:|---|---|---:|---|
+| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1733321230"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2079/data/1733160796_1733323433/W1733321230_1_small.jpg" width="90" alt="Kiviuq, n°1" title="Kiviuq, n°1"></a> | 2012-12-04 | 1.000 | pas encore examinée |
+| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1733321264"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2079/data/1733160796_1733323433/W1733321264_1_small.jpg" width="90" alt="Kiviuq, n°2" title="Kiviuq, n°2"></a> | 2012-12-04 | 1.000 | pas encore examinée |
+| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1733321281"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2079/data/1733160796_1733323433/W1733321281_1_small.jpg" width="90" alt="Kiviuq, n°3" title="Kiviuq, n°3"></a> | 2012-12-04 | 0.999 | pas encore examinée |
+| 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1631030991"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2057/data/1630941775_1631036118/N1631030991_14_small.jpg" width="90" alt="Kiviuq, n°4" title="Kiviuq, n°4"></a> | 2009-09-07 | 0.999 | pas encore examinée |
+| 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1733321213"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2079/data/1733160796_1733323433/W1733321213_1_small.jpg" width="90" alt="Kiviuq, n°5" title="Kiviuq, n°5"></a> | 2012-12-04 | 0.999 | pas encore examinée |
+| 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1733321247"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2079/data/1733160796_1733323433/W1733321247_1_small.jpg" width="90" alt="Kiviuq, n°6" title="Kiviuq, n°6"></a> | 2012-12-04 | 0.999 | pas encore examinée |
+| 7 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1788869104"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2091/data/1788357410_1788872704/N1788869104_7_small.jpg" width="90" alt="Kiviuq, n°7" title="Kiviuq, n°7"></a> | 2014-09-08 | 0.998 | pas encore examinée |
+| 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1788934704"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2091/data/1788928904_1789044042/N1788934704_7_small.jpg" width="90" alt="Kiviuq, n°8" title="Kiviuq, n°8"></a> | 2014-09-09 | 0.998 | pas encore examinée |
+| 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1814502638"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2098/data/1814501846_1814575671/N1814502638_3_small.jpg" width="90" alt="Kiviuq, n°9" title="Kiviuq, n°9"></a> | 2015-07-02 | 0.997 | pas encore examinée |
+| 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1661885752"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2064/data/1661873632_1661899820/N1661885752_1_small.jpg" width="90" alt="Kiviuq, n°10" title="Kiviuq, n°10"></a> | 2010-08-30 | 0.996 | pas encore examinée |
 
 ## Loge (Cassini ISS)
 
@@ -515,20 +541,19 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 ## Mimas (Cassini ISS)
 
-3 199 images analysées, dont 806 écartées comme ratées ; fouille en cours. Classement du 31/10/2026 à 02:59 UTC.
+3 565 images analysées, dont 878 écartées comme ratées ; fouille terminée. Classement du 31/10/2026 à 03:11 UTC.
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746311"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746311_1_small.jpg" width="90" alt="Mimas, n°1" title="Mimas, n°1"></a> | 2005-01-18 | 0.997 | pas encore examinée |
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1644778308"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2060/data/1644743986_1644781734/N1644778308_1_small.jpg" width="90" alt="Mimas, n°2" title="Mimas, n°2"></a> | 2010-02-13 | 0.996 | pas encore examinée |
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746278"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746278_1_small.jpg" width="90" alt="Mimas, n°3" title="Mimas, n°3"></a> | 2005-01-18 | 0.994 | pas encore examinée |
-| 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746344"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746344_1_small.jpg" width="90" alt="Mimas, n°4" title="Mimas, n°4"></a> | 2005-01-18 | 0.992 | pas encore examinée |
-| 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746660"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746660_1_small.jpg" width="90" alt="Mimas, n°5" title="Mimas, n°5"></a> | 2005-01-18 | 0.988 | pas encore examinée |
-| 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746384"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746384_1_small.jpg" width="90" alt="Mimas, n°6" title="Mimas, n°6"></a> | 2005-01-18 | 0.986 | pas encore examinée |
-| 7 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1592418236"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2045/data/1592415275_1592543361/W1592418236_2_small.jpg" width="90" alt="Mimas, n°7" title="Mimas, n°7"></a> | 2008-06-17 | 0.985 | pas encore examinée |
-| 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746693"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746693_1_small.jpg" width="90" alt="Mimas, n°8" title="Mimas, n°8"></a> | 2005-01-18 | 0.985 | pas encore examinée |
-| 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1592418312"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2045/data/1592415275_1592543361/W1592418312_2_small.jpg" width="90" alt="Mimas, n°9" title="Mimas, n°9"></a> | 2008-06-17 | 0.985 | pas encore examinée |
-| 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1592418272"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2045/data/1592415275_1592543361/W1592418272_2_small.jpg" width="90" alt="Mimas, n°10" title="Mimas, n°10"></a> | 2008-06-17 | 0.983 | pas encore examinée |
+| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746278"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746278_1_small.jpg" width="90" alt="Mimas, n°2" title="Mimas, n°2"></a> | 2005-01-18 | 0.993 | pas encore examinée |
+| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1644778807"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2060/data/1644743986_1644781734/N1644778807_1_small.jpg" width="90" alt="Mimas, n°3" title="Mimas, n°3"></a> | 2010-02-13 | 0.991 | pas encore examinée |
+| 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746344"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746344_1_small.jpg" width="90" alt="Mimas, n°4" title="Mimas, n°4"></a> | 2005-01-18 | 0.991 | pas encore examinée |
+| 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1644778308"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2060/data/1644743986_1644781734/N1644778308_1_small.jpg" width="90" alt="Mimas, n°5" title="Mimas, n°5"></a> | 2010-02-13 | 0.986 | pas encore examinée |
+| 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746660"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746660_1_small.jpg" width="90" alt="Mimas, n°6" title="Mimas, n°6"></a> | 2005-01-18 | 0.986 | pas encore examinée |
+| 7 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1864506077"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2110/data/1864498146_1864511329/N1864506077_1_small.jpg" width="90" alt="Mimas, n°7" title="Mimas, n°7"></a> | 2017-01-30 | 0.986 | pas encore examinée |
+| 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1750714281"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2083/data/1750625298_1750725326/N1750714281_5_small.jpg" width="90" alt="Mimas, n°8" title="Mimas, n°8"></a> | 2013-06-23 | 0.985 | pas encore examinée |
+| 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746693"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746693_1_small.jpg" width="90" alt="Mimas, n°9" title="Mimas, n°9"></a> | 2005-01-18 | 0.984 | pas encore examinée |
+| 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1484746384"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2009/data/1484688237_1484761461/N1484746384_1_small.jpg" width="90" alt="Mimas, n°10" title="Mimas, n°10"></a> | 2005-01-18 | 0.983 | pas encore examinée |
 
 ## Moon (Cassini ISS)
 
@@ -585,7 +610,7 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1575065613"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2039/data/1575013831_1575085421/N1575065613_4_small.jpg" width="90" alt="Paaliaq, n°1" title="Paaliaq, n°1"></a> | 2007-11-29 | 1.000 | pas encore examinée |
+| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1575065613"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2039/data/1575013831_1575085421/N1575065613_4_small.jpg" width="90" alt="Paaliaq, n°1" title="Paaliaq, n°1"></a> | 2007-11-29 | 1.000 | Déjà connu ou banal. Cette image, prise par la sonde Cassini, montre une portion de la lune Paaliaq, l'une des plus grandes de Saturne. Elle est caractérisée par un motif iridescent violet, capturé avec un filtre UV3, ce qui est inhabituel car la plupart des images de cette lune sont prises en mode |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1810670461"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2096/data/1810539051_1810694691/N1810670461_1_small.jpg" width="90" alt="Paaliaq, n°2" title="Paaliaq, n°2"></a> | 2015-05-18 | 0.999 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1810669130"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2096/data/1810539051_1810694691/N1810669130_1_small.jpg" width="90" alt="Paaliaq, n°3" title="Paaliaq, n°3"></a> | 2015-05-18 | 0.999 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1575065441"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2039/data/1575013831_1575085421/N1575065441_4_small.jpg" width="90" alt="Paaliaq, n°4" title="Paaliaq, n°4"></a> | 2007-11-29 | 0.999 | pas encore examinée |
@@ -618,7 +643,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1602501805"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2049/data/1602469889_1602565392/W1602501805_1_small.jpg" width="90" alt="Pan, n°1" title="Pan, n°1"></a> | 2008-10-12 | 0.998 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1496909448"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2012/data/1496877151_1496974774/N1496909448_1_small.jpg" width="90" alt="Pan, n°2" title="Pan, n°2"></a> | 2005-06-08 | 0.998 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1840900167"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2104/data/1840826434_1840961295/W1840900167_1_small.jpg" width="90" alt="Pan, n°3" title="Pan, n°3"></a> | 2016-05-02 | 0.996 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1500341195"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2014/data/1500221961_1500511617/W1500341195_1_small.jpg" width="90" alt="Pan, n°4" title="Pan, n°4"></a> | 2005-07-18 | 0.995 | pas encore examinée |
@@ -635,7 +659,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1587847451"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2044/data/1587815900_1587911783/W1587847451_1_small.jpg" width="90" alt="Pandora, n°1" title="Pandora, n°1"></a> | 2008-04-25 | 0.998 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1500340235"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2014/data/1500221961_1500511617/W1500340235_1_small.jpg" width="90" alt="Pandora, n°2" title="Pandora, n°2"></a> | 2005-07-18 | 0.991 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1501227245"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2014/data/1500512757_1501288730/N1501227245_4_small.jpg" width="90" alt="Pandora, n°3" title="Pandora, n°3"></a> | 2005-07-28 | 0.983 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1567917922"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2036/data/1567917399_1568001229/W1567917922_1_small.jpg" width="90" alt="Pandora, n°4" title="Pandora, n°4"></a> | 2007-09-08 | 0.980 | pas encore examinée |
@@ -652,7 +675,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1799331284"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2094/data/1799322007_1799399647/W1799331284_1_small.jpg" width="90" alt="Phoebe, n°1" title="Phoebe, n°1"></a> | 2015-01-07 | 1.000 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1799331267"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2094/data/1799322007_1799399647/W1799331267_1_small.jpg" width="90" alt="Phoebe, n°2" title="Phoebe, n°2"></a> | 2015-01-07 | 0.998 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1799331301"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2094/data/1799322007_1799399647/W1799331301_1_small.jpg" width="90" alt="Phoebe, n°3" title="Phoebe, n°3"></a> | 2015-01-07 | 0.997 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1799331233"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2094/data/1799322007_1799399647/W1799331233_1_small.jpg" width="90" alt="Phoebe, n°4" title="Phoebe, n°4"></a> | 2015-01-07 | 0.995 | pas encore examinée |
@@ -696,6 +718,22 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 | 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1517188307"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2020/data/1517147192_1517360310/N1517188307_1_small.jpg" width="90" alt="Polydeuces, n°9" title="Polydeuces, n°9"></a> | 2006-01-29 | 0.977 | pas encore examinée |
 | 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1586903029"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2044/data/1586727926_1587103629/W1586903029_1_small.jpg" width="90" alt="Polydeuces, n°10" title="Polydeuces, n°10"></a> | 2008-04-14 | 0.977 | pas encore examinée |
 
+## Prometheus (Cassini ISS)
+
+3 774 images analysées, dont 424 écartées comme ratées ; fouille terminée. Classement du 31/10/2026 à 04:24 UTC.
+
+| Rang | Image | Date | Score | Avis de l'IA du labo |
+|---:|---|---|---:|---|
+| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1745474924"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2082/data/1745365751_1745606282/W1745474924_1_small.jpg" width="90" alt="Prometheus, n°2" title="Prometheus, n°2"></a> | 2013-04-24 | 0.996 | pas encore examinée |
+| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1792423140"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2093/data/1792246756_1792581031/W1792423140_1_small.jpg" width="90" alt="Prometheus, n°3" title="Prometheus, n°3"></a> | 2014-10-19 | 0.995 | pas encore examinée |
+| 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1498058570"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2012/data/1498032693_1498058570/W1498058570_1_small.jpg" width="90" alt="Prometheus, n°4" title="Prometheus, n°4"></a> | 2005-06-21 | 0.994 | pas encore examinée |
+| 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1745474958"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2082/data/1745365751_1745606282/W1745474958_1_small.jpg" width="90" alt="Prometheus, n°5" title="Prometheus, n°5"></a> | 2013-04-24 | 0.993 | pas encore examinée |
+| 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1792423157"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2093/data/1792246756_1792581031/W1792423157_1_small.jpg" width="90" alt="Prometheus, n°6" title="Prometheus, n°6"></a> | 2014-10-19 | 0.993 | pas encore examinée |
+| 7 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1598066063"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2048/data/1598062272_1598209931/W1598066063_1_small.jpg" width="90" alt="Prometheus, n°7" title="Prometheus, n°7"></a> | 2008-08-22 | 0.990 | pas encore examinée |
+| 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1500344465"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2014/data/1500221961_1500511617/W1500344465_1_small.jpg" width="90" alt="Prometheus, n°8" title="Prometheus, n°8"></a> | 2005-07-18 | 0.988 | pas encore examinée |
+| 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1579322111"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2041/data/1579318049_1579446912/W1579322111_1_small.jpg" width="90" alt="Prometheus, n°9" title="Prometheus, n°9"></a> | 2008-01-18 | 0.987 | pas encore examinée |
+| 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1792423123"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2093/data/1792246756_1792581031/W1792423123_1_small.jpg" width="90" alt="Prometheus, n°10" title="Prometheus, n°10"></a> | 2014-10-19 | 0.986 | pas encore examinée |
+
 ## S/2004 S 12 (Cassini ISS)
 
 145 images analysées, dont 120 écartées comme ratées ; fouille terminée. Classement du 30/10/2026 à 08:47 UTC.
@@ -708,7 +746,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1615131299"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2053/data/1615125119_1615303992/W1615131299_1_small.jpg" width="90" alt="Siarnaq, n°1" title="Siarnaq, n°1"></a> | 2009-03-07 | 0.999 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1677061304"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2067/data/1676784188_1677062902/N1677061304_1_small.jpg" width="90" alt="Siarnaq, n°2" title="Siarnaq, n°2"></a> | 2011-02-22 | 0.999 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1615131173"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2053/data/1615125119_1615303992/N1615131173_1_small.jpg" width="90" alt="Siarnaq, n°3" title="Siarnaq, n°3"></a> | 2009-03-07 | 0.999 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1744874140"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2082/data/1744841516_1744876324/W1744874140_1_small.jpg" width="90" alt="Siarnaq, n°4" title="Siarnaq, n°4"></a> | 2013-04-17 | 0.998 | pas encore examinée |
@@ -725,7 +762,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1850569778"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2106/data/1850563215_1850609961/W1850569778_1_small.jpg" width="90" alt="Skathi, n°1" title="Skathi, n°1"></a> | 2016-08-22 | 1.000 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1850569812"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2106/data/1850563215_1850609961/W1850569812_1_small.jpg" width="90" alt="Skathi, n°2" title="Skathi, n°2"></a> | 2016-08-22 | 0.997 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1557225172"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2031/data/1557164967_1557237088/N1557225172_1_small.jpg" width="90" alt="Skathi, n°3" title="Skathi, n°3"></a> | 2007-05-07 | 0.997 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1557223999"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2031/data/1557164967_1557237088/N1557223999_1_small.jpg" width="90" alt="Skathi, n°4" title="Skathi, n°4"></a> | 2007-05-07 | 0.997 | pas encore examinée |
@@ -812,7 +848,7 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1844541963"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2105/data/1844536579_1844825829/N1844541963_1_small.jpg" width="90" alt="Tarqeq, n°1" title="Tarqeq, n°1"></a> | 2016-06-13 | 1.000 | pas encore examinée |
+| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1844541963"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2105/data/1844536579_1844825829/N1844541963_1_small.jpg" width="90" alt="Tarqeq, n°1" title="Tarqeq, n°1"></a> | 2016-06-13 | 1.000 | Déjà connu ou banal. Cette image, prise par la sonde Cassini, montre une surface rouge-orangée, probablement rocheuse, recouverte d'une multitude de petits points blancs. L'image a été prise avec un filtre infrarouge (IR1) alors que la plupart des prises de vue de cette cible l'utilisaient en mode |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1864391790"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2110/data/1864386733_1864498113/N1864391790_8_small.jpg" width="90" alt="Tarqeq, n°2" title="Tarqeq, n°2"></a> | 2017-01-29 | 1.000 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1844822082"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2105/data/1844536579_1844825829/N1844822082_1_small.jpg" width="90" alt="Tarqeq, n°3" title="Tarqeq, n°3"></a> | 2016-06-17 | 0.997 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1844387318"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2105/data/1844319700_1844455199/N1844387318_1_small.jpg" width="90" alt="Tarqeq, n°4" title="Tarqeq, n°4"></a> | 2016-06-12 | 0.997 | pas encore examinée |
@@ -829,7 +865,7 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1786709852"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2091/data/1786702247_1786893277/W1786709852_1_small.jpg" width="90" alt="Tarvos, n°1" title="Tarvos, n°1"></a> | 2014-08-14 | 1.000 | pas encore examinée |
+| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1786709852"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2091/data/1786702247_1786893277/W1786709852_1_small.jpg" width="90" alt="Tarvos, n°1" title="Tarvos, n°1"></a> | 2014-08-14 | 1.000 | Déjà connu ou banal. Cette image montre une partie de Saturne, avec ses anneaux caractéristiques. Un petit point blanc est visible à l'intérieur des anneaux, ce qui a été remarqué par un algorithme en raison de son caractère inhabituel. La prise de vue a été réalisée avec un temps de pose très court et un filtre particulier, ce qui pourrait expliquer cet aspect particulier. Les images prises juste avant et après sont normales, suggérant que ce point est un phénomène bref ou un problème technique de l'image. |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1786709920"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2091/data/1786702247_1786893277/W1786709920_1_small.jpg" width="90" alt="Tarvos, n°2" title="Tarvos, n°2"></a> | 2014-08-14 | 0.999 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1813141975"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2097/data/1813121971_1813169961/N1813141975_1_small.jpg" width="90" alt="Tarvos, n°3" title="Tarvos, n°3"></a> | 2015-06-16 | 0.999 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1786709886"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2091/data/1786702247_1786893277/W1786709886_1_small.jpg" width="90" alt="Tarvos, n°4" title="Tarvos, n°4"></a> | 2014-08-14 | 0.998 | pas encore examinée |
@@ -857,13 +893,28 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 | 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1563764066"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2034/data/1563701743_1563775971/W1563764066_1_small.jpg" width="90" alt="Telesto, n°9" title="Telesto, n°9"></a> | 2007-07-22 | 0.976 | pas encore examinée |
 | 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1772258211"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2088/data/1772193360_1772448874/W1772258211_1_small.jpg" width="90" alt="Telesto, n°10" title="Telesto, n°10"></a> | 2014-02-28 | 0.966 | pas encore examinée |
 
+## Tethys (Cassini ISS)
+
+3 796 images analysées, dont 342 écartées comme ratées ; fouille terminée. Classement du 31/10/2026 à 05:43 UTC.
+
+| Rang | Image | Date | Score | Avis de l'IA du labo |
+|---:|---|---|---:|---|
+| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1506220442"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2015/data/1506110127_1506288646/N1506220442_1_small.jpg" width="90" alt="Tethys, n°2" title="Tethys, n°2"></a> | 2005-09-24 | 0.993 | pas encore examinée |
+| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1825947915"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2100/data/1825347905_1825948027/N1825947915_1_small.jpg" width="90" alt="Tethys, n°3" title="Tethys, n°3"></a> | 2015-11-11 | 0.993 | pas encore examinée |
+| 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1784051835"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2091/data/1783515962_1784078355/W1784051835_1_small.jpg" width="90" alt="Tethys, n°4" title="Tethys, n°4"></a> | 2014-07-14 | 0.992 | pas encore examinée |
+| 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1778539111"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2090/data/1778455303_1778988047/W1778539111_1_small.jpg" width="90" alt="Tethys, n°5" title="Tethys, n°5"></a> | 2014-05-11 | 0.990 | pas encore examinée |
+| 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1784051903"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2091/data/1783515962_1784078355/W1784051903_1_small.jpg" width="90" alt="Tethys, n°6" title="Tethys, n°6"></a> | 2014-07-14 | 0.989 | pas encore examinée |
+| 7 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1521906512"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2021/data/1521893048_1522014377/N1521906512_3_small.jpg" width="90" alt="Tethys, n°7" title="Tethys, n°7"></a> | 2006-03-24 | 0.989 | pas encore examinée |
+| 8 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1506220068"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2015/data/1506110127_1506288646/N1506220068_1_small.jpg" width="90" alt="Tethys, n°8" title="Tethys, n°8"></a> | 2005-09-24 | 0.988 | pas encore examinée |
+| 9 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1506219742"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2015/data/1506110127_1506288646/N1506219742_1_small.jpg" width="90" alt="Tethys, n°9" title="Tethys, n°9"></a> | 2005-09-24 | 0.986 | pas encore examinée |
+| 10 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1525438347"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2022/data/1525363626_1525505391/N1525438347_6_small.jpg" width="90" alt="Tethys, n°10" title="Tethys, n°10"></a> | 2006-05-04 | 0.986 | pas encore examinée |
+
 ## Thrymr (Cassini ISS)
 
 1 546 images analysées, dont 17 écartées comme ratées ; fouille terminée. Classement du 30/10/2026 à 17:27 UTC.
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1614668389"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2053/data/1614561905_1614688042/N1614668389_1_small.jpg" width="90" alt="Thrymr, n°1" title="Thrymr, n°1"></a> | 2009-03-02 | 1.000 | pas encore examinée |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1614668515"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2053/data/1614561905_1614688042/W1614668515_1_small.jpg" width="90" alt="Thrymr, n°2" title="Thrymr, n°2"></a> | 2009-03-02 | 0.998 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1882186737"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2116/data/1882170487_1882204298/N1882186737_3_small.jpg" width="90" alt="Thrymr, n°3" title="Thrymr, n°3"></a> | 2017-08-23 | 0.998 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1701049758"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2071/data/1701032694_1701292777/W1701049758_1_small.jpg" width="90" alt="Thrymr, n°4" title="Thrymr, n°4"></a> | 2011-11-27 | 0.997 | pas encore examinée |
@@ -880,7 +931,7 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1719161900"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2075/data/1719134714_1719220860/N1719161900_3_small.jpg" width="90" alt="Ymir, n°1" title="Ymir, n°1"></a> | 2012-06-23 | 1.000 | pas encore examinée |
+| 1 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1719161900"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2075/data/1719134714_1719220860/N1719161900_3_small.jpg" width="90" alt="Ymir, n°1" title="Ymir, n°1"></a> | 2012-06-23 | 1.000 | Déjà connu ou banal. Cette image, prise par la caméra Cassini, montre une zone de Ymir, l'un des satellites de Saturne, dans l'obscurité. On observe de nombreux points lumineux, probablement des étoiles, ainsi que quelques lignes blanches, peut-être dues au mouvement de la caméra pendant la prise de vue. L'image est particulièrement remarquable car elle est la seule parmi 1450 prises sur Ymir à avoir été signalée comme inhabituelle.  La distance à l'astre et l'angle de phase indiquent une observation relativement précise, mais la nature de cette singularité reste mystérieuse. |
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1719059854"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2075/data/1719054866_1719100108/N1719059854_3_small.jpg" width="90" alt="Ymir, n°2" title="Ymir, n°2"></a> | 2012-06-22 | 0.999 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1586365089"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2044/data/1586356343_1586369779/N1586365089_2_small.jpg" width="90" alt="Ymir, n°3" title="Ymir, n°3"></a> | 2008-04-08 | 0.998 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1586367623"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2044/data/1586356343_1586369779/N1586367623_1_small.jpg" width="90" alt="Ymir, n°4" title="Ymir, n°4"></a> | 2008-04-08 | 0.997 | pas encore examinée |
