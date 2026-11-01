@@ -4,10 +4,10 @@ Les photos d'archives de la NASA que le labo juge dignes d'un regard humain, cha
 
 ## Comment une photo devient une trouvaille
 
-1. **246 375 photos** ont été passées en revue.
-2. **31 509** ont été écartées comme ratées (noires, saturées, incomplètes, striées ou pleines de bruit).
-3. Pour chaque astre, les 10 photos les plus différentes des autres deviennent des pistes : **1 690** pour l'instant.
-4. Pour chaque piste, le labo lit la fiche officielle de la NASA (distance, éclairage, filtre, nom de l'observation), la compare aux photos ordinaires du même astre et regarde les photos prises juste avant et après. Puis l'IA du labo regarde la photo : **236** examinées, 195 défauts d'image, 41 explicables par quelque chose de connu ou de banal.
+1. **264 135 photos** ont été passées en revue.
+2. **34 419** ont été écartées comme ratées (noires, saturées, incomplètes, striées ou pleines de bruit).
+3. Pour chaque astre, les 10 photos les plus différentes des autres deviennent des pistes : **1 700** pour l'instant.
+4. Pour chaque piste, le labo lit la fiche officielle de la NASA (distance, éclairage, filtre, nom de l'observation), la compare aux photos ordinaires du même astre et regarde les photos prises juste avant et après. Puis l'IA du labo regarde la photo : **257** examinées, 212 défauts d'image, 45 explicables par quelque chose de connu ou de banal.
 5. Une photo jugée intéressante passe une seconde question indépendante (« n'est-ce pas plutôt un défaut ? »). Si elle la passe, l'IA écrit son dossier : **0 trouvaille**.
 
 ## Les trouvailles
