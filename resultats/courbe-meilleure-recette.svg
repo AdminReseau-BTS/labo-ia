@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 226" font-family="sans-serif" font-size="11" fill="#8b949e">
 <line x1="30" x2="610" y1="170.0" y2="170.0" stroke="#8b949e" stroke-opacity="0.35"/><text x="26" y="174.0" text-anchor="end">0%</text>
-<line x1="30" x2="610" y1="100.0" y2="100.0" stroke="#8b949e" stroke-opacity="0.35"/><text x="26" y="104.0" text-anchor="end">30%</text>
-<line x1="30" x2="610" y1="30.0" y2="30.0" stroke="#8b949e" stroke-opacity="0.35"/><text x="26" y="34.0" text-anchor="end">60%</text>
+<line x1="30" x2="610" y1="100.0" y2="100.0" stroke="#8b949e" stroke-opacity="0.35"/><text x="26" y="104.0" text-anchor="end">25%</text>
+<line x1="30" x2="610" y1="30.0" y2="30.0" stroke="#8b949e" stroke-opacity="0.35"/><text x="26" y="34.0" text-anchor="end">50%</text>
 <text x="30" y="192">minute 1</text><text x="610" y="192" text-anchor="end">minute 15</text>
-<polyline points="30.0,138.4 71.4,107.9 112.9,112.6 154.3,120.5 195.7,138.0 237.1,98.9 278.6,45.1 320.0,55.8 361.4,52.2 402.9,56.9 444.3,55.7 485.7,64.5 527.1,52.3 568.6,48.3 610.0,41.6" fill="none" stroke="#2f6fde" stroke-width="2.5" stroke-linejoin="round"/><rect x="30" y="210" width="14" height="3" fill="#2f6fde"/><text x="50" y="215">avec plasticité</text>
+<polyline points="30.0,111.5 71.4,91.5 112.9,105.2 154.3,97.1 195.7,120.5 237.1,79.7 278.6,76.3 320.0,61.5 361.4,49.6 402.9,67.7 444.3,62.1 485.7,72.8 527.1,74.0 568.6,49.7 610.0,67.7" fill="none" stroke="#2f6fde" stroke-width="2.5" stroke-linejoin="round"/><rect x="30" y="210" width="14" height="3" fill="#2f6fde"/><text x="50" y="215">avec plasticité</text>
+<polyline points="30.0,92.1 71.4,113.6 112.9,67.8 154.3,100.5 195.7,100.7 237.1,96.5 278.6,96.7 320.0,95.2 361.4,65.7 402.9,127.8 444.3,96.8 485.7,100.9 527.1,118.1 568.6,106.9 610.0,58.2" fill="none" stroke="#8b949e" stroke-width="2.5" stroke-linejoin="round"/><rect x="250" y="210" width="14" height="3" fill="#8b949e"/><text x="270" y="215">culture figée (témoin)</text>
 </svg>
