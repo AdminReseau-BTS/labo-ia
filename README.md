@@ -11,18 +11,18 @@ Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a 
 
 ## Où en est le labo
 
-*Mis à jour automatiquement le 02/11/2026 à 09:03 UTC.*
+*Mis à jour automatiquement le 02/11/2026 à 15:05 UTC.*
 
 | | |
 |---|---:|
-| Photos de la NASA passées en revue | 333 099 |
+| Photos de la NASA passées en revue | 350 735 |
 | Astres entièrement passés en revue | 183 sur 185 |
-| Parties de Pong jouées par les neurones | 793 (211,5 h de jeu) |
-| Façons d'entraîner essayées | 223 |
-| Meilleur progrès observé, avant vérification | +31 points (recette n°208) |
+| Parties de Pong jouées par les neurones | 816 (217,6 h de jeu) |
+| Façons d'entraîner essayées | 231 |
+| Meilleur progrès observé, avant vérification | +31 points (recette n°232) |
 | Progrès confirmés après vérification | 2 sur 20 |
 
-**La recette qui a le mieux marché (n°208)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
+**La recette qui a le mieux marché (n°232)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
 
 ![Courbe d'apprentissage de la meilleure recette](resultats/courbe-meilleure-recette.svg)
 
@@ -32,7 +32,7 @@ Dernier rapport : [2026-11-02](rapports/2026-11-02.md)
 
 ### Sondes Fantômes : les trouvailles
 
-Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 347 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
+Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 371 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
 
 ### Labo de neurones : ce qui marche vraiment
 
