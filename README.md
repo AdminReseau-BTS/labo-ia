@@ -11,16 +11,16 @@ Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a 
 
 ## Où en est le labo
 
-*Mis à jour automatiquement le 03/11/2026 à 09:04 UTC.*
+*Mis à jour automatiquement le 03/11/2026 à 15:03 UTC.*
 
 | | |
 |---|---:|
-| Photos de la NASA passées en revue | 399 434 |
-| Astres entièrement passés en revue | 183 sur 185 |
-| Parties de Pong jouées par les neurones | 886 (236,3 h de jeu) |
-| Façons d'entraîner essayées | 250 |
+| Photos de la NASA passées en revue | 415 747 |
+| Astres entièrement passés en revue | 184 sur 185 |
+| Parties de Pong jouées par les neurones | 909 (242,4 h de jeu) |
+| Façons d'entraîner essayées | 256 |
 | Meilleur progrès observé, avant vérification | +31 points (recette n°232) |
-| Progrès confirmés après vérification | 2 sur 22 |
+| Progrès confirmés après vérification | 2 sur 23 |
 
 **La recette qui a le mieux marché (n°232)** : part des balles renvoyées, minute par minute, par des neurones qui apprennent (bleu) et par des neurones figés (gris) :
 
@@ -32,11 +32,11 @@ Dernier rapport : [2026-11-03](rapports/2026-11-03.md)
 
 ### Sondes Fantômes : les trouvailles
 
-Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 436 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
+Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 458 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
 
 ### Labo de neurones : ce qui marche vraiment
 
-**2 recettes sur 22 ont passé la vérification** : les neurones capables d'apprendre progressent nettement plus que les neurones figés. La plus nette, la recette n°149, fait gagner +12 points aux neurones qui apprennent, contre +0 aux neurones figés. Détails dans [les résultats complets](resultats/neurones.md).
+**2 recettes sur 23 ont passé la vérification** : les neurones capables d'apprendre progressent nettement plus que les neurones figés. La plus nette, la recette n°149, fait gagner +12 points aux neurones qui apprennent, contre +0 aux neurones figés. Détails dans [les résultats complets](resultats/neurones.md).
 
 ## Mission 1 : Sondes Fantômes
 
