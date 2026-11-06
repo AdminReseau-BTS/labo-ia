@@ -1,6 +1,6 @@
 # Labo de neurones : recettes d'entraînement
 
-*Mis à jour le 06/11/2026 à 03:01 UTC. Progrès = balles renvoyées pendant les 5 dernières minutes de jeu, moins les 5 premières, en points, en moyenne sur 3 cultures.*
+*Mis à jour le 06/11/2026 à 09:02 UTC. Progrès = balles renvoyées pendant les 5 dernières minutes de jeu, moins les 5 premières, en points, en moyenne sur 3 cultures.*
 
 ## La meilleure recette, minute par minute
 
@@ -11,6 +11,7 @@
 | n° | Protocole | Réglages | Début → fin | Progrès | Contre-épreuve |
 |---:|---|---|---:|---:|---|
 | 310 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°184* | stimulation 0,83 µA de 7,77 à 28,87 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,59 ; STDP 38,34 ms ; homéostasie 3 Hz | 20 % → 53 % | **+33** | -2 avec plasticité, -0 sans : non reproduit |
+| 333 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°315* | stimulation 0,7 µA de 6,96 à 31,75 Hz ; retour 1,26 µA, 0,91 s à 10,8 Hz, salve de 9 ; raquette ×3,56 ; STDP 14,87 ms ; homéostasie 3 Hz | 18 % → 50 % | **+32** | – |
 | 315 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°158* | stimulation 0,7 µA de 6,96 à 34,59 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,25 ; STDP 14,87 ms ; homéostasie 3 Hz | 22 % → 53 % | **+31** | +2 avec plasticité, +6 sans : non reproduit |
 | 232 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°158* | stimulation 0,83 µA de 6,42 à 28,87 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,25 ; STDP 34,42 ms ; homéostasie 3 Hz | 20 % → 50 % | **+31** | -2 avec plasticité, -1 sans : non reproduit |
 | 208 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°184* | stimulation 0,83 µA de 6,96 à 27 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,64 ; STDP 52,13 ms ; homéostasie 3 Hz | 19 % → 50 % | **+31** | -0 avec plasticité, -3 sans : non reproduit |
@@ -18,6 +19,7 @@
 | 184 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°158* | stimulation 0,83 µA de 6,96 à 28,87 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,25 ; STDP 38,34 ms ; homéostasie 3 Hz | 20 % → 50 % | **+30** | +7 avec plasticité, +4 sans : les cultures figées progressent autant |
 | 250 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°158* | stimulation 0,85 µA de 7,26 à 29,39 Hz ; retour 1,75 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,01 ; STDP 38,34 ms ; homéostasie 3 Hz | 19 % → 49 % | **+30** | +0 avec plasticité, -2 sans : non reproduit |
 | 209 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°208* | stimulation 0,83 µA de 6,96 à 28,13 Hz ; retour 1,69 µA, 0,91 s à 10,8 Hz, salve de 12 ; raquette ×3,64 ; STDP 52,13 ms ; homéostasie 2,91 Hz | 19 % → 48 % | **+29** | +12 avec plasticité, +9 sans : les cultures figées progressent autant |
+| 330 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°310* | stimulation 0,83 µA de 7,77 à 18,78 Hz ; retour 0,75 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×4 ; STDP 47,2 ms ; homéostasie 2,85 Hz | 20 % → 49 % | **+29** | +2 avec plasticité, +3 sans : non reproduit |
 | 223 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°184* | stimulation 0,93 µA de 6,96 à 30,19 Hz ; retour 1,35 µA, 0,91 s à 10,8 Hz, salve de 7 ; raquette ×4 ; STDP 30,2 ms ; homéostasie 3 Hz | 19 % → 48 % | **+29** | +8 avec plasticité, +0 sans : confirmé |
 | 257 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°208* | stimulation 0,83 µA de 6,96 à 27,2 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,25 ; STDP 66,45 ms ; homéostasie 2,5 Hz | 22 % → 50 % | **+29** | -6 avec plasticité, -3 sans : non reproduit |
 | 288 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°184* | stimulation 0,83 µA de 5,12 à 28,87 Hz ; retour 1,39 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,25 ; STDP 32,58 ms ; homéostasie 3 Hz | 19 % → 48 % | **+29** | -2 avec plasticité, +2 sans : non reproduit |
@@ -30,6 +32,7 @@
 | 242 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°223* | stimulation 0,91 µA de 6,96 à 24,91 Hz ; retour 1,35 µA, 0,91 s à 10,8 Hz, salve de 7 ; raquette ×4 ; STDP 14,91 ms ; homéostasie 2,98 Hz | 21 % → 48 % | **+28** | -2 avec plasticité, -5 sans : non reproduit |
 | 270 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°158* | stimulation 0,83 µA de 6,96 à 25,25 Hz ; retour 1,34 µA, 0,91 s à 10,8 Hz, salve de 12 ; raquette ×3,25 ; STDP 38,34 ms ; homéostasie 3 Hz | 21 % → 48 % | **+27** | – |
 | 278 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°208* | stimulation 1,22 µA de 5,92 à 27 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 8 ; raquette ×3,64 ; STDP 52,13 ms ; homéostasie 2,84 Hz | 20 % → 47 % | **+27** | – |
+| 332 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°310* | stimulation 0,83 µA de 7,77 à 25,22 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,59 ; STDP 38,34 ms ; homéostasie 3 Hz | 24 % → 51 % | **+27** | – |
 | 262 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°232* | stimulation 0,47 µA de 6,42 à 28,87 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 8 ; raquette ×3,25 ; STDP 34,42 ms ; homéostasie 3 Hz | 22 % → 48 % | **+27** | – |
 | 243 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°208* | stimulation 0,83 µA de 6,96 à 27 Hz ; retour 1,63 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,64 ; STDP 52,13 ms ; homéostasie 2,16 Hz | 23 % → 49 % | **+27** | – |
 | 279 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°208* | stimulation 0,83 µA de 6,26 à 25,49 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×2,67 ; STDP 52,13 ms ; homéostasie 3 Hz | 21 % → 47 % | **+26** | – |
@@ -37,9 +40,6 @@
 | 207 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°158* | stimulation 0,83 µA de 6,96 à 29,86 Hz ; retour 1,58 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,53 ; STDP 38,34 ms ; homéostasie 3 Hz | 23 % → 48 % | **+25** | – |
 | 280 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°232* | stimulation 0,83 µA de 6,29 à 28,58 Hz ; retour 1,42 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,17 ; STDP 34,42 ms ; homéostasie 3 Hz | 23 % → 48 % | **+25** | – |
 | 313 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°232* | stimulation 0,83 µA de 6,42 à 28,65 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,25 ; STDP 34,42 ms ; homéostasie 3 Hz | 22 % → 46 % | **+25** | – |
-| 307 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°232* | stimulation 1 µA de 6,42 à 28,87 Hz ; retour 1,71 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,25 ; STDP 41,1 ms ; homéostasie 3 Hz | 23 % → 48 % | **+24** | – |
-| 227 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°208* | stimulation 0,83 µA de 6,96 à 27 Hz ; retour 0,73 µA, 0,77 s à 10,8 Hz, salve de 10 ; raquette ×3,75 ; STDP 52,13 ms ; homéostasie 3 Hz | 30 % → 48 % | **+18** | – |
-| 265 | retour prévisible / imprévisible (DishBrain)<br>*tirée au hasard* | stimulation 1,35 µA de 4,19 à 20,48 Hz ; retour 1,41 µA, 4,54 s à 26,3 Hz, salve de 3 ; raquette ×0,54 ; STDP 50,14 ms ; homéostasie 1,04 Hz | 30 % → 48 % | **+17** | – |
 
 ## Archive : les 30 meilleures recettes sur 1 000 neurones
 
@@ -111,3 +111,4 @@ Une contre-épreuve rejoue une recette prometteuse sur 3 cultures neuves, avec e
 | 288 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°184* | stimulation 0,83 µA de 5,12 à 28,87 Hz ; retour 1,39 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,25 ; STDP 32,58 ms ; homéostasie 3 Hz | 19 % → 48 % | **+29** | -2 avec plasticité, +2 sans : non reproduit |
 | 310 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°184* | stimulation 0,83 µA de 7,77 à 28,87 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,59 ; STDP 38,34 ms ; homéostasie 3 Hz | 20 % → 53 % | **+33** | -2 avec plasticité, -0 sans : non reproduit |
 | 315 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°158* | stimulation 0,7 µA de 6,96 à 34,59 Hz ; retour 1,46 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×3,25 ; STDP 14,87 ms ; homéostasie 3 Hz | 22 % → 53 % | **+31** | +2 avec plasticité, +6 sans : non reproduit |
+| 330 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°310* | stimulation 0,83 µA de 7,77 à 18,78 Hz ; retour 0,75 µA, 0,91 s à 10,8 Hz, salve de 10 ; raquette ×4 ; STDP 47,2 ms ; homéostasie 2,85 Hz | 20 % → 49 % | **+29** | +2 avec plasticité, +3 sans : non reproduit |
