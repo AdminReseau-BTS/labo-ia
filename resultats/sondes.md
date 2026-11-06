@@ -1,6 +1,6 @@
 # Sondes Fantômes : toutes les cibles classées
 
-*Mis à jour le 06/11/2026 à 15:02 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange, sauf celles que l'IA du labo a jugées ratées. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
+*Mis à jour le 06/11/2026 à 21:02 UTC. Pour chaque cible, les 10 images les plus inhabituelles, de la plus étrange à la moins étrange, sauf celles que l'IA du labo a jugées ratées. Cliquer sur une image ouvre sa fiche NASA (OPUS).*
 
 ## Aegaeon (Cassini ISS)
 
@@ -707,7 +707,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1751048847"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2083/data/1751048847_1751204189/W1751048847_1_small.jpg" width="90" alt="Saturn, n°3" title="Saturn, n°3"></a> | 2013-06-27 | 0.999 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1865755621"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2110/data/1865753812_1865897410/N1865755621_1_small.jpg" width="90" alt="Saturn, n°4" title="Saturn, n°4"></a> | 2017-02-14 | 0.999 | Déjà connu ou banal. Cette image montre Saturne prise par la sonde Cassini, et plus précisément son bord, ou limbe, où l'atmosphère et les panaches de glace se manifestent. La prise de vue a été réalisée avec un temps de pose très court (0.32 secondes) et un filtre spécifique (GRN), ce qui est inhabituel par rapport aux autres images de Saturne. L'image est classée comme |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-n1865755557"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2110/data/1865753812_1865897410/N1865755557_1_small.jpg" width="90" alt="Saturn, n°5" title="Saturn, n°5"></a> | 2017-02-14 | 0.998 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=co-iss-w1663841369"><img src="https://opus.pds-rings.seti.org/holdings/previews/COISS_2xxx/COISS_2065/data/1663708608_1663878634/W1663841369_1_small.jpg" width="90" alt="Saturn, n°6" title="Saturn, n°6"></a> | 2010-09-22 | 0.998 | pas encore examinée |
@@ -1211,7 +1210,7 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-09426-acs-j6mm10011"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTJx_xxxx/HSTJ0_9426/DATA/VISIT_10/J6MM10011_small.jpg" width="90" alt="Adrastea, n°3" title="Adrastea, n°3"></a> | 2003-02-05 | 0.900 | pas encore examinée |
+| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-09426-acs-j6mm10011"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTJx_xxxx/HSTJ0_9426/DATA/VISIT_10/J6MM10011_small.jpg" width="90" alt="Adrastea, n°3" title="Adrastea, n°3"></a> | 2003-02-05 | 0.900 | Déjà connu ou banal. Cette image, prise par le télescope Hubble, montre Adrastea, un petit astéroïde qui tourne autour de Saturne. Elle est particulièrement inhabituelle car elle a été prise avec un filtre spécifique (ACS-F814W) alors que la plupart des images de cette cible étaient prises avec un autre filtre (ACS-F475W). Les photos prises juste avant et après sont normales, ce qui suggère que cette image est un événement bref, un problème technique, ou un simple changement de position de la caméra. Elle se situe parmi les trois images les plus étranges prises d'Adrastea. |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-09426-acs-j6mm10021"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTJx_xxxx/HSTJ0_9426/DATA/VISIT_10/J6MM10021_small.jpg" width="90" alt="Adrastea, n°4" title="Adrastea, n°4"></a> | 2003-02-05 | 0.870 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-09426-acs-j6mm10e8q"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTJx_xxxx/HSTJ0_9426/DATA/VISIT_10/J6MM10E8Q_small.jpg" width="90" alt="Adrastea, n°5" title="Adrastea, n°5"></a> | 2003-02-05 | 0.810 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-09426-acs-j6mm04011"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTJx_xxxx/HSTJ0_9426/DATA/VISIT_04/J6MM04011_small.jpg" width="90" alt="Adrastea, n°6" title="Adrastea, n°6"></a> | 2003-01-25 | 0.790 | pas encore examinée |
@@ -1273,7 +1272,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10870-acs-j9ng41030"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTJx_xxxx/HSTJ1_0870/DATA/VISIT_41/J9NG41030_small.jpg" width="90" alt="Mab, n°3" title="Mab, n°3"></a> | 2006-08-16 | 0.902 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10870-acs-j9ng42040"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTJx_xxxx/HSTJ1_0870/DATA/VISIT_42/J9NG42040_small.jpg" width="90" alt="Mab, n°4" title="Mab, n°4"></a> | 2006-08-27 | 0.859 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10473-acs-j9dh35040"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTJx_xxxx/HSTJ1_0473/DATA/VISIT_35/J9DH35040_small.jpg" width="90" alt="Mab, n°5" title="Mab, n°5"></a> | 2006-06-16 | 0.848 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10870-acs-j9ng41l7q"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTJx_xxxx/HSTJ1_0870/DATA/VISIT_41/J9NG41L7Q_small.jpg" width="90" alt="Mab, n°6" title="Mab, n°6"></a> | 2006-08-16 | 0.793 | pas encore examinée |
@@ -1437,7 +1435,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07243-nicmos-n4be04040"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7243/DATA/VISIT_04/N4BE04040_small.jpg" width="90" alt="Io, n°2" title="Io, n°2"></a> | 1997-10-30 | 0.967 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07319-nicmos-n41sx2010"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7319/DATA/VISIT_X2/N41SX2010_small.jpg" width="90" alt="Io, n°3" title="Io, n°3"></a> | 1998-11-22 | 0.967 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07243-nicmos-n4be06030"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7243/DATA/VISIT_06/N4BE06030_small.jpg" width="90" alt="Io, n°4" title="Io, n°4"></a> | 1998-11-11 | 0.957 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07319-nicmos-n41sx2031"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7319/DATA/VISIT_X2/N41SX2031_small.jpg" width="90" alt="Io, n°5" title="Io, n°5"></a> | 1998-11-22 | 0.938 | pas encore examinée |
@@ -1453,7 +1450,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10161-nicmos-n92hc1060"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN1_0161/DATA/VISIT_C1/N92HC1060_small.jpg" width="90" alt="Jupiter, n°2" title="Jupiter, n°2"></a> | 2005-03-25 | 0.989 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11498-nicmos-nb0607020"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN1_1498/DATA/VISIT_07/NB0607020_small.jpg" width="90" alt="Jupiter, n°3" title="Jupiter, n°3"></a> | 2008-07-09 | 0.984 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10161-nicmos-n92hc1040"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN1_0161/DATA/VISIT_C1/N92HC1040_small.jpg" width="90" alt="Jupiter, n°4" title="Jupiter, n°4"></a> | 2005-03-25 | 0.982 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07241-nicmos-n4db01030"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7241/DATA/VISIT_01/N4DB01030_small.jpg" width="90" alt="Jupiter, n°5" title="Jupiter, n°5"></a> | 1997-10-26 | 0.973 | pas encore examinée |
@@ -1490,7 +1486,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07818-nicmos-n4pf03010"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7818/DATA/VISIT_03/N4PF03010_small.jpg" width="90" alt="Pluto, n°2" title="Pluto, n°2"></a> | 1998-03-27 | 0.960 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07818-nicmos-n4pf02021"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7818/DATA/VISIT_02/N4PF02021_small.jpg" width="90" alt="Pluto, n°3" title="Pluto, n°3"></a> | 1998-06-07 | 0.937 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07818-nicmos-n4pf03011"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7818/DATA/VISIT_03/N4PF03011_small.jpg" width="90" alt="Pluto, n°4" title="Pluto, n°4"></a> | 1998-03-27 | 0.889 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07818-nicmos-n4pf02010"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7818/DATA/VISIT_02/N4PF02010_small.jpg" width="90" alt="Pluto, n°5" title="Pluto, n°5"></a> | 1998-06-07 | 0.881 | pas encore examinée |
@@ -1506,7 +1501,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-09354-nicmos-n8eqb1onq"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_9354/DATA/VISIT_B1/N8EQB1ONQ_small.jpg" width="90" alt="Saturn, n°2" title="Saturn, n°2"></a> | 2003-03-07 | 0.918 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-09354-nicmos-n8eqb1p9q"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_9354/DATA/VISIT_B1/N8EQB1P9Q_small.jpg" width="90" alt="Saturn, n°3" title="Saturn, n°3"></a> | 2003-03-07 | 0.918 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-09354-nicmos-n8eqb1poq"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_9354/DATA/VISIT_B1/N8EQB1POQ_small.jpg" width="90" alt="Saturn, n°4" title="Saturn, n°4"></a> | 2003-03-07 | 0.891 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07823-nicmos-n4ih01040"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7823/DATA/VISIT_01/N4IH01040_small.jpg" width="90" alt="Saturn, n°5" title="Saturn, n°5"></a> | 1998-01-04 | 0.873 | pas encore examinée |
@@ -1528,7 +1522,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07180-nicmos-n4dz01050"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7180/DATA/VISIT_01/N4DZ01050_small.jpg" width="90" alt="Titan, n°2" title="Titan, n°2"></a> | 1997-11-22 | 0.878 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07180-nicmos-n4dz05060"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7180/DATA/VISIT_05/N4DZ05060_small.jpg" width="90" alt="Titan, n°3" title="Titan, n°3"></a> | 1997-11-17 | 0.854 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07180-nicmos-n4dz04050"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7180/DATA/VISIT_04/N4DZ04050_small.jpg" width="90" alt="Titan, n°4" title="Titan, n°4"></a> | 1997-10-28 | 0.854 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07180-nicmos-n4dz01060"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7180/DATA/VISIT_01/N4DZ01060_small.jpg" width="90" alt="Titan, n°5" title="Titan, n°5"></a> | 1997-11-22 | 0.841 | pas encore examinée |
@@ -1544,7 +1537,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11190-nicmos-na0202080"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN1_1190/DATA/VISIT_02/NA0202080_small.jpg" width="90" alt="Uranus, n°2" title="Uranus, n°2"></a> | 2007-08-16 | 0.908 | pas encore examinée |
 | 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11190-nicmos-na0203080"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN1_1190/DATA/VISIT_03/NA0203080_small.jpg" width="90" alt="Uranus, n°3" title="Uranus, n°3"></a> | 2007-08-16 | 0.867 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07429-nicmos-n43h05b3q"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7429/DATA/VISIT_05/N43H05B3Q_small.jpg" width="90" alt="Uranus, n°4" title="Uranus, n°4"></a> | 1997-07-28 | 0.827 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07429-nicmos-n43h05020"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTNx_xxxx/HSTN0_7429/DATA/VISIT_05/N43H05020_small.jpg" width="90" alt="Uranus, n°5" title="Uranus, n°5"></a> | 1997-07-28 | 0.806 | pas encore examinée |
@@ -1727,7 +1719,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11085-wfpc2-u9xe0701m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_1085/DATA/VISIT_07/U9XE0701M_small.jpg" width="90" alt="Europa, n°3" title="Europa, n°3"></a> | 2007-04-28 | 0.937 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11085-wfpc2-u9xe0204m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_1085/DATA/VISIT_02/U9XE0204M_small.jpg" width="90" alt="Europa, n°4" title="Europa, n°4"></a> | 2007-04-14 | 0.921 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06752-wfpc2-u3awb502r"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6752/DATA/VISIT_B5/U3AWB502R_small.jpg" width="90" alt="Europa, n°5" title="Europa, n°5"></a> | 1999-08-19 | 0.881 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11085-wfpc2-u9xe0206m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_1085/DATA/VISIT_02/U9XE0206M_small.jpg" width="90" alt="Europa, n°6" title="Europa, n°6"></a> | 2007-04-14 | 0.873 | pas encore examinée |
@@ -1742,7 +1733,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10468-wfpc2-u9au230dm"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0468/DATA/VISIT_23/U9AU230DM_small.jpg" width="90" alt="Ganymede, n°3" title="Ganymede, n°3"></a> | 2007-05-01 | 0.956 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06029-wfpc2-u2q60305t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6029/DATA/VISIT_03/U2Q60305T_small.jpg" width="90" alt="Ganymede, n°4" title="Ganymede, n°4"></a> | 1995-07-14 | 0.934 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06752-wfpc2-u3awa701r"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6752/DATA/VISIT_A7/U3AWA701R_small.jpg" width="90" alt="Ganymede, n°5" title="Ganymede, n°5"></a> | 1999-08-28 | 0.926 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-05837-wfpc2-u2p60207t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_5837/DATA/VISIT_02/U2P60207T_small.jpg" width="90" alt="Ganymede, n°6" title="Ganymede, n°6"></a> | 1995-08-19 | 0.904 | pas encore examinée |
@@ -1757,7 +1747,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10860-wfpc2-u9qs010cm"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0860/DATA/VISIT_01/U9QS010CM_small.jpg" width="90" alt="Haumea, n°3" title="Haumea, n°3"></a> | 2007-02-06 | 0.924 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10860-wfpc2-u9qs0101m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0860/DATA/VISIT_01/U9QS0101M_small.jpg" width="90" alt="Haumea, n°4" title="Haumea, n°4"></a> | 2007-02-06 | 0.924 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10860-wfpc2-u9qs010ym"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0860/DATA/VISIT_01/U9QS010YM_small.jpg" width="90" alt="Haumea, n°5" title="Haumea, n°5"></a> | 2007-02-06 | 0.924 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10860-wfpc2-u9qs010jm"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0860/DATA/VISIT_01/U9QS010JM_small.jpg" width="90" alt="Haumea, n°6" title="Haumea, n°6"></a> | 2007-02-06 | 0.890 | pas encore examinée |
@@ -1772,7 +1761,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-05392-wfpc2-u2930801t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_5392/DATA/VISIT_08/U2930801T_small.jpg" width="90" alt="Io, n°3" title="Io, n°3"></a> | 1994-03-06 | 0.994 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11096-wfpc2-u9xb4005m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_1096/DATA/VISIT_40/U9XB4005M_small.jpg" width="90" alt="Io, n°4" title="Io, n°4"></a> | 2007-02-28 | 0.986 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-05392-wfpc2-u2930802t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_5392/DATA/VISIT_08/U2930802T_small.jpg" width="90" alt="Io, n°5" title="Io, n°5"></a> | 1994-03-06 | 0.983 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06218-wfpc2-u2r60103t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6218/DATA/VISIT_01/U2R60103T_small.jpg" width="90" alt="Io, n°6" title="Io, n°6"></a> | 1995-07-23 | 0.983 | pas encore examinée |
@@ -1788,7 +1776,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
 | 2 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10357-wfpc2-u97f1106m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0357/DATA/VISIT_11/U97F1106M_small.jpg" width="90" alt="Jupiter, n°2" title="Jupiter, n°2"></a> | 2005-01-14 | 0.993 | Déjà connu ou banal. Cette image montre Saturne et ses anneaux, capturés par le télescope spatial Hubble. Ce qui est inhabituel, c'est l'utilisation d'un filtre spécifique (WFPC2-F439W) alors que la plupart des images de Saturne utilisent un autre filtre (WFPC2-F410M). De plus, les images prises juste avant et après cette capture sont également étranges, suggérant que ce phénomène n'est pas un simple accident. Cette image se classe parmi les plus étranges parmi les nombreuses photos prises de Saturne par Hubble. |
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11096-wfpc2-u9xb1007m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_1096/DATA/VISIT_10/U9XB1007M_small.jpg" width="90" alt="Jupiter, n°3" title="Jupiter, n°3"></a> | 2007-02-27 | 0.993 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10357-wfpc2-u97f1103m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0357/DATA/VISIT_11/U97F1103M_small.jpg" width="90" alt="Jupiter, n°4" title="Jupiter, n°4"></a> | 2005-01-13 | 0.993 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10357-wfpc2-u97f1102m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0357/DATA/VISIT_11/U97F1102M_small.jpg" width="90" alt="Jupiter, n°5" title="Jupiter, n°5"></a> | 2005-01-13 | 0.990 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06452-wfpc2-u3ap030kt"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6452/DATA/VISIT_03/U3AP030KT_small.jpg" width="90" alt="Jupiter, n°6" title="Jupiter, n°6"></a> | 1996-10-21 | 0.988 | pas encore examinée |
@@ -1803,7 +1790,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10870-wfpc2-u9ng520zm"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0870/DATA/VISIT_52/U9NG520ZM_small.jpg" width="90" alt="Mab, n°3" title="Mab, n°3"></a> | 2007-06-10 | 0.992 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10870-wfpc2-u9ng5215m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0870/DATA/VISIT_52/U9NG5215M_small.jpg" width="90" alt="Mab, n°4" title="Mab, n°4"></a> | 2007-06-10 | 0.990 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10870-wfpc2-u9ng520km"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0870/DATA/VISIT_52/U9NG520KM_small.jpg" width="90" alt="Mab, n°5" title="Mab, n°5"></a> | 2007-06-10 | 0.985 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11292-wfpc2-ua1c8103m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_1292/DATA/VISIT_81/UA1C8103M_small.jpg" width="90" alt="Mab, n°6" title="Mab, n°6"></a> | 2007-08-25 | 0.982 | pas encore examinée |
@@ -1818,7 +1804,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-08577-wfpc2-u666050br"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_8577/DATA/VISIT_05/U666050BR_small.jpg" width="90" alt="Mars, n°3" title="Mars, n°3"></a> | 2001-04-02 | 0.981 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-08579-wfpc2-u6440106r"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_8579/DATA/VISIT_01/U6440106R_small.jpg" width="90" alt="Mars, n°4" title="Mars, n°4"></a> | 2001-05-27 | 0.961 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-08577-wfpc2-u666050ar"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_8577/DATA/VISIT_05/U666050AR_small.jpg" width="90" alt="Mars, n°5" title="Mars, n°5"></a> | 2001-04-02 | 0.956 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-08579-wfpc2-u6440206m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_8579/DATA/VISIT_02/U6440206M_small.jpg" width="90" alt="Mars, n°6" title="Mars, n°6"></a> | 2001-05-27 | 0.956 | pas encore examinée |
@@ -1833,7 +1818,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06753-wfpc2-u40n0104m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6753/DATA/VISIT_01/U40N0104M_small.jpg" width="90" alt="Neptune, n°3" title="Neptune, n°3"></a> | 1997-07-03 | 0.992 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06753-wfpc2-u40n030bm"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6753/DATA/VISIT_03/U40N030BM_small.jpg" width="90" alt="Neptune, n°4" title="Neptune, n°4"></a> | 1997-07-06 | 0.991 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-05831-wfpc2-u2ue0904t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_5831/DATA/VISIT_09/U2UE0904T_small.jpg" width="90" alt="Neptune, n°5" title="Neptune, n°5"></a> | 1995-11-24 | 0.987 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06846-wfpc2-u34u0205t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6846/DATA/VISIT_02/U34U0205T_small.jpg" width="90" alt="Neptune, n°6" title="Neptune, n°6"></a> | 1996-03-08 | 0.985 | pas encore examinée |
@@ -1848,7 +1832,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-08660-wfpc2-u6394304r"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_8660/DATA/VISIT_43/U6394304R_small.jpg" width="90" alt="Pandora, n°3" title="Pandora, n°3"></a> | 2000-11-20 | 0.845 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-09341-wfpc2-u6l44306m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_9341/DATA/VISIT_43/U6L44306M_small.jpg" width="90" alt="Pandora, n°4" title="Pandora, n°4"></a> | 2002-12-09 | 0.828 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-08802-wfpc2-u6em1304m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_8802/DATA/VISIT_13/U6EM1304M_small.jpg" width="90" alt="Pandora, n°5" title="Pandora, n°5"></a> | 2001-11-28 | 0.793 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-08660-wfpc2-u6394305r"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_8660/DATA/VISIT_43/U6394305R_small.jpg" width="90" alt="Pandora, n°6" title="Pandora, n°6"></a> | 2000-11-20 | 0.776 | pas encore examinée |
@@ -1863,7 +1846,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10786-wfpc2-u9qa1707m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0786/DATA/VISIT_17/U9QA1707M_small.jpg" width="90" alt="Pluto, n°3" title="Pluto, n°3"></a> | 2007-05-18 | 0.993 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10786-wfpc2-u9qa1806m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0786/DATA/VISIT_18/U9QA1806M_small.jpg" width="90" alt="Pluto, n°4" title="Pluto, n°4"></a> | 2007-05-11 | 0.986 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10786-wfpc2-u9qa1907m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0786/DATA/VISIT_19/U9QA1907M_small.jpg" width="90" alt="Pluto, n°5" title="Pluto, n°5"></a> | 2007-05-04 | 0.967 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10786-wfpc2-u9qa1703m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0786/DATA/VISIT_17/U9QA1703M_small.jpg" width="90" alt="Pluto, n°6" title="Pluto, n°6"></a> | 2007-05-18 | 0.965 | pas encore examinée |
@@ -1878,7 +1860,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06806-wfpc2-u3ic0106p"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6806/DATA/VISIT_01/U3IC0106P_small.jpg" width="90" alt="Prometheus, n°3" title="Prometheus, n°3"></a> | 1997-01-10 | 0.990 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07427-wfpc2-u46a0904r"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_7427/DATA/VISIT_09/U46A0904R_small.jpg" width="90" alt="Prometheus, n°4" title="Prometheus, n°4"></a> | 1997-10-01 | 0.975 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06806-wfpc2-u3ic0103t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6806/DATA/VISIT_01/U3IC0103T_small.jpg" width="90" alt="Prometheus, n°5" title="Prometheus, n°5"></a> | 1997-01-10 | 0.970 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-07427-wfpc2-u46a8104r"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_7427/DATA/VISIT_81/U46A8104R_small.jpg" width="90" alt="Prometheus, n°6" title="Prometheus, n°6"></a> | 1998-10-24 | 0.962 | pas encore examinée |
@@ -1893,7 +1874,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-05776-wfpc2-u2kr0107t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_5776/DATA/VISIT_01/U2KR0107T_small.jpg" width="90" alt="Saturn, n°3" title="Saturn, n°3"></a> | 1994-12-01 | 0.983 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-10862-wfpc2-u9rlu901m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_0862/DATA/VISIT_U9/U9RLU901M_small.jpg" width="90" alt="Saturn, n°4" title="Saturn, n°4"></a> | 2007-02-09 | 0.981 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-09354-wfpc2-u8eq0105m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_9354/DATA/VISIT_01/U8EQ0105M_small.jpg" width="90" alt="Saturn, n°5" title="Saturn, n°5"></a> | 2003-03-07 | 0.979 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06328-wfpc2-u2zn0105t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6328/DATA/VISIT_01/U2ZN0105T_small.jpg" width="90" alt="Saturn, n°6" title="Saturn, n°6"></a> | 1995-11-18 | 0.979 | pas encore examinée |
@@ -1908,7 +1888,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06216-wfpc2-u2oo0403t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6216/DATA/VISIT_04/U2OO0403T_small.jpg" width="90" alt="Saturn Rings, n°3" title="Saturn Rings, n°3"></a> | 1995-11-20 | 0.987 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06216-wfpc2-u2oo0202t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6216/DATA/VISIT_02/U2OO0202T_small.jpg" width="90" alt="Saturn Rings, n°4" title="Saturn Rings, n°4"></a> | 1995-05-22 | 0.979 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-05836-wfpc2-u2tf020et"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_5836/DATA/VISIT_02/U2TF020ET_small.jpg" width="90" alt="Saturn Rings, n°5" title="Saturn Rings, n°5"></a> | 1995-08-10 | 0.977 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-05836-wfpc2-u2tf0404t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_5836/DATA/VISIT_04/U2TF0404T_small.jpg" width="90" alt="Saturn Rings, n°6" title="Saturn Rings, n°6"></a> | 1995-11-27 | 0.974 | pas encore examinée |
@@ -1923,7 +1902,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11956-wfpc2-ub963105m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_1956/DATA/VISIT_31/UB963105M_small.jpg" width="90" alt="Titan, n°3" title="Titan, n°3"></a> | 2009-02-24 | 0.988 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06733-wfpc2-u3in010ct"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6733/DATA/VISIT_01/U3IN010CT_small.jpg" width="90" alt="Titan, n°4" title="Titan, n°4"></a> | 1996-10-17 | 0.986 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06295-wfpc2-u2vi1106t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6295/DATA/VISIT_11/U2VI1106T_small.jpg" width="90" alt="Titan, n°5" title="Titan, n°5"></a> | 1995-10-01 | 0.985 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-06295-wfpc2-u2vi1103t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_6295/DATA/VISIT_11/U2VI1103T_small.jpg" width="90" alt="Titan, n°6" title="Titan, n°6"></a> | 1995-10-01 | 0.981 | pas encore examinée |
@@ -1938,7 +1916,6 @@ Pas de classement : il reste moins de 30 images exploitables pour les comparer e
 
 | Rang | Image | Date | Score | Avis de l'IA du labo |
 |---:|---|---|---:|---|
-| 3 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11292-wfpc2-ua1c740ym"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_1292/DATA/VISIT_74/UA1C740YM_small.jpg" width="90" alt="Uranus, n°3" title="Uranus, n°3"></a> | 2007-08-14 | 0.997 | pas encore examinée |
 | 4 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11292-wfpc2-ua1c740lm"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_1292/DATA/VISIT_74/UA1C740LM_small.jpg" width="90" alt="Uranus, n°4" title="Uranus, n°4"></a> | 2007-08-14 | 0.996 | pas encore examinée |
 | 5 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-11292-wfpc2-ua1c7407m"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU1_1292/DATA/VISIT_74/UA1C7407M_small.jpg" width="90" alt="Uranus, n°5" title="Uranus, n°5"></a> | 2007-08-13 | 0.994 | pas encore examinée |
 | 6 | <a href="https://opus.pds-rings.seti.org/opus/#/view=detail&amp;detail=hst-05220-wfpc2-u2hl0108t"><img src="https://opus.pds-rings.seti.org/holdings/previews/HSTUx_xxxx/HSTU0_5220/DATA/VISIT_01/U2HL0108T_small.jpg" width="90" alt="Uranus, n°6" title="Uranus, n°6"></a> | 1994-08-22 | 0.990 | pas encore examinée |
