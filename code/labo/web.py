@@ -6,7 +6,7 @@ import time
 from flask import Flask, abort, jsonify, redirect, render_template_string, request
 
 from . import direct, vpn
-from .config import (CULTURE_SIZE, DEPLOY_KEY, FEEDBACK_MODES, NEURO_DB, OPUS_DETAIL, OPUS_PREVIEWS, PUBLICATION_STATUS,
+from .config import (CULTURE_SIZE, MOTOR_PROTOCOL, DEPLOY_KEY, FEEDBACK_MODES, NEURO_DB, OPUS_DETAIL, OPUS_PREVIEWS, PUBLICATION_STATUS,
                      SONDES_DB, VEILLE_DB)
 from .db import connect, rows, scalar
 
@@ -93,7 +93,7 @@ def index():
     }
     recipes = []
     for r in rows(NEURO_DB, "SELECT * FROM recipes WHERE learning IS NOT NULL AND neurons=?"
-                            " ORDER BY learning DESC LIMIT 8", (CULTURE_SIZE,)):
+                            " AND protocol=? ORDER BY learning DESC LIMIT 8", (CULTURE_SIZE, MOTOR_PROTOCOL)):
         p = json.loads(r["params"])
         recipes.append({**dict(r), "mode": FEEDBACK_MODES.get(p["mode"], p["mode"]), "p": p})
     best_chart = None
@@ -471,7 +471,8 @@ figure.no img { opacity:.45; filter:grayscale(1); }
   <canvas id="pong" width="640" height="400"></canvas>
   <div class="row" style="margin-top:8px"><span class="big" id="n-score"></span><span class="note" id="n-time"></span></div>
   <p class="note">La raquette (à gauche) est pilotée uniquement par l'activité des neurones. La simulation tourne
-  environ 6 fois plus vite que la réalité : la page rejoue des extraits de 10 secondes à vitesse normale.</p>
+  à une vitesse mesurée ci-dessous. Les images arrivent dans l'ordre, sans rejouer les mêmes mouvements.</p>
+  <p class="note" id="n-motor">Calibration des zones motrices pendant l'échauffement.</p>
   <h3>La puce : 64 électrodes sous les neurones</h3>
   <canvas id="chip" width="320" height="320"></canvas>
   <div class="keys"><span><i style="background:#3b82f6"></i>voient la balle</span>
@@ -497,15 +498,40 @@ const REASONS = {"image presque uniforme": "vide", "image presque noire": "trop 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const $ = id => document.getElementById(id);
 let latest = null, clip = null, frame = 0, lastSondes = null, level = new Float32Array(64), flash = 0, flashColor = "";
+let queue = [], sessionId = null, lastFrameId = -1, receivedAt = 0, polling = false;
+
+function ingest(n, now) {
+  latest = n ? {...n, age: Math.max(0, now - n.t)} : null;
+  receivedAt = Date.now();
+  if (!n || !n.frames || !n.frames.length) {
+    queue = []; clip = null;
+    return;
+  }
+  if (n.session_id !== sessionId) {
+    queue = []; lastFrameId = -1; sessionId = n.session_id;
+    level.fill(0);
+  }
+  // Les fichiers contiennent une fenetre glissante : chaque image n'est consommee qu'une fois.
+  const fresh = n.frames.filter(f => Number.isFinite(f[6]) && f[6] > lastFrameId);
+  if (fresh.length) lastFrameId = fresh[fresh.length - 1][6];
+  queue.push(...fresh);
+  if (queue.length > 80) queue = queue.slice(-40); // au plus 2 s de retard apres rattrapage
+  clip = latest;
+}
 
 function ago(s) { return s < 90 ? Math.round(s) + " s" : Math.round(s / 60) + " min"; }
 
 async function poll() {
+  if (polling) return;
+  polling = true;
   try {
-    const d = await (await fetch("/api/direct", {cache: "no-store"})).json();
-    latest = d.neurones ? {...d.neurones, age: d.now - d.neurones.t} : null;
+    const response = await fetch("/api/direct", {cache: "no-store", signal: AbortSignal.timeout(8000)});
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    const d = await response.json();
+    ingest(d.neurones, d.now);
     showSondes(d.sondes, d.now);
-  } catch (e) { $("n-what").textContent = "Tableau de bord injoignable…"; }
+  } catch (e) { $("n-what").textContent = "Connexion interrompue — nouvel essai automatique…"; }
+  finally { polling = false; }
 }
 
 function showSondes(s, now) {
@@ -526,8 +552,7 @@ function showSondes(s, now) {
 }
 
 function startClip() {
-  if (!latest || !latest.frames || !latest.frames.length || (clip && latest.t === clip.t)) return false;
-  clip = latest; frame = 0;
+  if (!clip) return false;
   const who = clip.plastic ? "neurones capables d'apprendre" : "neurones figés, incapables d'apprendre (vérification)";
   $("n-what").innerHTML = "<strong>" + esc(clip.what) + "</strong> · culture n°" + esc(clip.seed) + ", " + who
     + "<br>Recette : " + esc(clip.recipe);
@@ -545,7 +570,7 @@ function drawPong(f) {
   g.fillStyle = "#e6e9ee"; const ph = 0.25 * H; g.fillRect(10, paddle * H - ph / 2, 10, ph);
   if (!pause) { g.beginPath(); g.arc(24 + x * (W - 40), 8 + y * (H - 16), 8, 0, 7); g.fill(); }
   g.font = "16px system-ui"; g.textAlign = "center";
-  if (clip.sim_t < 0) { g.fillStyle = "#95a1b0"; g.fillText("Échauffement : la culture vit seule avant la partie", W / 2, 30); }
+  if (f[7] < 0) { g.fillStyle = "#95a1b0"; g.fillText("Échauffement : calibration des zones motrices", W / 2, 30); }
   else if (pause) { g.fillStyle = "#ef4444"; g.fillText("Balle ratée : petite pause avant la suivante", W / 2, 30); }
 }
 
@@ -562,18 +587,34 @@ function drawChip(f) {
 }
 
 function tick() {
-  if ((!clip || frame >= clip.frames.length) && !startClip()) {
-    if (clip) $("n-time").textContent = latest && latest.age > 120 ? "Pas de nouvelles depuis " + ago(latest.age) + " : voir la page Erreurs" : "Chargement de l'extrait suivant…";
+  const age = latest ? latest.age + (Date.now() - receivedAt) / 1000 : 0;
+  if (age > 20) {
+    $("n-time").textContent = "Dernières données il y a " + ago(age) + " — simulation en attente ou interrompue";
     return;
   }
-  const f = clip.frames[frame++];
+  if (!clip) {
+    const messages = {preparing:"Construction de la culture…", thinking:"L'IA prépare une nouvelle recette…", error:"Session interrompue : nouvel essai en préparation…"};
+    $("n-what").textContent = latest ? (messages[latest.status] || latest.what || "En attente…") : "En attente de la simulation…";
+    $("n-time").textContent = "";
+    return;
+  }
+  if (!queue.length) return;
+  startClip();
+  const f = queue.shift();
   drawPong(f); drawChip(f);
-  const minute = Math.max(0, Math.floor(clip.sim_t / 60) + 1);
-  $("n-score").textContent = clip.hits + " balles renvoyées, " + clip.misses + " ratées";
-  $("n-time").textContent = clip.sim_t < 0 ? "échauffement" : "minute " + Math.min(minute, 15) + " sur 15";
+  const minute = Math.max(0, Math.floor(f[7] / 60) + 1);
+  $("n-score").textContent = f[8] + " balles renvoyées, " + f[9] + " ratées";
+  $("n-time").textContent = (f[7] < 0 ? "échauffement : " + Math.ceil(-f[7]) + " s" : "minute " + Math.min(minute, 15) + " sur 15")
+    + " · simulation " + (clip.speed || 0).toFixed(2) + "× temps réel";
+  if (clip.motor) {
+    const m = clip.motor;
+    $("n-motor").textContent = "Activité haut / bas : " + m.rates_hz.map(v => v.toFixed(1)).join(" / ")
+      + " imp/s · activité de fond : " + m.baseline_hz.map(v => v.toFixed(1)).join(" / ")
+      + " · pilotage calibré v" + clip.protocol;
+  }
 }
 
-poll(); setInterval(poll, 2000); setInterval(tick, 50);
+poll(); setInterval(poll, 1000); setInterval(tick, 50);
 </script>
 </body></html>
 """

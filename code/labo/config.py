@@ -69,6 +69,7 @@ FEEDBACK_MODES = {
 # Chaque recette garde la taille sur laquelle elle a ete jouee : seules celles de la taille actuelle
 # se comparent entre elles, les anciennes restent en archive.
 CULTURE_SIZE = 20000
+MOTOR_PROTOCOL = 2  # calibration du decodeur : resultats separes du protocole initial
 
 # Publication des recherches sur GitHub (voir labo.publication).
 PUBLICATION_SETTINGS = DATA / "publication.json"

@@ -29,7 +29,8 @@ from cl import BurstDesign, ChannelSet, StimDesign  # noqa: E402
 from cl._sim import _data_buffer  # noqa: E402
 
 from . import culture, db, direct, llm  # noqa: E402
-from .config import CULTURE_SIZE, FEEDBACK_MODES, LOG_FORMAT, NEURO_DB  # noqa: E402
+from .config import CULTURE_SIZE, MOTOR_PROTOCOL, FEEDBACK_MODES, LOG_FORMAT, NEURO_DB  # noqa: E402
+from .motor import MotorDecoder
 
 log = logging.getLogger("neurones")
 
@@ -126,6 +127,10 @@ class Pong:
         self.sens = StimDesign(160, -recipe["sens_amp"], 160, recipe["sens_amp"])
         self.fb = StimDesign(160, -recipe["fb_amp"], 160, recipe["fb_amp"])
         self.paddle, self.pause, self.phase = 0.5, 0.0, 0.0
+        self.motor = MotorDecoder(self.dt)
+        self.session_id = f"{os.getpid()}-{time.time_ns()}"
+        self.started = time.monotonic()
+        self.command = 0.0
         self.hits = np.zeros(GAME_MIN, int)
         self.misses = np.zeros(GAME_MIN, int)
         self.spikes = 0
@@ -142,6 +147,9 @@ class Pong:
     def tick(self, neurons, t, spikes):
         """t : secondes depuis le debut de la partie (negatif pendant l'echauffement)."""
         self.spikes += len(spikes)
+        up = sum(self.region[s.channel] > 0 for s in spikes)
+        down = sum(self.region[s.channel] < 0 for s in spikes)
+        self.command = self.motor.update(up, down, calibrating=t < 0)
         if self.info is not None:
             for s in spikes:
                 self.act[s.channel] += 1
@@ -159,15 +167,9 @@ class Pong:
                 self.serve()
             return
 
-        up = down = 0
-        for s in spikes:
-            side = self.region[s.channel]
-            up += side > 0
-            down += side < 0
-        if up + down:
-            half = self.PADDLE / 2
-            move = r["gain"] * (down - up) / (up + down) * self.dt
-            self.paddle = min(max(self.paddle + move, half), 1 - half)
+        half = self.PADDLE / 2
+        move = r["gain"] * self.command * self.dt
+        self.paddle = min(max(self.paddle + move, half), 1 - half)
 
         self.x += self.vx * self.dt
         self.y += self.vy * self.dt
@@ -203,7 +205,8 @@ class Pong:
         """Garde une image de la partie (balle, raquette, activite des 64 electrodes) pour la page
         « En direct », et y envoie regulierement les 10 dernieres secondes de jeu."""
         self.frames.append([round(self.x, 3), round(self.y, 3), round(self.paddle, 3), self.event,
-                            int(self.pause > 0), "".join(str(min(int(a), 9)) for a in self.act)])
+                            int(self.pause > 0), "".join(str(min(int(a), 9)) for a in self.act),
+                            self.n, round(t, 2), int(self.hits.sum()), int(self.misses.sum())])
         self.act[:] = 0
         self.event = 0
         if time.time() - self.shown < LIVE_EVERY:
@@ -211,6 +214,10 @@ class Pong:
         self.shown = time.time()
         direct.write("neurones", {
             **self.info, "sim_t": round(t, 1), "hits": int(self.hits.sum()), "misses": int(self.misses.sum()),
+            "session_id": self.session_id, "status": "warmup" if t < 0 else "playing",
+            "protocol": MOTOR_PROTOCOL, "speed": round((t + WARMUP_S) / max(time.monotonic() - self.started, .01), 2),
+            "motor": {"baseline_hz": self.motor.baseline, "rates_hz": self.motor.rates,
+                      "command": float(self.command)},
             "curve": [round(float(a / (a + b)), 3) if a + b else None for a, b in zip(self.hits, self.misses)],
             "frame_s": FRAME_TICKS / TICKS_PER_SECOND, "frames": list(self.frames),
             "sensory": SENSORY, "up": UP, "down": DOWN})
@@ -234,6 +241,8 @@ def run_session(recipe, seed, plastic, info=None):
     config = {"seed": int(seed), "plastic": bool(plastic), "n": CULTURE_SIZE,
               "stdp_tau_ms": float(recipe["stdp_tau"]), "target_hz": float(recipe["target_hz"])}
     start = time.time()
+    if info is not None:
+        direct.write("neurones", {**info, "status": "preparing", "frames": []})
     culture.prepare(CULTURE_FILE, **config)
     cl.sim.set_simulator_data_source("labo.culture:create_source", config={**config, "path": str(CULTURE_FILE)},
                                      metadata=culture.METADATA)
@@ -259,10 +268,12 @@ def play(con, recipe_id, recipe, seed, plastic, what="Test"):
             # Le simulateur abandonne s'il prend trop de retard quand le processeur est tres occupe
             # (IA locale, autre mission) : on rejoue la meme session une fois, apres une pause.
             log.warning("simulateur en retard (recette %s, culture %s) : session rejouée", recipe_id, seed)
+            direct.write("neurones", {**info, "status": "error", "frames": []})
             time.sleep(60)
             res = run_session(recipe, seed, plastic, info)
     except Exception:  # le labo tourne 24 h/24 : une session ratee ne doit pas l'arreter
         log.exception("session interrompue (recette %s, culture %s)", recipe_id, seed)
+        direct.write("neurones", {**info, "status": "error", "frames": []})
         time.sleep(30)
         return None
     con.execute(
@@ -318,11 +329,12 @@ def ask_llm(rows):
 
 def propose(con, rng):
     rows = con.execute("SELECT id, params, learning FROM recipes WHERE learning IS NOT NULL AND neurons=?"
-                       " ORDER BY learning DESC", (CULTURE_SIZE,)).fetchall()
+                       " AND protocol=? ORDER BY learning DESC", (CULTURE_SIZE, MOTOR_PROTOCOL)).fetchall()
     if not rows:
         return dict(DISHBRAIN), "protocole DishBrain"
     if len(rows) % 5 == 4 and llm.available():
         try:
+            direct.write("neurones", {"status": "thinking", "what": "Proposition d'une recette par l'IA locale", "frames": []})
             return ask_llm(rows)
         except (requests.RequestException, ValueError, KeyError, TypeError) as e:
             log.warning("proposition de l'IA inutilisable : %s", e)
@@ -338,8 +350,8 @@ def mean_learning(results):
 
 
 def evaluate(con, recipe, origin):
-    rid = con.execute("INSERT INTO recipes(params, origin, created_at, neurons) VALUES (?,?,?,?)",
-                      (json.dumps(recipe), origin, time.time(), CULTURE_SIZE)).lastrowid
+    rid = con.execute("INSERT INTO recipes(params, origin, created_at, neurons, protocol) VALUES (?,?,?,?,?)",
+                      (json.dumps(recipe), origin, time.time(), CULTURE_SIZE, MOTOR_PROTOCOL)).lastrowid
     con.commit()
     results = [r for r in (play(con, rid, recipe, s, True) for s in SEARCH_SEEDS) if r]
     if not results:
@@ -349,7 +361,7 @@ def evaluate(con, recipe, origin):
     late = float(np.mean([r["late"] for r in results]))
     hits = sum(r["hits"] for r in results)
     total = hits + sum(r["misses"] for r in results)
-    best = con.execute("SELECT MAX(learning) FROM recipes WHERE neurons=?", (CULTURE_SIZE,)).fetchone()[0]
+    best = con.execute("SELECT MAX(learning) FROM recipes WHERE neurons=? AND protocol=?", (CULTURE_SIZE, MOTOR_PROTOCOL)).fetchone()[0]
     con.execute("UPDATE recipes SET early=?, late=?, learning=?, hit_rate=? WHERE id=?",
                 (early, late, late - early, hits / total if total else 0.0, rid))
     con.commit()
@@ -364,7 +376,7 @@ def evaluate(con, recipe, origin):
 def confirm_best(con):
     """Rejoue la meilleure recette sur des cultures neuves, avec et sans plasticite."""
     row = con.execute("SELECT * FROM recipes WHERE learning IS NOT NULL AND control IS NULL AND neurons=?"
-                      " ORDER BY learning DESC LIMIT 1", (CULTURE_SIZE,)).fetchone()
+                      " AND protocol=? ORDER BY learning DESC LIMIT 1", (CULTURE_SIZE, MOTOR_PROTOCOL)).fetchone()
     if row is None or row["learning"] < MIN_EFFECT:
         return
     recipe = json.loads(row["params"])
@@ -395,6 +407,9 @@ def main():
         con.execute("ALTER TABLE recipes ADD COLUMN neurons INTEGER DEFAULT 1000")
         con.commit()
     rng = np.random.default_rng()
+    if "protocol" not in {c[1] for c in con.execute("PRAGMA table_info(recipes)")}:
+        con.execute("ALTER TABLE recipes ADD COLUMN protocol INTEGER DEFAULT 1")
+        con.commit()
     db.journal(con, log, f"Labo de neurones démarré ({CULTURE_SIZE:,} neurones par culture).".replace(",", " "))
     while True:
         recipe, origin = propose(con, rng)

@@ -20,6 +20,8 @@ from pathlib import Path
 
 import numpy as np
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 import torch
 from PIL import Image
 from sklearn.decomposition import PCA
@@ -112,6 +114,8 @@ DOSSIER_SCHEMA = {
         "conclusion": {"type": "string"}}}
 
 HTTP = requests.Session()
+HTTP.mount('https://', HTTPAdapter(max_retries=Retry(
+    total=3, backoff_factor=1, status_forcelist=(429, 500, 502, 503, 504), allowed_methods=('GET',))))
 HTTP.headers["User-Agent"] = "labo-ia-sondes-fantomes/1.0 (recherche d'anomalies, projet perso)"
 
 SCHEMA = """
