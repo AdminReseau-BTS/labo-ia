@@ -5,7 +5,7 @@ import time
 
 from flask import Flask, abort, jsonify, redirect, render_template_string, request
 
-from . import direct, vpn
+from . import direct, vpn, health
 from .config import (CULTURE_SIZE, MOTOR_PROTOCOL, DEPLOY_KEY, FEEDBACK_MODES, NEURO_DB, OPUS_DETAIL, OPUS_PREVIEWS, PUBLICATION_STATUS,
                      SONDES_DB, VEILLE_DB)
 from .db import connect, rows, scalar
@@ -140,7 +140,7 @@ def live():
 
 @app.route("/api/direct")
 def live_api():
-    return jsonify(now=time.time(), neurones=direct.read("neurones"), sondes=direct.read("sondes"))
+    return jsonify(now=time.time(), neurones=direct.read("neurones"), sondes=direct.read("sondes"), health=health.snapshot())
 
 
 @app.route("/erreurs")
@@ -149,6 +149,7 @@ def errors():
     show_all = request.args.get("tout") == "1"
     return render_template_string(
         ERRORS, now=when(time.time()), topic=veille.settings()["ntfy"], test=request.args.get("test"),
+        service_health=health.snapshot(),
         phone=vpn.links(),
         # Par defaut : les erreurs pas encore vues ou de la semaine, et tout ce qui date de moins de 24 h.
         show_all=show_all, errors=rows(VEILLE_DB, "SELECT * FROM erreurs" + ("" if show_all else
@@ -240,7 +241,7 @@ def nav(page):
     links = (("/", "Tableau de bord"), ("/direct", "En direct"), ("/erreurs", "Erreurs"))
     return '<nav class="nav">' + "".join(
         f'<a href="{href}"{" class=on" if href == page else ""}>{label}'
-        + ('{% if unseen %} <span class="badge">{{ unseen }}</span>{% endif %}' if href == "/erreurs" else "")
+        + ('{% if unseen %} <span class="badge" title="Alertes enregistrées non consultées">{{ unseen }}</span>{% endif %}' if href == "/erreurs" else "")
         + "</a>" for href, label in links) + "</nav>"
 
 
@@ -359,8 +360,9 @@ PAGE = """<!doctype html>
 <section>
   <h2>Labo de neurones</h2>
   <p class="sub">Une culture de 20 000 neurones simulés, branchée sur le SDK officiel de Cortical Labs,
-  apprend à jouer à Pong. Le labo invente des protocoles d'entraînement, les teste et garde les meilleurs.
-  Les recettes jouées avant sur 1 000 neurones restent en archive.</p>
+  tente d'apprendre à jouer à Pong. Le labo invente des protocoles d'entraînement, les teste et garde les meilleurs.
+  Le classement utilise le pilotage calibré v2. Les résultats antérieurs restent conservés en base ;
+  un progrès doit être confirmé face aux cultures témoins avant de conclure à un apprentissage.</p>
   <div class="stats">
     <div class="stat"><b>{{ neuro.sessions }}</b><span>parties jouées</span></div>
     <div class="stat"><b>{{ ("%.1f" if neuro.sim_hours < 10 else "%.0f")|format(neuro.sim_hours)|replace(".", ",") }} h</b><span>de vie de culture simulée</span></div>
@@ -462,6 +464,7 @@ figure.no img { opacity:.45; filter:grayscale(1); }
   """ + nav("/direct") + """
   <h1>En direct</h1>
   <p class="sub">Ce que font les deux missions en ce moment. La page se met à jour toute seule.</p>
+  <p class="note" id="health" role="status">Vérification des services…</p>
 </header>
 <main>
 <section>
@@ -529,9 +532,24 @@ async function poll() {
     if (!response.ok) throw new Error("HTTP " + response.status);
     const d = await response.json();
     ingest(d.neurones, d.now);
+    showHealth(d.health);
     showSondes(d.sondes, d.now);
   } catch (e) { $("n-what").textContent = "Connexion interrompue — nouvel essai automatique…"; }
   finally { polling = false; }
+}
+
+function showHealth(h) {
+  if (!h) return;
+  const active = h.services.filter(s => s.state === 'active').length;
+  const gib = bytes => (bytes / 1073741824).toFixed(1);
+  let text = (h.status === 'ok' ? 'Services en marche' : h.status === 'unknown' ? 'État des services indisponible' : 'Service à vérifier')
+    + ' · ' + active + '/' + h.services.length;
+  const stopped = h.services.filter(s => s.state !== 'active').map(s => s.name + ' : ' + s.state);
+  if (stopped.length) text += ' · ' + stopped.join(', ');
+  if (h.memory) text += ' · RAM ' + gib(h.memory.used) + ' / ' + gib(h.memory.total) + ' Gio';
+  if (h.disk) text += ' · volume du labo ' + Math.round(100 * h.disk.used / h.disk.total) + ' % utilisé';
+  $('health').textContent = text;
+  $('health').style.color = h.status === 'degraded' ? '#f59e0b' : '';
 }
 
 function showSondes(s, now) {
@@ -639,10 +657,20 @@ ol.steps { margin:6px 0 10px; padding-left:20px; }
 <header>
   """ + nav("/erreurs") + """
   <h1>Erreurs et alertes</h1>
+  <p class="note">Le compteur indique les alertes enregistrées non consultées, y compris les anciennes.
+  Il ne compte pas les pannes actuellement actives.</p>
   <p class="sub">Le labo se surveille tout seul toutes les 5 minutes : plantages, services arrêtés, mission bloquée,
   publication en échec, disque plein. Page mise à jour le {{ now }}.</p>
 </header>
 <main style="display:block">
+<section style="margin-bottom:16px">
+  <h2>État actuel des services</h2>
+  {% for service in service_health.services %}
+  <p><strong>{{ service.name }}</strong> : {{ 'en marche' if service.state == 'active' else service.state }}
+  · {{ service.restarts }} redémarrage(s) automatique(s) depuis son dernier lancement.</p>
+  {% else %}<p>État des services temporairement indisponible.</p>{% endfor %}
+  <p class="note">Pour vérifier que la simulation avance, consulte <a href="/direct">le jeu en direct et ses mesures</a>.</p>
+</section>
 <section style="margin-bottom:16px">
   <h2>Voir le labo depuis ton téléphone</h2>
   <p class="note">Le labo passe par un VPN privé (Tailscale) : rien n'est ouvert sur Internet, seuls tes appareils

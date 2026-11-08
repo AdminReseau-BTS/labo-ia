@@ -323,7 +323,7 @@ def ask_llm(rows):
         f"\nBornes des parametres : {json.dumps(SPACE)}. Modes : {json.dumps(FEEDBACK_MODES, ensure_ascii=False)}."
         "\nPropose UNE nouvelle recette, differente des precedentes, et resume en une phrase en "
         "francais l'hypothese qu'elle teste.")
-    out = llm.ask(prompt, schema=LLM_SCHEMA)
+    out = llm.ask(prompt, schema=LLM_SCHEMA, wait=False)
     return clean(out["recette"]), f"proposée par l'IA : {out['hypothese']}"
 
 
@@ -336,6 +336,8 @@ def propose(con, rng):
         try:
             direct.write("neurones", {"status": "thinking", "what": "Proposition d'une recette par l'IA locale", "frames": []})
             return ask_llm(rows)
+        except llm.Busy:
+            log.info("IA occupée par les images : recherche de recette poursuivie sans attente")
         except (requests.RequestException, ValueError, KeyError, TypeError) as e:
             log.warning("proposition de l'IA inutilisable : %s", e)
     if len(rows) < 8 or rng.random() < 0.2:

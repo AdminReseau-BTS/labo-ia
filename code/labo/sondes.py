@@ -128,6 +128,8 @@ CREATE TABLE IF NOT EXISTS images (
     opus_id TEXT PRIMARY KEY, campaign_id INTEGER, time1 TEXT, small TEXT,
     emb BLOB, artifact TEXT, score REAL, rank INTEGER, added_at REAL, filtre INTEGER);
 CREATE INDEX IF NOT EXISTS images_campaign ON images(campaign_id, rank);
+CREATE INDEX IF NOT EXISTS images_added_at ON images(added_at);
+CREATE INDEX IF NOT EXISTS images_rank ON images(rank) WHERE rank IS NOT NULL;
 CREATE TABLE IF NOT EXISTS descriptions (opus_id TEXT PRIMARY KEY, text TEXT, created_at REAL, verdict TEXT);
 CREATE TABLE IF NOT EXISTS journal (t REAL, msg TEXT);
 CREATE TABLE IF NOT EXISTS contexte (opus_id TEXT PRIMARY KEY, data TEXT, created_at REAL);
@@ -636,7 +638,9 @@ def run_once(con, embed):
         else:
             db.journal(con, log, "Toute l'archive d'imagerie est fouillée. Nouvelle vérification dans 24 h.")
             show("Toute l'archive est fouillée : en attente de nouvelles photos (vérification toutes les 24 h)")
-            time.sleep(86400)
+            for _ in range(86400 // 30):
+                time.sleep(30)
+                publish_state()  # attente normale, pas une panne de la mission
         return
 
     items, times, available = fetch_page(camp["instrument"], camp["target"], camp["next_start"])
@@ -668,6 +672,9 @@ def main():
         con.execute("INSERT OR IGNORE INTO campaigns(instrument, target) VALUES (?,?)", (inst, target))
     con.commit()
     embed = Embedder()
+    RECENT.extend(dict(row) for row in con.execute(
+        "SELECT opus_id,small,time1,artifact AS reason FROM images ORDER BY rowid DESC LIMIT 18"))
+    show("Démarrage : reprise des recherches enregistrées")
     db.journal(con, log, "Mission Sondes Fantômes démarrée.")
     reclassify(con)
     threading.Thread(target=examine_forever, name="examen", daemon=True).start()

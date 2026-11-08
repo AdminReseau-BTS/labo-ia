@@ -18,7 +18,11 @@ def available():
     return any(m.get("name", "").startswith(OLLAMA_MODEL) for m in tags.get("models", []))
 
 
-def ask(prompt, image_path=None, schema=None, timeout=3600):
+class Busy(requests.RequestException):
+    """L'autre mission utilise deja le modele local."""
+
+
+def ask(prompt, image_path=None, schema=None, timeout=3600, wait=True):
     """Pose une question au modele. Avec un schema JSON, renvoie un dict.
     Delai large : l'IA passe apres les missions pour le processeur, une reponse peut prendre longtemps."""
     payload = {
@@ -35,9 +39,9 @@ def ask(prompt, image_path=None, schema=None, timeout=3600):
         payload["format"] = schema
     with (DATA / '.ollama-request.lock').open('a') as lock:
         try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            fcntl.flock(lock, fcntl.LOCK_EX | (0 if wait else fcntl.LOCK_NB))
         except BlockingIOError as exc:
-            raise requests.RequestException("IA locale occupee par l'autre mission") from exc
+            raise Busy("IA locale occupee par l'autre mission") from exc
         r = requests.post(f"{OLLAMA_URL}/api/generate", json=payload, timeout=timeout)
         r.raise_for_status()
         result = r.json()
