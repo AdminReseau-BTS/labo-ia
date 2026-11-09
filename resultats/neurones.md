@@ -1,6 +1,6 @@
 # Labo de neurones : recettes d'entraînement
 
-*Mis à jour le 09/11/2026 à 04:04 UTC. Progrès = balles renvoyées pendant les 5 dernières minutes de jeu, moins les 5 premières, en points, en moyenne sur 3 cultures.*
+*Mis à jour le 09/11/2026 à 10:03 UTC. Progrès = balles renvoyées pendant les 5 dernières minutes de jeu, moins les 5 premières, en points, en moyenne sur 3 cultures.*
 
 ## La meilleure recette, minute par minute
 
@@ -118,3 +118,4 @@ Une contre-épreuve rejoue une recette prometteuse sur 3 cultures neuves, avec e
 | 370 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°333* | stimulation 1,05 µA de 6,96 à 31,75 Hz ; retour 1,26 µA, 0,91 s à 10,8 Hz, salve de 9 ; raquette ×3,56 ; STDP 24,42 ms ; homéostasie 3 Hz | 21 % → 52 % | **+31** | +1 avec plasticité, -4 sans : non reproduit |
 | 372 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°370* | stimulation 0,92 µA de 5,8 à 31,75 Hz ; retour 0,89 µA, 0,91 s à 10,8 Hz, salve de 9 ; raquette ×3,56 ; STDP 24,42 ms ; homéostasie 3 Hz | 19 % → 49 % | **+30** | -1 avec plasticité, +2 sans : non reproduit |
 | 384 | retour prévisible / imprévisible (DishBrain)<br>*variante de la n°333* | stimulation 0,55 µA de 6,96 à 31,75 Hz ; retour 1,26 µA, 0,91 s à 10,8 Hz, salve de 13 ; raquette ×3,56 ; STDP 14,87 ms ; homéostasie 3 Hz | 20 % → 51 % | **+31** | +7 avec plasticité, -3 sans : confirmé |
+| 396 | retour prévisible / imprévisible (DishBrain)<br>*protocole DishBrain* | stimulation 1 µA de 4 à 40 Hz ; retour 1 µA, 4 s à 5 Hz, salve de 10 ; raquette ×2 ; STDP 20 ms ; homéostasie 1,5 Hz | 21 % → 28 % | **+7** | -9 avec plasticité, -10 sans : non reproduit |
