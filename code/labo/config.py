@@ -92,3 +92,6 @@ LOG_FORMAT = "%(asctime)s %(levelname)s %(name)s %(message)s"
 # IA locale optionnelle (Ollama). Sans elle, les missions tournent quand meme.
 OLLAMA_URL = "http://127.0.0.1:11434"
 OLLAMA_MODEL = "gemma3:4b"
+ATELIER_MODEL = "qwen3:8b"
+ATELIER_DIR = DATA / "atelier"
+SERVICES["labo-atelier"] = "Atelier du futur"

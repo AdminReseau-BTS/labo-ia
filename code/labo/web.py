@@ -11,6 +11,8 @@ from .config import (CULTURE_SIZE, MOTOR_PROTOCOL, DEPLOY_KEY, FEEDBACK_MODES, N
 from .db import connect, rows, scalar
 
 app = Flask(__name__)
+from .atelier_web import bp as atelier_bp
+app.register_blueprint(atelier_bp)
 
 
 @app.context_processor
@@ -140,7 +142,7 @@ def live():
 
 @app.route("/api/direct")
 def live_api():
-    return jsonify(now=time.time(), neurones=direct.read("neurones"), sondes=direct.read("sondes"), health=health.snapshot())
+    return jsonify(now=time.time(), neurones=direct.read("neurones"), sondes=direct.read("sondes"), atelier=direct.read("atelier"), health=health.snapshot())
 
 
 @app.route("/erreurs")
@@ -238,7 +240,7 @@ footer { max-width:1240px; margin:auto; padding:0 16px 30px; }
 
 def nav(page):
     """Menu commun ; la pastille rouge compte les erreurs pas encore vues."""
-    links = (("/", "Tableau de bord"), ("/direct", "En direct"), ("/erreurs", "Erreurs"))
+    links = (("/", "Tableau de bord"), ("/direct", "En direct"), ("/atelier", "Atelier du futur"), ("/erreurs", "Erreurs"))
     return '<nav class="nav">' + "".join(
         f'<a href="{href}"{" class=on" if href == page else ""}>{label}'
         + ('{% if unseen %} <span class="badge" title="Alertes enregistrées non consultées">{{ unseen }}</span>{% endif %}' if href == "/erreurs" else "")
@@ -463,10 +465,15 @@ figure.no img { opacity:.45; filter:grayscale(1); }
 <header>
   """ + nav("/direct") + """
   <h1>En direct</h1>
-  <p class="sub">Ce que font les deux missions en ce moment. La page se met à jour toute seule.</p>
+  <p class="sub">Ce que font les trois missions en ce moment. La page se met à jour toute seule.</p>
   <p class="note" id="health" role="status">Vérification des services…</p>
 </header>
 <main>
+<section class="wide">
+  <div class="row"><h2>Atelier du futur</h2><a href="/atelier">Projets et téléchargements →</a></div>
+  <p id="a-status" role="status">En attente de l’atelier…</p>
+  <p id="a-progress" class="note"></p>
+</section>
 <section>
   <h2>Labo de neurones</h2>
   <p class="sub" id="n-what">En attente des neurones…</p>
@@ -533,9 +540,20 @@ async function poll() {
     const d = await response.json();
     ingest(d.neurones, d.now);
     showHealth(d.health);
+    showAtelier(d.atelier, d.now);
     showSondes(d.sondes, d.now);
   } catch (e) { $("n-what").textContent = "Connexion interrompue — nouvel essai automatique…"; }
   finally { polling = false; }
+}
+
+function showAtelier(a, now) {
+  $("a-status").textContent = a ? a.message : "Atelier en attente de démarrage…";
+  const stale = a && now - a.t > 90;
+  $("a-progress").textContent = stale ? "Suivi interrompu : consulter les services du labo." :
+    a && a.activity === "waiting" ? "En file d’attente : une autre mission utilise le modèle." :
+    a && a.activity === "generating" ? (a.model + " · " + (a.characters || 0) + " caractères reçus · calcul en cours") :
+    a && a.next_at ? "Prochain cycle : " + new Date(a.next_at * 1000).toLocaleString("fr-FR") :
+    "Conception, tests, autocritique et publication automatiques des prototypes retenus.";
 }
 
 function showHealth(h) {

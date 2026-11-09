@@ -7,7 +7,7 @@ import time
 
 from .config import DATA
 
-UNITS = ('labo-neurones.service', 'labo-sondes.service', 'labo-web.service', 'ollama.service')
+UNITS = ('labo-neurones.service', 'labo-sondes.service', 'labo-web.service', 'ollama.service', 'labo-atelier.service')
 _lock = threading.Lock()
 _cached = None
 _at = 0.0
