@@ -1,6 +1,6 @@
 # Labo de neurones : recettes d'entraînement
 
-*Mis à jour le 09/11/2026 à 22:01 UTC. Progrès = balles renvoyées pendant les 5 dernières minutes de jeu, moins les 5 premières, en points, en moyenne sur 3 cultures.*
+*Mis à jour le 10/11/2026 à 04:03 UTC. Progrès = balles renvoyées pendant les 5 dernières minutes de jeu, moins les 5 premières, en points, en moyenne sur 3 cultures.*
 
 ## La meilleure recette, minute par minute
 
