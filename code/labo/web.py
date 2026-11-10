@@ -13,12 +13,14 @@ from .db import connect, rows, scalar
 app = Flask(__name__)
 from .atelier_web import bp as atelier_bp
 app.register_blueprint(atelier_bp)
+from .explorations_web import bp as explorations_bp
+app.register_blueprint(explorations_bp)
 
 
 @app.context_processor
 def unseen_errors():
     """Nombre d'erreurs pas encore vues, affiche dans le menu de chaque page."""
-    return {"unseen": scalar(VEILLE_DB, "SELECT COUNT(*) FROM erreurs WHERE vue=0 AND niveau='erreur'")}
+    return {"unseen": scalar(VEILLE_DB, "SELECT COUNT(*) FROM erreurs WHERE vue=0 AND niveau='erreur' AND resolved_at IS NULL")}
 
 
 @app.template_filter("when")
@@ -83,7 +85,7 @@ def index():
     verdicts = {r[0]: r[1] for r in rows(SONDES_DB, "SELECT verdict, COUNT(*) FROM descriptions GROUP BY verdict")}
     to_judge = scalar(SONDES_DB, """SELECT COUNT(*) FROM images i LEFT JOIN descriptions d ON d.opus_id = i.opus_id
                                     WHERE i.rank <= 10 AND d.opus_id IS NULL""")
-    alerts = rows(VEILLE_DB, "SELECT * FROM erreurs WHERE vue=0 ORDER BY niveau='erreur' DESC, derniere DESC LIMIT 6")
+    alerts = rows(VEILLE_DB, "SELECT * FROM erreurs WHERE vue=0 AND resolved_at IS NULL ORDER BY niveau='erreur' DESC, derniere DESC LIMIT 6")
     groups = rows(SONDES_DB, """
         SELECT c.*, COUNT(i.opus_id) AS n FROM campaigns c JOIN images i ON i.campaign_id = c.id
         WHERE c.scored_at IS NOT NULL GROUP BY c.id ORDER BY c.scored_at DESC LIMIT 15""")
@@ -142,7 +144,7 @@ def live():
 
 @app.route("/api/direct")
 def live_api():
-    return jsonify(now=time.time(), neurones=direct.read("neurones"), sondes=direct.read("sondes"), atelier=direct.read("atelier"), health=health.snapshot())
+    return jsonify(now=time.time(), neurones=direct.read("neurones"), sondes=direct.read("sondes"), atelier=direct.read("atelier"), explorations=direct.read("explorations"), health=health.snapshot())
 
 
 @app.route("/erreurs")
@@ -155,8 +157,8 @@ def errors():
         phone=vpn.links(),
         # Par defaut : les erreurs pas encore vues ou de la semaine, et tout ce qui date de moins de 24 h.
         show_all=show_all, errors=rows(VEILLE_DB, "SELECT * FROM erreurs" + ("" if show_all else
-                                       " WHERE (niveau='erreur' AND (vue=0 OR derniere > unixepoch() - 7 * 86400))"
-                                       " OR derniere > unixepoch() - 86400")
+                                       " WHERE resolved_at IS NULL AND ((niveau='erreur' AND (vue=0 OR derniere > unixepoch() - 7 * 86400))"
+                                       " OR derniere > unixepoch() - 86400)")
                                        + " ORDER BY vue, derniere DESC LIMIT 200"))
 
 
@@ -240,7 +242,7 @@ footer { max-width:1240px; margin:auto; padding:0 16px 30px; }
 
 def nav(page):
     """Menu commun ; la pastille rouge compte les erreurs pas encore vues."""
-    links = (("/", "Tableau de bord"), ("/direct", "En direct"), ("/atelier", "Atelier du futur"), ("/erreurs", "Erreurs"))
+    links = (("/", "Tableau de bord"), ("/direct", "En direct"), ("/atelier", "Atelier du futur"), ("/explorations", "Explorations"), ("/erreurs", "Erreurs"))
     return '<nav class="nav">' + "".join(
         f'<a href="{href}"{" class=on" if href == page else ""}>{label}'
         + ('{% if unseen %} <span class="badge" title="Alertes enregistrées non consultées">{{ unseen }}</span>{% endif %}' if href == "/erreurs" else "")
@@ -465,7 +467,7 @@ figure.no img { opacity:.45; filter:grayscale(1); }
 <header>
   """ + nav("/direct") + """
   <h1>En direct</h1>
-  <p class="sub">Ce que font les trois missions en ce moment. La page se met à jour toute seule.</p>
+  <p class="sub">Ce que font les missions en ce moment. La page se met à jour toute seule.</p>
   <p class="note" id="health" role="status">Vérification des services…</p>
 </header>
 <main>
@@ -473,6 +475,7 @@ figure.no img { opacity:.45; filter:grayscale(1); }
   <div class="row"><h2>Atelier du futur</h2><a href="/atelier">Projets et téléchargements →</a></div>
   <p id="a-status" role="status">En attente de l’atelier…</p>
   <p id="a-progress" class="note"></p>
+  <p><a href="/explorations">Six explorations autonomes →</a> <span class="note" id="x-status"></span></p>
 </section>
 <section>
   <h2>Labo de neurones</h2>
@@ -541,6 +544,7 @@ async function poll() {
     ingest(d.neurones, d.now);
     showHealth(d.health);
     showAtelier(d.atelier, d.now);
+    $("x-status").textContent = d.explorations ? d.explorations.message : "Démarrage…";
     showSondes(d.sondes, d.now);
   } catch (e) { $("n-what").textContent = "Connexion interrompue — nouvel essai automatique…"; }
   finally { polling = false; }
@@ -722,14 +726,15 @@ ol.steps { margin:6px 0 10px; padding-left:20px; }
     </span>
   </div>
   {% for e in errors %}
-  <div class="err {{ 'new' if not e.vue and e.niveau == 'erreur' }}">
+  <div class="err {{ 'new' if not e.vue and e.niveau == 'erreur' and not e.resolved_at }}">
     <span class="lvl {{ 'vue' if e.vue else e.niveau }}">{{ e.niveau }}{{ " · vue" if e.vue }}</span>
     <div class="big"><strong>{{ e.source }}</strong> : {{ e.titre }}</div>
+    {% if e.resolved_at %}<p class="pos">Résolue le {{ e.resolved_at|when }} · {{ e.resolution }}</p>{% endif %}
     <div class="note">{% if e.nombre > 1 %}{{ e.nombre }} fois, du {{ e.premiere|when }} au {{ e.derniere|when }}{% else %}le {{ e.premiere|when }}{% endif %}</div>
     {% if e.detail %}<details><summary class="note">Voir le détail technique</summary><pre>{{ e.detail }}</pre></details>{% endif %}
   </div>
   {% else %}
-  <p class="note">Aucun problème : tout tourne normalement.</p>
+  <p class="note">Aucune alerte ouverte dans cette vue. Les alertes résolues restent dans l’historique.</p>
   {% endfor %}
   <p class="note">Une <b>erreur</b> déclenche une notification (une seule fois tant que tu ne l'as pas marquée comme vue).
   Un <b>avertissement</b> est un petit souci passager, comme une photo qui n'a pas pu être téléchargée : il est

@@ -24,7 +24,7 @@ class Busy(requests.RequestException):
 
 
 def ask(prompt, image_path=None, schema=None, timeout=3600, wait=True,
-        model=None, num_predict=768, num_ctx=4096, progress=None):
+        model=None, num_predict=768, num_ctx=4096, progress=None, thinking=False):
     """Pose une question au modele. Avec un schema JSON, renvoie un dict.
     Delai large : l'IA passe apres les missions pour le processeur, une reponse peut prendre longtemps."""
     payload = {
@@ -36,7 +36,7 @@ def ask(prompt, image_path=None, schema=None, timeout=3600, wait=True,
         "keep_alive": 0,  # libere aussi le cache de prompts, qui finissait par depasser 7 Gio
     }
     if payload['model'].startswith('qwen3:'):
-        payload['think'] = False
+        payload['think'] = bool(thinking)
     if image_path:
         payload["images"] = [base64.b64encode(Path(image_path).read_bytes()).decode()]
     if schema:
@@ -65,7 +65,7 @@ def ask(prompt, image_path=None, schema=None, timeout=3600, wait=True,
                     now = time.monotonic()
                     if now - started > timeout: raise requests.Timeout('Delai total de generation depasse')
                     if now - last > 2:
-                        progress('generating', length)
+                        progress('reasoning' if event.get('thinking') and not length else 'generating', length)
                         last = now
                     if event.get('done'):
                         result = event

@@ -29,7 +29,8 @@ log = logging.getLogger("veille")
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS erreurs (
     id INTEGER PRIMARY KEY, cle TEXT, niveau TEXT, source TEXT, titre TEXT, detail TEXT,
-    premiere REAL, derniere REAL, nombre INTEGER DEFAULT 1, vue INTEGER DEFAULT 0);
+    premiere REAL, derniere REAL, nombre INTEGER DEFAULT 1, vue INTEGER DEFAULT 0,
+    resolved_at REAL, resolution TEXT);
 CREATE TABLE IF NOT EXISTS etat (k TEXT PRIMARY KEY, v TEXT);
 """
 MAX_NOTIFS_PER_HOUR = 10
@@ -92,7 +93,7 @@ def record(con, niveau, source, titre, detail="", resume=None):
     """Garde un probleme. Tant qu'il n'a pas ete vu, sa repetition ne fait que l'incrementer."""
     cle = f"{source}|{re.sub(r'[0-9]+', '#', titre)[:200]}"
     now = time.time()
-    row = con.execute("SELECT id FROM erreurs WHERE cle=? AND vue=0 ORDER BY id DESC LIMIT 1", (cle,)).fetchone()
+    row = con.execute("SELECT id FROM erreurs WHERE cle=? AND vue=0 AND resolved_at IS NULL ORDER BY id DESC LIMIT 1", (cle,)).fetchone()
     if row:
         con.execute("UPDATE erreurs SET nombre=nombre+1, derniere=?, detail=? WHERE id=?", (now, detail, row[0]))
         con.commit()
@@ -230,6 +231,9 @@ def main():
     logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
     con = db.connect(VEILLE_DB)
     con.executescript(SCHEMA)
+    columns={r[1] for r in con.execute('PRAGMA table_info(erreurs)')}
+    for name,kind in (('resolved_at','REAL'),('resolution','TEXT')):
+        if name not in columns: con.execute(f'ALTER TABLE erreurs ADD COLUMN {name} {kind}')
     if "--test" in sys.argv:
         ok = notify("Labo IA : test", "Les notifications marchent. Tu seras prévenu ici si quelque chose casse.", 3)
         print("notification envoyée" if ok else "échec de l'envoi")

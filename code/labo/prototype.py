@@ -72,8 +72,8 @@ def compile_spec(spec):
     names = set()
     for p in params:
         key = p.get('id', '')
-        if not re.fullmatch('[a-z][a-z0-9_]{0,19}', key) or key in names or key in FUNCS:
-            raise ValueError('Identifiant parametre invalide ou duplique')
+        if not re.fullmatch('[a-z][a-z0-9_]{0,63}', key) or key in names or key in FUNCS:
+            raise ValueError(f'Identifiant {key!r} invalide : 1 a 64 caracteres ASCII, commence par une lettre, unique')
         names.add(key)
         vals = [p.get(k) for k in ('min', 'max', 'default')]
         if any(type(v) not in (int, float) or not math.isfinite(v) or abs(v) > 1e8 for v in vals):
@@ -106,13 +106,17 @@ def validate(spec):
             outputs.append(y)
         except (ArithmeticError, ValueError) as exc:
             raise ValueError(f'Calcul invalide pour {values}: {exc}') from exc
-    for p in ps:
-        vals = {q['id']: q['default'] for q in ps}
-        ys = []
-        for x in (p['min'], p['default'], p['max']):
-            vals[p['id']] = x
-            ys.append([evaluate(m['tree'], vals) for m in model['metrics']])
-        if all(max(col) - min(col) < 1e-9 for col in zip(*ys)):
+    # Un parametre sature (ex. batterie pleine) peut rester inactif au point par defaut.
+    # Tester son effet dans tous les contextes de la grille, pas seulement au centre.
+    grid_count = 3 ** len(ps)
+    for index, p in enumerate(ps):
+        groups = {}
+        for case, result in zip(cases[:grid_count], outputs[:grid_count]):
+            context = case[:index]+case[index+1:]
+            groups.setdefault(context, []).append(result)
+        active = any(not math.isclose(min(col), max(col), rel_tol=1e-9, abs_tol=1e-12)
+                     for group in groups.values() for col in zip(*group))
+        if not active:
             raise ValueError('Parametre sans effet : ' + p['id'])
     return model, {'passed': True, 'cases': len(cases), 'checks': ['schema', 'formules bornees',
         'combinaisons des bornes', '64 points aleatoires', 'sensibilite des commandes'],

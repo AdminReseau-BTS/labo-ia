@@ -12,7 +12,7 @@ import uuid
 import zipfile
 from contextlib import contextmanager
 
-from . import direct, llm, prototype
+from . import direct, llm, prototype, foundations
 from .config import ATELIER_DIR, ATELIER_MODEL, LOG_FORMAT
 
 log = logging.getLogger('atelier')
@@ -43,6 +43,13 @@ REVIEW_SCHEMA = {'type': 'object', 'properties': {
     'improvements': {'type': 'array', 'items': {'type': 'string'}},
     'reason': {'type': 'string'}}, 'required': ['score', 'verdict', 'strengths', 'blockers', 'improvements', 'reason'],
     'additionalProperties': False}
+
+# Les contraintes envoyees au modele doivent correspondre au validateur reel.
+for key in ('assumptions', 'limitations'):
+    SPEC_SCHEMA['properties'][key].update(minItems=2,maxItems=4)
+SPEC_SCHEMA['properties']['parameters'].update(minItems=2,maxItems=3)
+SPEC_SCHEMA['properties']['metrics'].update(minItems=2,maxItems=2)
+SPEC_SCHEMA['properties']['parameters']['items']['properties']['id'].update(pattern='^[a-z][a-z0-9_]{0,63}$',maxLength=64)
 
 
 @contextmanager
@@ -180,20 +187,25 @@ def publish(project):
 def step(p):
     pid = p['id']
     if p['phase'] in ('design', 'revise'):
+        base = foundations.seed(p['topic'])
         previous = '\nDerniere version : '+json.dumps(p['spec'], ensure_ascii=False) if p['spec'] else ''
         feedback = '\nA corriger : '+json.dumps(p['review'], ensure_ascii=False) if p['review'] else ''
         if p['error']: feedback += '\nErreur des tests : '+p['error']
         existing = [x['title'] for x in list_projects(12) if x['id'] != pid]
-        prompt = '''Tu es concepteur de prototypes futuristes. Produis en francais un petit simulateur original, utile et honnete.
-Sujet : '''+p['topic']+'''. Tout est calculable hors ligne ; pas d'API, de code, de telechargement ou d'action physique.
+        prompt = '''Tu es concepteur de prototypes futuristes. Adapte en francais le bilan de reference fourni en un simulateur utile.
+Sujet : '''+p['topic']+'''. Le produit final est une application interactive telechargeable, calculable hors ligne.
 Le moteur construit automatiquement les curseurs, les mesures, un graphe de sensibilite et un export CSV.
-Fournis 2 ou 3 parametres independants avec min/max/default realistes et unites, et 2 mesures avec formules.
+Conserve les equations, unites et identifiants du bilan fourni sauf erreur mathematique demontree.
+Personnalise le titre, les explications, les scenarios et les valeurs par defaut dans les bornes.
+Fournis exactement 2 mesures et 2 ou 3 parametres. Identifiants ASCII courts, au maximum 64 caracteres.
 Formules : uniquement les identifiants des parametres, nombres, parentheses, + - * / et min,max,abs,sqrt.
 Pas de puissance, pas de reference aux autres mesures. Evite toute division par zero sur l'ensemble des bornes.
 Chaque parametre doit influencer au moins une mesure. Verifie les unites, les conversions et les ordres de grandeur.
 Explique chaque formule et ses coefficients. Les constantes non sourcees doivent etre declarees comme hypotheses illustratives.
 Minimum 2 hypotheses et 2 limites explicites. Ne revendique aucune nouveaute scientifique ou preuve experimentale.
-Textes concis, environ 600 mots maximum au total. Titres deja proposes a ne pas reproduire : '''+json.dumps(existing, ensure_ascii=False)+previous+feedback
+N'invente pas de formule d'humidite, biologie ou rendement hors du bilan fourni. Un rapport de flux n'est pas une humidite relative.
+Textes brefs : 30 mots maximum par champ, 2 hypotheses et 2 limites. Ne recopie pas les consignes techniques dans les textes du produit.
+Bilan de reference : '''+json.dumps(base,ensure_ascii=False)+'''\nTitres deja proposes a ne pas reproduire : '''+json.dumps(existing, ensure_ascii=False)+previous+feedback
         spec = llm.ask(prompt, schema=SPEC_SCHEMA, model=ATELIER_MODEL, num_predict=2300, num_ctx=8192,
                        timeout=2400, wait=True, progress=_progress)
         # Sauver aussi une proposition invalide pour permettre au modele de la corriger.
@@ -206,16 +218,21 @@ Textes concis, environ 600 mots maximum au total. Titres deja proposes a ne pas 
         update(pid, f'Tests numeriques reussis sur {tests["cases"]} scenarios ; autocritique a suivre.',
                title=model['title'], phase='review', tests=tests, attempts=0, error=None)
     elif p['phase'] == 'review':
-        prompt = '''Tu es un evaluateur exigeant, distinct du role de conception. Critique ce simulateur futuriste.
+        prompt = '''Tu es un evaluateur rigoureux, distinct du role de conception. Critique ce simulateur pedagogique.
 Il s'agit d'un prototype pedagogique, pas d'une innovation prouvee. Verifie les formules, dimensions/unites,
 conversions, coefficients, bornes, valeurs par defaut, utilite, honnetete des hypotheses et limites.
 Les tests numeriques ne prouvent PAS la validite physique. Mets chaque erreur substantielle dans blockers.
 Score entier de 0 a 10. Verdict publish seulement si score >=8 et aucun blocker, sinon revise.
-Ne recompense pas seulement une belle presentation. Propose des corrections concretes, sans exiger des donnees externes
-pour un modele explicitement illustratif. Reponse en francais, concise (350 mots maximum).
+Ne recompense pas seulement une belle presentation. N'invente pas d'objection : chaque blocker doit montrer une contradiction concrete,
+une operation dimensionnelle fausse ou un cas numerique qui echoue. Un parametre choisi par l'utilisateur est une hypothese,
+pas une prediction. Un rendement declare illustratif ne pretend pas modeliser la biologie ou les conditions de Mars.
+Une surface en m2 multipliee par kg/m2/j donne kg/j ; une surface multipliee par L/m2/j donne L/j.
+Ces deux sorties independantes n'ont aucune conversion kg/L a faire entre elles. Ne demande pas de donnees externes
+pour valider un bilan explicitement illustratif. La rigueur comprend aussi l'absence de faux positifs.
+Reponse en francais, concise (200 mots maximum), au maximum 3 elements par liste.
 Specification : '''+json.dumps(p['spec'], ensure_ascii=False)+'\nTests : '+json.dumps(p['tests'], ensure_ascii=False)
-        review = valid_review(llm.ask(prompt, schema=REVIEW_SCHEMA, model=ATELIER_MODEL, num_predict=1500,
-                                     num_ctx=8192, timeout=2400, wait=True, progress=_progress))
+        review = valid_review(llm.ask(prompt, schema=REVIEW_SCHEMA, model=ATELIER_MODEL, num_predict=4096,
+                                     num_ctx=8192, timeout=3600, wait=True, progress=_progress, thinking=True))
         update(pid, 'Autocritique : '+str(review['score'])+'/10 — '+review['reason'], review=review, attempts=0)
         if review['verdict'] == 'publish' and review['score'] >= 8 and not review['blockers']:
             if setting('paused', '0') != '1': publish(get_project(pid))
@@ -276,7 +293,10 @@ def run():
             except llm.Busy:
                 state.update(status='waiting', message='En attente du modele, utilise par une autre mission.')
             except Exception as exc:
-                log.exception('Echec d’une etape de l’atelier')
+                if isinstance(exc, (ValueError, SyntaxError, TypeError, KeyError)):
+                    log.info('Proposition a corriger (pas une panne du service) : %s', exc)
+                else:
+                    log.exception('Echec technique d’une etape de l’atelier')
                 state.update(status='retry', message='Etape en echec ; nouvelle tentative apres temporisation.', activity=None, characters=None)
                 if p:
                     attempts = p['attempts']+1
