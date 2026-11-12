@@ -11,14 +11,14 @@ Ce dépôt est son carnet de recherche. On y trouve où il en est et ce qu'il a 
 
 ## Où en est le labo
 
-*Mis à jour automatiquement le 12/11/2026 à 16:02 UTC.*
+*Mis à jour automatiquement le 12/11/2026 à 22:03 UTC.*
 
 | | |
 |---|---:|
 | Photos de la NASA passées en revue | 565 616 |
 | Astres entièrement passés en revue | 237 sur 237 |
-| Parties de Pong jouées par les neurones | 1 777 (473,9 h de jeu) |
-| Façons d'entraîner essayées | 499 |
+| Parties de Pong jouées par les neurones | 1 803 (480,8 h de jeu) |
+| Façons d'entraîner essayées | 508 |
 | Meilleur progrès observé, avant vérification | +33 points (recette n°310) |
 | Progrès confirmés après vérification | 3 sur 45 |
 
@@ -32,7 +32,7 @@ Dernier rapport : [2026-11-12](rapports/2026-11-12.md)
 
 ### Sondes Fantômes : les trouvailles
 
-Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 1 673 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
+Rien de vraiment intéressant pour l'instant. L'IA du labo a examiné 1 724 photos qui sortaient de l'ordinaire : toutes s'expliquent par un défaut d'image ou par quelque chose de déjà connu. Les vraies trouvailles apparaîtront ici, et dans la page [Trouvailles](trouvailles/), qui montre déjà les curiosités expliquées.
 
 ### Labo de neurones : ce qui marche vraiment
 
