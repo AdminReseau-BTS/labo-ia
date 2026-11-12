@@ -1,6 +1,6 @@
 # Labo de neurones : recettes d'entraînement
 
-*Mis à jour le 11/11/2026 à 22:02 UTC. Progrès = balles renvoyées pendant les 5 dernières minutes de jeu, moins les 5 premières, en points, en moyenne sur 3 cultures.*
+*Mis à jour le 12/11/2026 à 04:04 UTC. Progrès = balles renvoyées pendant les 5 dernières minutes de jeu, moins les 5 premières, en points, en moyenne sur 3 cultures.*
 
 ## La meilleure recette, minute par minute
 
@@ -125,3 +125,4 @@ Une contre-épreuve rejoue une recette prometteuse sur 3 cultures neuves, avec e
 | 426 | aucun retour<br>*variante de la n°418* | stimulation 0,72 µA de 7,96 à 49,85 Hz ; retour 1,53 µA, 5,9 s à 6,63 Hz, salve de 9 ; raquette ×2,92 ; STDP 57,22 ms ; homéostasie 2,43 Hz | 23 % → 30 % | **+7** | -0 avec plasticité, -2 sans : non reproduit |
 | 467 | silence après une balle ratée<br>*tirée au hasard* | stimulation 0,55 µA de 8,13 à 19,99 Hz ; retour 0,36 µA, 3,01 s à 10,77 Hz, salve de 16 ; raquette ×1,71 ; STDP 61,99 ms ; homéostasie 2,3 Hz | 22 % → 30 % | **+9** | +2 avec plasticité, -2 sans : non reproduit |
 | 468 | silence après une balle ratée<br>*variante de la n°467* | stimulation 0,55 µA de 8,13 à 15,75 Hz ; retour 0,36 µA, 3,01 s à 10,77 Hz, salve de 15 ; raquette ×1,68 ; STDP 61,99 ms ; homéostasie 2,3 Hz | 23 % → 31 % | **+9** | +5 avec plasticité, +3 sans : les cultures figées progressent autant |
+| 469 | aucun retour<br>*variante de la n°468* | stimulation 0,55 µA de 8,13 à 16,13 Hz ; retour 0,36 µA, 3,01 s à 10,77 Hz, salve de 15 ; raquette ×0,74 ; STDP 61,99 ms ; homéostasie 2,3 Hz | 22 % → 27 % | **+5** | -4 avec plasticité, +4 sans : non reproduit |
